@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Admin - Escala de Plantão NOC</title>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -15,7 +18,9 @@
       color: #0f172a;
     }
 
-    .bloqueado { display: none; }
+    .bloqueado {
+      display: none;
+    }
 
     .login-overlay {
       min-height: 100vh;
@@ -57,7 +62,14 @@
       margin-bottom: 12px;
     }
 
-    .login-card button { width: 100%; }
+    .login-card input:focus {
+      outline: 2px solid #2563eb;
+      border-color: #2563eb;
+    }
+
+    .login-card button {
+      width: 100%;
+    }
 
     .erro-login {
       margin-top: 12px;
@@ -144,7 +156,9 @@
       color: #991b1b;
     }
 
-    button:hover { filter: brightness(0.96); }
+    button:hover {
+      filter: brightness(0.96);
+    }
 
     .grid5,
     .ferias-controle {
@@ -258,7 +272,9 @@
       display: none;
     }
 
-    .status-salvamento.ativo { display: block; }
+    .status-salvamento.ativo {
+      display: block;
+    }
 
     .aviso {
       margin: 12px 0;
@@ -308,11 +324,25 @@
       border: 1px solid #93c5fd;
     }
 
-    .cor-util { background: #ffffff; }
-    .cor-sabado { background: #fef3c7; }
-    .cor-domingo { background: #fee2e2; }
-    .cor-ferias { background: #dbeafe; }
-    .cor-conflito { background: #fecaca; }
+    .cor-util {
+      background: #ffffff;
+    }
+
+    .cor-sabado {
+      background: #fef3c7;
+    }
+
+    .cor-domingo {
+      background: #fee2e2;
+    }
+
+    .cor-ferias {
+      background: #dbeafe;
+    }
+
+    .cor-conflito {
+      background: #fecaca;
+    }
 
     .tabela-topo {
       display: flex;
@@ -341,7 +371,9 @@
       border-radius: 10px;
     }
 
-    .tabela-wrapper.recolhida { display: none; }
+    .tabela-wrapper.recolhida {
+      display: none;
+    }
 
     table {
       width: 100%;
@@ -402,7 +434,9 @@
       font-weight: 700;
     }
 
-    .linha-oculta { display: none; }
+    .linha-oculta {
+      display: none;
+    }
 
     .linha-encontrada {
       outline: 2px solid #2563eb;
@@ -425,7 +459,9 @@
       background: #fef2f2 !important;
     }
 
-    .linha-conflito td { background: #fef2f2; }
+    .linha-conflito td {
+      background: #fef2f2;
+    }
 
     .linha-conflito .domingo,
     .linha-conflito .sabado {
@@ -497,7 +533,9 @@
       color: #1d4ed8;
     }
 
-    .obs { margin-top: 20px; }
+    .obs {
+      margin-top: 20px;
+    }
 
     .obs label {
       display: block;
@@ -616,7 +654,8 @@
     </div>
 
     <div class="nota">
-      Ao clicar em <strong>Gerar escala</strong>, os feriados nacionais do mês serão marcados automaticamente. Feriados municipais podem ser adicionados abaixo ou marcados manualmente na tabela.
+      Ao clicar em <strong>Gerar escala</strong>, os feriados nacionais do mês serão marcados automaticamente.
+      Para feriados municipais, marque manualmente a coluna <strong>Feriado?</strong> na tabela.
     </div>
 
     <div id="statusSalvamento" class="status-salvamento">Alterações salvas automaticamente.</div>
@@ -641,27 +680,6 @@
     </div>
 
     <div id="listaFerias" class="lista-ferias"></div>
-
-    <div class="ferias-controle">
-      <div>
-        <label>Data do feriado municipal</label>
-        <input id="feriadoManualData" type="date">
-      </div>
-
-      <div>
-        <label>Nome do feriado</label>
-        <input id="feriadoManualNome" type="text" placeholder="Ex: Aniversário do Município">
-      </div>
-
-      <div>
-        <label>Tipo</label>
-        <input type="text" value="Municipal / Manual" disabled>
-      </div>
-
-      <button id="btnAdicionarFeriadoManual" class="btn-secundario" type="button">Adicionar feriado</button>
-    </div>
-
-    <div id="listaFeriadosManuais" class="lista-ferias"></div>
 
     <div class="pesquisa-area">
       <input id="pesquisa" type="text" placeholder="Pesquisar por data, nome, dia, horário ou observação...">
@@ -742,7 +760,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       const STORAGE_KEY = 'escalaPlantaoNocAdmin';
 
       let ferias = [];
-      let feriadosManuais = [];
       let timerSalvamento = null;
 
       const $ = (id) => document.getElementById(id);
@@ -831,11 +848,13 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         const a = Number(p[2]);
 
         if (Number.isNaN(d) || Number.isNaN(m) || Number.isNaN(a)) return null;
+
         return new Date(a, m, d);
       }
 
       function feriasNoDia(nome, dataBr) {
         const iso = dataBrParaIso(dataBr);
+
         if (!nome || !iso) return null;
 
         return ferias.find((f) => f.nome === nome && iso >= f.inicio && iso <= f.fim) || null;
@@ -1038,99 +1057,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         obs.innerText = partes.join(' | ');
       }
 
-      function encontrarLinhaPorData(dataBr) {
-        return Array.from(document.querySelectorAll('#tabela tbody tr'))
-          .find((linha) => (linha.cells[0]?.innerText.trim() || '') === dataBr) || null;
-      }
-
-      function atualizarListaFeriadosManuais() {
-        $('listaFeriadosManuais').innerHTML = feriadosManuais
-          .map((f, index) => `
-            <span class="ferias-item">
-              ${dataIsoParaBr(f.data)}: ${escapeHtml(f.nome)}
-              <button type="button" data-remover-feriado-manual="${index}">x</button>
-            </span>
-          `)
-          .join('');
-      }
-
-      function adicionarFeriadoManual() {
-        const dataIso = $('feriadoManualData').value;
-        const nome = $('feriadoManualNome').value.trim();
-
-        if (!dataIso || !nome) {
-          alert('Informe a data e o nome do feriado municipal.');
-          return;
-        }
-
-        if (!bodyTabela().rows.length) {
-          alert('Gere a escala antes de adicionar o feriado.');
-          return;
-        }
-
-        const dataBr = dataIsoParaBr(dataIso);
-        const linha = encontrarLinhaPorData(dataBr);
-
-        if (!linha) {
-          alert('Essa data não existe na escala atual.');
-          return;
-        }
-
-        const jaExiste = feriadosManuais.some((f) => f.data === dataIso && f.nome === nome);
-
-        if (!jaExiste) {
-          feriadosManuais.push({ data: dataIso, nome: nome });
-        }
-
-        const checkbox = linha.querySelector('.check-feriado');
-        checkbox.checked = true;
-
-        alternarFeriado(checkbox, 'automatico');
-        adicionarTextoObservacao(linha, `Feriado municipal: ${nome}`);
-
-        $('feriadoManualData').value = '';
-        $('feriadoManualNome').value = '';
-
-        atualizarListaFeriadosManuais();
-        atualizarTudo();
-        limparAviso();
-        salvarAutomatico();
-
-        alert('Feriado municipal adicionado à escala.');
-      }
-
-      function removerFeriadoManual(index) {
-        const feriado = feriadosManuais[index];
-
-        if (!feriado) return;
-
-        const dataBr = dataIsoParaBr(feriado.data);
-
-        feriadosManuais.splice(index, 1);
-
-        const linha = encontrarLinhaPorData(dataBr);
-
-        if (linha) {
-          removerObservacaoPorPrefixo(linha, 'Feriado municipal:');
-
-          const aindaTemMunicipalNaData = feriadosManuais.some((f) => f.data === feriado.data);
-          const observacao = linha.cells[6]?.innerText || '';
-          const temFeriadoNacional = observacao.includes('Feriado nacional:');
-          const temManualGenerico = observacao.includes('Feriado manual/municipal');
-
-          if (!aindaTemMunicipalNaData && !temFeriadoNacional && !temManualGenerico) {
-            const checkbox = linha.querySelector('.check-feriado');
-            checkbox.checked = false;
-            alternarFeriado(checkbox, 'automatico');
-          }
-        }
-
-        atualizarListaFeriadosManuais();
-        atualizarTudo();
-        limparAviso();
-        salvarAutomatico();
-      }
-
       async function buscarFeriadosNacionais(mostrarAlerta = true) {
         const ano = $('ano').value;
         const mesSelecionado = Number($('mes').value) + 1;
@@ -1139,6 +1065,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           if (mostrarAlerta) {
             alert('Gere a escala antes de buscar os feriados.');
           }
+
           return;
         }
 
@@ -1324,9 +1251,8 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
             const observacao = linha.cells[6]?.innerText || '';
             const temNacional = observacao.includes('Feriado nacional:');
-            const temMunicipal = observacao.includes('Feriado municipal:');
 
-            if (temNacional || temMunicipal) {
+            if (temNacional) {
               checkbox.checked = true;
               aplicarClasse(linha, diaSemana, true);
               linha.cells[4].innerText = horarioPorDia(diaSemana, true);
@@ -1450,7 +1376,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       function montarDadosEscala() {
         return {
-          versao: 8,
+          versao: 9,
           atualizadoEm: new Date().toISOString(),
           escalaId: $('escalaId').value.trim(),
           nomeEscala: garantirNomeEscala(),
@@ -1463,7 +1389,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           whatsappNoc: whatsappNoc(),
           observacoes: $('observacoes').value,
           ferias: ferias,
-          feriadosManuais: feriadosManuais,
           linhas: Array.from(document.querySelectorAll('#tabela tbody tr')).map((linha) => ({
             data: linha.cells[0]?.innerText.trim() || '',
             semana: linha.cells[1]?.innerText.trim() || '',
@@ -1488,9 +1413,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
         ferias = dados.ferias || [];
         atualizarListaFerias();
-
-        feriadosManuais = dados.feriadosManuais || [];
-        atualizarListaFeriadosManuais();
 
         bodyTabela().innerHTML = '';
         (dados.linhas || []).forEach(montarLinha);
@@ -1819,7 +1741,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         $('btnAlternarTabela').onclick = alternarTabela;
         $('btnLimpar').onclick = limparTabela;
         $('btnAdicionarFerias').onclick = adicionarFerias;
-        $('btnAdicionarFeriadoManual').onclick = adicionarFeriadoManual;
 
         $('btnLimparPesquisa').onclick = () => {
           $('pesquisa').value = '';
@@ -1849,14 +1770,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           if (index !== null) removerFerias(Number(index));
         };
 
-        $('listaFeriadosManuais').onclick = (event) => {
-          const index = event.target.getAttribute('data-remover-feriado-manual');
-
-          if (index !== null) {
-            removerFeriadoManual(Number(index));
-          }
-        };
-
         bodyTabela().addEventListener('change', (event) => {
           if (event.target.classList.contains('check-feriado')) alternarFeriado(event.target, 'manual');
 
@@ -1876,7 +1789,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       preencherSelects();
       atualizarListaFerias();
-      atualizarListaFeriadosManuais();
       ligarEventos();
       atualizarTudo();
     })();
