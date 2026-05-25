@@ -1,1 +1,1498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Escala de Plantão NOC</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      background: #eaf2ff;
+      color: #0f172a;
+    }
+
+    .container {
+      max-width: 1250px;
+      margin: 28px auto;
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(30, 64, 175, 0.16);
+      border: 1px solid #bfdbfe;
+    }
+
+    .topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 2px solid #bfdbfe;
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+      color: #1d4ed8;
+    }
+
+    .subtitulo {
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-content: flex-start;
+    }
+
+    .grupo-acoes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 8px;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      background: #eff6ff;
+    }
+
+    button {
+      border: none;
+      padding: 10px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .btn-primario {
+      background: #1d4ed8;
+      color: #ffffff;
+    }
+
+    .btn-secundario {
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+
+    .btn-publicar {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    button:hover {
+      filter: brightness(0.96);
+    }
+
+    .grid4,
+    .ferias-controle {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .campo label,
+    .ferias-controle label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .campo input,
+    .campo select,
+    .ferias-controle input,
+    .ferias-controle select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #93c5fd;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .campo input:focus,
+    .campo select:focus,
+    .ferias-controle input:focus,
+    .ferias-controle select:focus,
+    .pesquisa-area input:focus,
+    .obs textarea:focus {
+      outline: 2px solid #2563eb;
+      border-color: #2563eb;
+    }
+
+    .ferias-controle {
+      padding: 14px;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      background: #eff6ff;
+      align-items: end;
+    }
+
+    .lista-ferias {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: -6px 0 16px;
+      font-size: 13px;
+    }
+
+    .ferias-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #dbeafe;
+      border: 1px solid #93c5fd;
+      color: #1e3a8a;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .ferias-item button {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #93c5fd;
+      color: #1e3a8a;
+    }
+
+    .pesquisa-area {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin: 16px 0;
+      align-items: center;
+    }
+
+    .pesquisa-area input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #93c5fd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .resultado-pesquisa {
+      font-size: 13px;
+      color: #334155;
+      margin-top: -8px;
+      margin-bottom: 12px;
+    }
+
+    .status-salvamento {
+      font-size: 13px;
+      color: #1d4ed8;
+      margin: 8px 0 12px;
+      font-weight: 700;
+      display: none;
+    }
+
+    .status-salvamento.ativo {
+      display: block;
+    }
+
+    .aviso {
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 14px;
+      display: none;
+      white-space: pre-line;
+    }
+
+    .aviso.ok {
+      display: block;
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .aviso.erro {
+      display: block;
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .legenda {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 14px 0 18px;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    .legenda-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cor {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid #93c5fd;
+    }
+
+    .cor-util {
+      background: #ffffff;
+    }
+
+    .cor-sabado {
+      background: #fef3c7;
+    }
+
+    .cor-domingo {
+      background: #fee2e2;
+    }
+
+    .cor-ferias {
+      background: #dbeafe;
+    }
+
+    .cor-conflito {
+      background: #fecaca;
+    }
+
+    .tabela-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      margin-bottom: 10px;
+    }
+
+    .tabela-topo h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #1d4ed8;
+    }
+
+    .tabela-botoes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tabela-wrapper {
+      overflow-x: auto;
+      border: 1px solid #93c5fd;
+      border-radius: 10px;
+    }
+
+    .tabela-wrapper.recolhida {
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th,
+    td {
+      border: 1px solid #bfdbfe;
+      padding: 9px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background: #1d4ed8;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .celula-bloqueada {
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    td[contenteditable="true"] {
+      background: #ffffff;
+      min-width: 110px;
+    }
+
+    td[contenteditable="true"]:focus {
+      outline: 2px solid #2563eb;
+      background: #eff6ff;
+    }
+
+    select.colaborador {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #93c5fd;
+      border-radius: 6px;
+      background: #ffffff;
+      font-size: 14px;
+      color: #0f172a;
+    }
+
+    .domingo,
+    .feriado {
+      background: #fee2e2 !important;
+      color: #991b1b;
+      font-weight: 700;
+    }
+
+    .sabado {
+      background: #fef3c7 !important;
+      color: #92400e;
+      font-weight: 700;
+    }
+
+    .linha-oculta {
+      display: none;
+    }
+
+    .linha-encontrada {
+      outline: 2px solid #2563eb;
+      outline-offset: -2px;
+    }
+
+    .linha-proximo {
+      outline: 3px solid #2563eb;
+      outline-offset: -3px;
+    }
+
+    .linha-ferias {
+      outline: 3px solid #1d4ed8;
+      outline-offset: -3px;
+    }
+
+    .linha-conflito {
+      outline: 3px solid #dc2626;
+      outline-offset: -3px;
+      background: #fef2f2 !important;
+    }
+
+    .linha-conflito td {
+      background: #fef2f2;
+    }
+
+    .linha-conflito .domingo,
+    .linha-conflito .sabado {
+      background: #fef2f2 !important;
+    }
+
+    .whatsapp-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .whatsapp-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .resumo {
+      margin-top: 20px;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 16px;
+      background: #eff6ff;
+    }
+
+    .resumo h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: #1d4ed8;
+    }
+
+    .resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .card-resumo {
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .card-resumo strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #1e3a8a;
+    }
+
+    .card-resumo span {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1d4ed8;
+    }
+
+    .obs {
+      margin-top: 20px;
+    }
+
+    .obs label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1e3a8a;
+    }
+
+    .obs textarea {
+      width: 100%;
+      min-height: 90px;
+      resize: vertical;
+      border: 1px solid #93c5fd;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .nota {
+      font-size: 13px;
+      color: #475569;
+      margin: 8px 0 16px;
+    }
+
+    @media (max-width: 850px) {
+      .grid4,
+      .ferias-controle,
+      .pesquisa-area,
+      .resumo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topo,
+      .tabela-topo {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .tabela-botoes {
+        flex-direction: column;
+      }
+    }
+
+    @media print {
+      .acoes,
+      .tabela-topo button,
+      .ferias-controle,
+      .lista-ferias,
+      .pesquisa-area,
+      .resultado-pesquisa,
+      .status-salvamento,
+      .aviso,
+      .nota {
+        display: none !important;
+      }
+
+      body {
+        background: #ffffff;
+      }
+
+      .container {
+        margin: 0;
+        box-shadow: none;
+        border-radius: 0;
+        max-width: none;
+      }
+
+      th,
+      td {
+        font-size: 11px;
+        padding: 6px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="topo">
+      <div>
+        <h1 contenteditable="true" id="tituloPagina">Admin - Escala de Plantão NOC</h1>
+        <div class="subtitulo">Monte, confira, salve automaticamente e publique a escala de plantão</div>
+      </div>
+
+      <div class="acoes">
+        <div class="grupo-acoes">
+          <button id="btnGerar" class="btn-primario" type="button">Gerar escala</button>
+          <button id="btnPublicar" class="btn-publicar" type="button">Publicar escala</button>
+          <button id="btnFeriados" class="btn-secundario" type="button">Buscar feriados nacionais</button>
+          <button id="btnVerificar" class="btn-secundario" type="button">Verificar escala</button>
+          <button id="btnProximo" class="btn-secundario" type="button">Próximo plantão</button>
+        </div>
+
+        <div class="grupo-acoes">
+          <button id="btnCarregar" class="btn-secundario" type="button">Carregar rascunho</button>
+        </div>
+
+        <div class="grupo-acoes">
+          <button id="btnResumo" class="btn-secundario" type="button">Atualizar resumo</button>
+          <button id="btnExportarCsv" class="btn-secundario" type="button">Exportar CSV</button>
+          <button id="btnLimpar" class="btn-secundario" type="button">Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid4">
+      <div class="campo">
+        <label>Mês</label>
+        <select id="mes"></select>
+      </div>
+
+      <div class="campo">
+        <label>Ano</label>
+        <input id="ano" type="number" value="2026">
+      </div>
+
+      <div class="campo">
+        <label>Setor</label>
+        <input id="setor" type="text" value="NOC">
+      </div>
+
+      <div class="campo">
+        <label>Telefone NOC</label>
+        <input id="telefone" type="text" value="98449-1917">
+      </div>
+    </div>
+
+    <div class="nota">
+      A escala é salva automaticamente neste navegador. Depois de conferir, clique em <strong>Publicar escala</strong> para enviar para a tela dos plantonistas.
+    </div>
+
+    <div id="statusSalvamento" class="status-salvamento">Alterações salvas automaticamente.</div>
+
+    <div class="ferias-controle">
+      <div>
+        <label>Colaborador em férias</label>
+        <select id="feriasColaborador"></select>
+      </div>
+
+      <div>
+        <label>Início</label>
+        <input id="feriasInicio" type="date">
+      </div>
+
+      <div>
+        <label>Fim</label>
+        <input id="feriasFim" type="date">
+      </div>
+
+      <button id="btnAdicionarFerias" class="btn-secundario" type="button">Adicionar férias</button>
+    </div>
+
+    <div id="listaFerias" class="lista-ferias"></div>
+
+    <div class="pesquisa-area">
+      <input id="pesquisa" type="text" placeholder="Pesquisar por data, nome, dia, horário ou observação...">
+      <button id="btnLimparPesquisa" class="btn-secundario" type="button">Limpar pesquisa</button>
+    </div>
+
+    <div id="resultadoPesquisa" class="resultado-pesquisa">Digite algo para localizar um plantão.</div>
+    <div id="aviso" class="aviso"></div>
+
+    <div class="legenda">
+      <div class="legenda-item"><span class="cor cor-util"></span> Dia útil</div>
+      <div class="legenda-item"><span class="cor cor-sabado"></span> Sábado</div>
+      <div class="legenda-item"><span class="cor cor-domingo"></span> Domingo/Feriado</div>
+      <div class="legenda-item"><span class="cor cor-ferias"></span> Férias</div>
+      <div class="legenda-item"><span class="cor cor-conflito"></span> Problema/conflito</div>
+    </div>
+
+    <div class="tabela-topo">
+      <h2>Tabela da escala</h2>
+
+      <div class="tabela-botoes">
+        <button id="btnAlternarTabela" class="btn-secundario" type="button">Minimizar tabela</button>
+      </div>
+    </div>
+
+    <div id="tabelaWrapper" class="tabela-wrapper">
+      <table id="tabela">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Semana</th>
+            <th>Feriado?</th>
+            <th>Plantonista</th>
+            <th>Horário</th>
+            <th>Telefone</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="resumo">
+      <h2>Resumo de plantões</h2>
+      <div class="resumo-grid" id="resumo"></div>
+    </div>
+
+    <div class="obs">
+      <label>Observações gerais</label>
+      <textarea id="observacoes">REGRAS DE ESCALA:
+Segunda a sexta: 17:45 às 21:50
+Sábado: 12:00 às 19:00
+Domingo e feriados: 08:00 às 19:00
+João: fixo em todas as segundas-feiras, salvo férias.
+Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL = "https://qbgwlfxsyqirwkvezkdu.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_oPqwuXv53mXcWAUgXc8XHg_XTLH7clz";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    (() => {
+      'use strict';
+
+      const colaboradores = ['André', 'Bruno', 'Emanuel', 'Guilherme', 'João'];
+      const colaboradoresSemana = ['André', 'Bruno', 'Emanuel', 'Guilherme'];
+      const colaboradoresFimSemana = ['André', 'Bruno', 'Emanuel', 'Guilherme', 'João'];
+      const nomesSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+      const STORAGE_KEY = 'escalaPlantaoNocAdmin';
+
+      let ferias = [];
+      let timerSalvamento = null;
+
+      const $ = (id) => document.getElementById(id);
+      const bodyTabela = () => document.querySelector('#tabela tbody');
+
+      function escapeHtml(valor) {
+        return String(valor ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      function telefoneNoc() {
+        return $('telefone').value.trim() || '98449-1917';
+      }
+
+      function whatsappNoc() {
+        const numeros = telefoneNoc().replace(/\D/g, '');
+        const numeroCompleto = numeros.startsWith('55') ? numeros : '5555' + numeros;
+        return 'https://wa.me/' + numeroCompleto;
+      }
+
+      function telefoneHtml() {
+        return `<a class="whatsapp-link" href="${whatsappNoc()}" target="_blank"><span class="whatsapp-icon">☎</span>${escapeHtml(telefoneNoc())}</a>`;
+      }
+
+      function dataBR(dia, mes, ano) {
+        return `${String(dia).padStart(2, '0')}/${String(mes + 1).padStart(2, '0')}/${ano}`;
+      }
+
+      function dataBrParaIso(data) {
+        const p = String(data).split('/');
+        return p.length === 3 ? `${p[2]}-${p[1]}-${p[0]}` : '';
+      }
+
+      function dataIsoParaBr(data) {
+        const p = String(data).split('-');
+        return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : data;
+      }
+
+      function dataBrParaDate(data) {
+        const p = String(data).split('/');
+        if (p.length !== 3) return null;
+
+        const d = Number(p[0]);
+        const m = Number(p[1]) - 1;
+        const a = Number(p[2]);
+
+        if (Number.isNaN(d) || Number.isNaN(m) || Number.isNaN(a)) return null;
+        return new Date(a, m, d);
+      }
+
+      function feriasNoDia(nome, dataBr) {
+        const iso = dataBrParaIso(dataBr);
+        if (!nome || !iso) return null;
+
+        return ferias.find((f) => f.nome === nome && iso >= f.inicio && iso <= f.fim) || null;
+      }
+
+      function horarioPorDia(diaSemana, feriado) {
+        if (feriado || diaSemana === 0) return '08:00 às 19:00';
+        if (diaSemana === 6) return '12:00 às 19:00';
+        return '17:45 às 21:50';
+      }
+
+      function classeDia(diaSemana, feriado) {
+        if (feriado || diaSemana === 0) return 'domingo';
+        if (diaSemana === 6) return 'sabado';
+        return '';
+      }
+
+      function diaSemanaDaLinha(linha) {
+        return nomesSemana.indexOf(linha.cells[1]?.innerText.trim() || '');
+      }
+
+      function aplicarClasse(linha, diaSemana, feriado) {
+        linha.classList.remove('sabado', 'domingo', 'feriado');
+
+        const classe = classeDia(diaSemana, feriado);
+        if (classe) linha.classList.add(classe);
+      }
+
+      function criarSelect(nomeSelecionado = '') {
+        return `<select class="colaborador">
+          <option value="">Selecione</option>
+          ${colaboradores.map((nome) => `<option value="${escapeHtml(nome)}" ${nome === nomeSelecionado ? 'selected' : ''}>${escapeHtml(nome)}</option>`).join('')}
+        </select>`;
+      }
+
+      function escolherPlantonista(diaSemana, dataBr, contagem, ultimoPorSemana, ultimoPlantonista, feriado) {
+        const nomeDia = nomesSemana[diaSemana];
+
+        if (diaSemana === 1 && ultimoPlantonista !== 'João' && !feriasNoDia('João', dataBr)) {
+          contagem.João = (contagem.João || 0) + 1;
+          ultimoPorSemana[nomeDia] = 'João';
+          return 'João';
+        }
+
+        let permitidos = (feriado || diaSemana === 6) ? colaboradoresFimSemana.slice() : colaboradoresSemana.slice();
+
+        if (diaSemana === 0) {
+          permitidos = colaboradoresSemana.slice();
+        }
+
+        permitidos = permitidos.filter((nome) => nome !== ultimoPlantonista && !feriasNoDia(nome, dataBr));
+
+        if (!permitidos.length) {
+          permitidos = colaboradores.filter((nome) => nome !== ultimoPlantonista && !feriasNoDia(nome, dataBr));
+        }
+
+        if (!permitidos.length) return '';
+
+        permitidos.sort((a, b) => {
+          const pa = (contagem[a] || 0) + (ultimoPorSemana[nomeDia] === a ? 2 : 0);
+          const pb = (contagem[b] || 0) + (ultimoPorSemana[nomeDia] === b ? 2 : 0);
+          return pa - pb;
+        });
+
+        const escolhido = permitidos[0];
+
+        contagem[escolhido] = (contagem[escolhido] || 0) + 1;
+        ultimoPorSemana[nomeDia] = escolhido;
+
+        return escolhido;
+      }
+
+      function montarLinha(item) {
+        const linha = bodyTabela().insertRow();
+
+        const data = item.data || '';
+        const semana = item.semana || '';
+        const feriado = !!item.feriado;
+        const plantonista = item.plantonista || '';
+        const diaSemana = nomesSemana.indexOf(semana);
+
+        linha.innerHTML = `
+          <td class="celula-bloqueada">${escapeHtml(data)}</td>
+          <td class="celula-bloqueada">${escapeHtml(semana)}</td>
+          <td><input type="checkbox" class="check-feriado" ${feriado ? 'checked' : ''}></td>
+          <td>${criarSelect(plantonista)}</td>
+          <td contenteditable="true">${escapeHtml(item.horario || '')}</td>
+          <td>${telefoneHtml()}</td>
+          <td contenteditable="true">${escapeHtml(item.observacao || '')}</td>
+        `;
+
+        aplicarClasse(linha, diaSemana, feriado);
+      }
+
+      function gerarEscala() {
+        if (bodyTabela().rows.length) {
+          const confirmar = confirm('Gerar uma nova escala vai apagar a tabela atual. Deseja continuar?');
+          if (!confirmar) return;
+        }
+
+        const mes = Number($('mes').value);
+        const ano = Number($('ano').value);
+        const totalDias = new Date(ano, mes + 1, 0).getDate();
+
+        bodyTabela().innerHTML = '';
+
+        const contagem = {};
+        const ultimoPorSemana = {};
+        let ultimoPlantonista = '';
+
+        for (let dia = 1; dia <= totalDias; dia++) {
+          const dataObj = new Date(ano, mes, dia);
+          const diaSemana = dataObj.getDay();
+          const data = dataBR(dia, mes, ano);
+          const feriado = false;
+          const plantonista = escolherPlantonista(diaSemana, data, contagem, ultimoPorSemana, ultimoPlantonista, feriado);
+
+          montarLinha({
+            data,
+            semana: nomesSemana[diaSemana],
+            feriado,
+            plantonista,
+            horario: horarioPorDia(diaSemana, feriado),
+            observacao: plantonista ? '' : 'Sem colaborador disponível por férias'
+          });
+
+          ultimoPlantonista = plantonista;
+        }
+
+        atualizarTudo();
+        limparAviso();
+        salvarAutomatico();
+      }
+
+      function atualizarResumo() {
+        const contagem = Object.fromEntries(colaboradores.map((nome) => [nome, 0]));
+
+        document.querySelectorAll('select.colaborador').forEach((select) => {
+          if (select.value && Object.prototype.hasOwnProperty.call(contagem, select.value)) {
+            contagem[select.value]++;
+          }
+        });
+
+        $('resumo').innerHTML = colaboradores
+          .map((nome) => `<div class="card-resumo"><strong>${escapeHtml(nome)}</strong><span>${contagem[nome]}</span></div>`)
+          .join('');
+      }
+
+      function linhaTemConflito(linha, index, linhas) {
+        const data = linha.cells[0]?.innerText.trim() || '';
+        const semana = linha.cells[1]?.innerText.trim() || '';
+        const diaSemana = nomesSemana.indexOf(semana);
+        const feriado = !!linha.querySelector('.check-feriado')?.checked;
+        const plantonista = linha.querySelector('select.colaborador')?.value || '';
+        const horario = linha.cells[4]?.innerText.trim() || '';
+        const esperado = horarioPorDia(diaSemana, feriado);
+
+        if (!data) return true;
+        if (diaSemana === -1) return true;
+        if (!plantonista) return true;
+        if (horario !== esperado) return true;
+
+        if (plantonista === 'João' && !(feriado || diaSemana === 0 || diaSemana === 1 || diaSemana === 6)) {
+          return true;
+        }
+
+        if (plantonista && feriasNoDia(plantonista, data)) {
+          return true;
+        }
+
+        if (index > 0) {
+          const anterior = linhas[index - 1].querySelector('select.colaborador')?.value || '';
+          if (plantonista && plantonista === anterior) return true;
+        }
+
+        if (index < linhas.length - 1) {
+          const proximo = linhas[index + 1].querySelector('select.colaborador')?.value || '';
+          if (plantonista && plantonista === proximo) return true;
+        }
+
+        return false;
+      }
+
+      function atualizarConflitos() {
+        const linhas = Array.from(document.querySelectorAll('#tabela tbody tr'));
+
+        linhas.forEach((linha, index) => {
+          linha.classList.remove('linha-conflito', 'linha-ferias');
+
+          const data = linha.cells[0]?.innerText.trim() || '';
+          const plantonista = linha.querySelector('select.colaborador')?.value || '';
+
+          if (plantonista && feriasNoDia(plantonista, data)) {
+            linha.classList.add('linha-ferias');
+          }
+
+          if (linhaTemConflito(linha, index, linhas)) {
+            linha.classList.add('linha-conflito');
+          }
+        });
+      }
+
+      function pesquisar() {
+        const termo = $('pesquisa').value.trim().toLowerCase();
+        let encontrados = 0;
+
+        document.querySelectorAll('#tabela tbody tr').forEach((linha) => {
+          linha.classList.remove('linha-encontrada', 'linha-oculta', 'linha-proximo');
+
+          if (!termo) return;
+
+          const select = linha.querySelector('select.colaborador');
+
+          const texto = [
+            linha.cells[0]?.innerText || '',
+            linha.cells[1]?.innerText || '',
+            linha.querySelector('.check-feriado')?.checked ? 'feriado sim' : 'feriado nao',
+            select?.value || '',
+            linha.cells[4]?.innerText || '',
+            telefoneNoc(),
+            linha.cells[6]?.innerText || ''
+          ].join(' ').toLowerCase();
+
+          if (texto.includes(termo)) {
+            linha.classList.add('linha-encontrada');
+            encontrados++;
+          } else {
+            linha.classList.add('linha-oculta');
+          }
+        });
+
+        $('resultadoPesquisa').innerText = !termo
+          ? 'Digite algo para localizar um plantão.'
+          : encontrados === 0
+            ? 'Nenhum plantão encontrado.'
+            : `${encontrados} plantão(ões) encontrado(s).`;
+      }
+
+      function atualizarTudo() {
+        atualizarResumo();
+        atualizarConflitos();
+        pesquisar();
+      }
+
+      function aviso(msg, tipo) {
+        $('aviso').className = 'aviso ' + tipo;
+        $('aviso').innerText = msg;
+      }
+
+      function limparAviso() {
+        $('aviso').className = 'aviso';
+        $('aviso').innerText = '';
+      }
+
+      function alternarFeriado(checkbox) {
+        const linha = checkbox.closest('tr');
+        const diaSemana = diaSemanaDaLinha(linha);
+        const feriado = checkbox.checked;
+
+        aplicarClasse(linha, diaSemana, feriado);
+        linha.cells[4].innerText = horarioPorDia(diaSemana, feriado);
+
+        const select = linha.querySelector('select.colaborador');
+        if (select) validarColaborador(select);
+
+        atualizarTudo();
+        limparAviso();
+        salvarAutomatico();
+      }
+
+      function validarColaborador(select) {
+        const linha = select.closest('tr');
+        const nome = select.value;
+
+        if (!nome) return;
+
+        const data = linha.cells[0]?.innerText.trim() || '';
+        const diaSemana = diaSemanaDaLinha(linha);
+        const feriado = !!linha.querySelector('.check-feriado')?.checked;
+
+        if (nome === 'João' && !(feriado || diaSemana === 0 || diaSemana === 1 || diaSemana === 6)) {
+          select.value = '';
+          alert('João só pode ser selecionado em segunda-feira, finais de semana ou feriados.');
+          return;
+        }
+
+        const f = feriasNoDia(nome, data);
+
+        if (f) {
+          select.value = '';
+          alert(`${nome} está de férias nesse dia (${dataIsoParaBr(f.inicio)} até ${dataIsoParaBr(f.fim)}).`);
+          return;
+        }
+
+        const anterior = linha.previousElementSibling?.querySelector('select.colaborador')?.value || '';
+        const proximo = linha.nextElementSibling?.querySelector('select.colaborador')?.value || '';
+
+        if (nome === anterior || nome === proximo) {
+          select.value = '';
+          alert(`${nome} não pode ficar dois dias seguidos.`);
+        }
+      }
+
+      function preencherSelects() {
+        $('mes').innerHTML = meses
+          .map((nome, index) => `<option value="${index}" ${index === 4 ? 'selected' : ''}>${nome}</option>`)
+          .join('');
+
+        $('feriasColaborador').innerHTML = '<option value="">Selecione</option>' + colaboradores
+          .map((nome) => `<option value="${escapeHtml(nome)}">${escapeHtml(nome)}</option>`)
+          .join('');
+      }
+
+      function atualizarListaFerias() {
+        $('listaFerias').innerHTML = ferias
+          .map((f, index) => `
+            <span class="ferias-item">
+              ${escapeHtml(f.nome)}: ${dataIsoParaBr(f.inicio)} até ${dataIsoParaBr(f.fim)}
+              <button type="button" data-remover-ferias="${index}">x</button>
+            </span>
+          `)
+          .join('');
+      }
+
+      function adicionarFerias() {
+        const nome = $('feriasColaborador').value;
+        const inicio = $('feriasInicio').value;
+        const fim = $('feriasFim').value;
+
+        if (!nome || !inicio || !fim) {
+          alert('Selecione o colaborador e informe início e fim das férias.');
+          return;
+        }
+
+        if (fim < inicio) {
+          alert('A data final das férias não pode ser menor que a data inicial.');
+          return;
+        }
+
+        ferias.push({ nome, inicio, fim });
+        atualizarListaFerias();
+
+        document.querySelectorAll('#tabela tbody tr').forEach((linha) => {
+          const dataIso = dataBrParaIso(linha.cells[0]?.innerText.trim() || '');
+          const select = linha.querySelector('select.colaborador');
+
+          if (select && select.value === nome && dataIso >= inicio && dataIso <= fim) {
+            select.value = '';
+
+            const obs = linha.cells[6];
+            const texto = `${nome} em férias`;
+
+            obs.innerText = obs.innerText.trim()
+              ? `${obs.innerText.trim()} | ${texto}`
+              : texto;
+          }
+        });
+
+        atualizarTudo();
+        limparAviso();
+        salvarAutomatico();
+      }
+
+      function removerFerias(index) {
+        ferias.splice(index, 1);
+        atualizarListaFerias();
+        atualizarTudo();
+        limparAviso();
+        salvarAutomatico();
+      }
+
+      async function buscarFeriadosNacionais() {
+        const ano = $('ano').value;
+        const mesSelecionado = Number($('mes').value) + 1;
+
+        if (!bodyTabela().rows.length) {
+          alert('Gere a escala antes de buscar os feriados.');
+          return;
+        }
+
+        try {
+          const resposta = await fetch(`https://brasilapi.com.br/api/feriados/v1/${ano}`);
+
+          if (!resposta.ok) throw new Error('Falha na consulta');
+
+          const feriados = await resposta.json();
+          let marcados = 0;
+
+          feriados.forEach((feriado) => {
+            const partes = String(feriado.date).split('-');
+
+            if (partes.length !== 3 || Number(partes[1]) !== mesSelecionado) return;
+
+            const data = `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+            document.querySelectorAll('#tabela tbody tr').forEach((linha) => {
+              if ((linha.cells[0]?.innerText.trim() || '') === data) {
+                const checkbox = linha.querySelector('.check-feriado');
+                checkbox.checked = true;
+                alternarFeriado(checkbox);
+
+                const obs = linha.cells[6];
+                const texto = `Feriado nacional: ${feriado.name || 'Feriado'}`;
+
+                if (!obs.innerText.includes(texto)) {
+                  obs.innerText = obs.innerText.trim()
+                    ? `${obs.innerText.trim()} | ${texto}`
+                    : texto;
+                }
+
+                marcados++;
+              }
+            });
+          });
+
+          atualizarTudo();
+          limparAviso();
+          salvarAutomatico();
+
+          alert(marcados ? `${marcados} feriado(s) marcado(s).` : 'Nenhum feriado nacional neste mês.');
+        } catch {
+          alert('Não foi possível buscar os feriados. Verifique a internet ou marque manualmente.');
+        }
+      }
+
+      function montarDadosEscala() {
+        return {
+          versao: 4,
+          atualizadoEm: new Date().toISOString(),
+          titulo: $('tituloPagina').innerText.trim(),
+          mesNumero: Number($('mes').value),
+          mes: meses[Number($('mes').value)],
+          ano: Number($('ano').value),
+          setor: $('setor').value.trim() || 'NOC',
+          telefoneNoc: telefoneNoc(),
+          whatsappNoc: whatsappNoc(),
+          observacoes: $('observacoes').value,
+          ferias: ferias,
+          linhas: Array.from(document.querySelectorAll('#tabela tbody tr')).map((linha) => ({
+            data: linha.cells[0]?.innerText.trim() || '',
+            semana: linha.cells[1]?.innerText.trim() || '',
+            feriado: !!linha.querySelector('.check-feriado')?.checked,
+            plantonista: linha.querySelector('select.colaborador')?.value || '',
+            horario: linha.cells[4]?.innerText.trim() || '',
+            telefone: telefoneNoc(),
+            observacao: linha.cells[6]?.innerText.trim() || ''
+          }))
+        };
+      }
+
+      function carregarDadosEscala(dados) {
+        $('tituloPagina').innerText = dados.titulo || 'Admin - Escala de Plantão NOC';
+        $('mes').value = String(dados.mesNumero ?? 0);
+        $('ano').value = dados.ano || new Date().getFullYear();
+        $('setor').value = dados.setor || 'NOC';
+        $('telefone').value = dados.telefoneNoc || '98449-1917';
+        $('observacoes').value = dados.observacoes || $('observacoes').value;
+
+        ferias = dados.ferias || [];
+        atualizarListaFerias();
+
+        bodyTabela().innerHTML = '';
+        (dados.linhas || []).forEach(montarLinha);
+
+        atualizarTudo();
+        limparAviso();
+      }
+
+      function salvarAutomatico() {
+        clearTimeout(timerSalvamento);
+
+        timerSalvamento = setTimeout(() => {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(montarDadosEscala()));
+
+          $('statusSalvamento').classList.add('ativo');
+          $('statusSalvamento').innerText = 'Alterações salvas automaticamente.';
+
+          setTimeout(() => {
+            $('statusSalvamento').classList.remove('ativo');
+          }, 1800);
+        }, 400);
+      }
+
+      function carregarRascunho() {
+        const salvo = localStorage.getItem(STORAGE_KEY);
+
+        if (!salvo) {
+          alert('Nenhum rascunho salvo encontrado.');
+          return;
+        }
+
+        carregarDadosEscala(JSON.parse(salvo));
+        alert('Rascunho carregado.');
+      }
+
+      async function publicarEscala() {
+        const dados = montarDadosEscala();
+
+        if (!dados.linhas.length) {
+          alert('Gere a escala antes de publicar.');
+          return;
+        }
+
+        const confirmar = confirm('Deseja publicar esta escala para os plantonistas?');
+
+        if (!confirmar) return;
+
+        try {
+          dados.atualizadoEm = new Date().toISOString();
+
+          const { error } = await supabase
+            .from('escalas')
+            .upsert(
+              {
+                id: 'noc-atual',
+                dados: dados,
+                atualizado_em: new Date().toISOString()
+              },
+              {
+                onConflict: 'id'
+              }
+            );
+
+          if (error) {
+            console.error(error);
+            alert('Erro ao publicar a escala. Verifique as políticas do Supabase.');
+            return;
+          }
+
+          alert('Escala publicada com sucesso para os plantonistas.');
+        } catch (erro) {
+          console.error(erro);
+          alert('Erro inesperado ao publicar a escala.');
+        }
+      }
+
+      function baixarArquivo(nome, conteudo, tipo) {
+        const blob = new Blob([conteudo], { type: tipo });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+
+        a.href = url;
+        a.download = nome;
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(url);
+      }
+
+      function exportarCsv() {
+        const dados = montarDadosEscala();
+
+        const linhas = [['Data', 'Semana', 'Feriado', 'Plantonista', 'Horario', 'Telefone', 'Observacao']];
+
+        dados.linhas.forEach((item) => {
+          linhas.push([
+            item.data,
+            item.semana,
+            item.feriado ? 'Sim' : 'Não',
+            item.plantonista,
+            item.horario,
+            item.telefone,
+            item.observacao
+          ]);
+        });
+
+        const csv = linhas
+          .map((linha) => linha.map((valor) => `"${String(valor).replaceAll('"', '""')}"`).join(';'))
+          .join('\n');
+
+        baixarArquivo(`escala-plantao-noc-${dados.mes}-${dados.ano}.csv`, '\ufeff' + csv, 'text/csv;charset=utf-8');
+      }
+
+      function verificarEscala() {
+        const dados = montarDadosEscala();
+        const problemas = [];
+
+        if (!dados.linhas.length) {
+          aviso('Nenhuma escala foi gerada.', 'erro');
+          return;
+        }
+
+        const totalDias = new Date(dados.ano, dados.mesNumero + 1, 0).getDate();
+
+        if (dados.linhas.length !== totalDias) {
+          problemas.push(`A escala tem ${dados.linhas.length} linha(s), mas o mês tem ${totalDias} dia(s).`);
+        }
+
+        dados.linhas.forEach((linha, index) => {
+          const diaSemana = nomesSemana.indexOf(linha.semana);
+          const esperado = horarioPorDia(diaSemana, linha.feriado);
+
+          if (!linha.data) problemas.push(`Linha ${index + 1}: data em branco.`);
+          if (diaSemana === -1) problemas.push(`${linha.data || 'Linha ' + (index + 1)}: dia da semana inválido.`);
+          if (!linha.plantonista) problemas.push(`${linha.data || 'Linha ' + (index + 1)}: sem plantonista.`);
+          if (linha.horario !== esperado) problemas.push(`${linha.data}: horário deveria ser ${esperado}.`);
+
+          if (linha.plantonista === 'João' && !(linha.feriado || diaSemana === 0 || diaSemana === 1 || diaSemana === 6)) {
+            problemas.push(`${linha.data}: João não pode nesse dia.`);
+          }
+
+          if (linha.plantonista && feriasNoDia(linha.plantonista, linha.data)) {
+            problemas.push(`${linha.data}: ${linha.plantonista} está de férias.`);
+          }
+
+          if (index > 0 && linha.plantonista && linha.plantonista === dados.linhas[index - 1].plantonista) {
+            problemas.push(`${dados.linhas[index - 1].data} e ${linha.data}: ${linha.plantonista} está em dois dias seguidos.`);
+          }
+        });
+
+        atualizarConflitos();
+
+        aviso(
+          problemas.length
+            ? '⚠️ Verifique:\n\n' + problemas.join('\n')
+            : '✅ Escala verificada: nenhum problema encontrado.',
+          problemas.length ? 'erro' : 'ok'
+        );
+      }
+
+      function proximoPlantao() {
+        $('pesquisa').value = '';
+        pesquisar();
+
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        let encontrada = null;
+
+        Array.from(document.querySelectorAll('#tabela tbody tr')).some((linha) => {
+          linha.classList.remove('linha-proximo');
+
+          const data = dataBrParaDate(linha.cells[0]?.innerText.trim() || '');
+          if (!data) return false;
+
+          data.setHours(0, 0, 0, 0);
+
+          if (data >= hoje) {
+            encontrada = linha;
+            return true;
+          }
+
+          return false;
+        });
+
+        if (!encontrada) {
+          alert('Nenhum próximo plantão encontrado nesta escala.');
+          return;
+        }
+
+        encontrada.classList.add('linha-proximo');
+        encontrada.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        const select = encontrada.querySelector('select.colaborador');
+
+        $('resultadoPesquisa').innerText =
+          `Próximo plantão: ${encontrada.cells[0].innerText.trim()} (${encontrada.cells[1].innerText.trim()}) - ${select.value || 'sem plantonista'} - ${encontrada.cells[4].innerText.trim()}`;
+      }
+
+      function limparTabela() {
+        if (!confirm('Tem certeza que deseja limpar a tabela?')) return;
+
+        bodyTabela().innerHTML = '';
+        atualizarTudo();
+        limparAviso();
+        salvarAutomatico();
+      }
+
+      function alternarTabela() {
+        const wrapper = $('tabelaWrapper');
+        const botao = $('btnAlternarTabela');
+        const recolhida = wrapper.classList.toggle('recolhida');
+
+        botao.innerText = recolhida ? 'Mostrar tabela' : 'Minimizar tabela';
+      }
+
+      function ligarEventos() {
+        $('btnGerar').onclick = gerarEscala;
+        $('btnPublicar').onclick = publicarEscala;
+        $('btnFeriados').onclick = buscarFeriadosNacionais;
+        $('btnVerificar').onclick = verificarEscala;
+        $('btnProximo').onclick = proximoPlantao;
+        $('btnResumo').onclick = atualizarResumo;
+        $('btnCarregar').onclick = carregarRascunho;
+        $('btnExportarCsv').onclick = exportarCsv;
+        $('btnAlternarTabela').onclick = alternarTabela;
+        $('btnLimpar').onclick = limparTabela;
+        $('btnAdicionarFerias').onclick = adicionarFerias;
+
+        $('btnLimparPesquisa').onclick = () => {
+          $('pesquisa').value = '';
+          pesquisar();
+        };
+
+        $('pesquisa').oninput = pesquisar;
+
+        $('telefone').oninput = () => {
+          document.querySelectorAll('#tabela tbody tr').forEach((linha) => {
+            linha.cells[5].innerHTML = telefoneHtml();
+          });
+
+          atualizarTudo();
+          salvarAutomatico();
+        };
+
+        ['mes', 'ano', 'setor', 'observacoes'].forEach((id) => {
+          $(id).addEventListener('input', salvarAutomatico);
+          $(id).addEventListener('change', salvarAutomatico);
+        });
+
+        $('tituloPagina').addEventListener('input', salvarAutomatico);
+
+        $('listaFerias').onclick = (event) => {
+          const index = event.target.getAttribute('data-remover-ferias');
+          if (index !== null) removerFerias(Number(index));
+        };
+
+        bodyTabela().addEventListener('change', (event) => {
+          if (event.target.classList.contains('check-feriado')) alternarFeriado(event.target);
+
+          if (event.target.classList.contains('colaborador')) {
+            validarColaborador(event.target);
+            atualizarTudo();
+            limparAviso();
+            salvarAutomatico();
+          }
+        });
+
+        bodyTabela().addEventListener('input', () => {
+          atualizarTudo();
+          salvarAutomatico();
+        });
+      }
+
+      preencherSelects();
+      atualizarListaFerias();
+      ligarEventos();
+      atualizarTudo();
+    })();
+  </script>
+</body>
+</html>
