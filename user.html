@@ -23,7 +23,7 @@
       margin: 28px auto;
       background: #ffffff;
       padding: 24px;
-      border-radius: 14px;
+      border-radius: 16px;
       box-shadow: 0 12px 30px rgba(30, 64, 175, 0.16);
       border: 1px solid #bfdbfe;
     }
@@ -59,7 +59,7 @@
     button {
       border: none;
       padding: 10px 13px;
-      border-radius: 8px;
+      border-radius: 9px;
       cursor: pointer;
       font-weight: 700;
       font-size: 14px;
@@ -73,6 +73,11 @@
     .btn-secundario {
       background: #dbeafe;
       color: #1e3a8a;
+    }
+
+    .btn-ativo {
+      background: #1d4ed8 !important;
+      color: #ffffff !important;
     }
 
     button:hover {
@@ -89,7 +94,7 @@
     .card-info {
       background: #eff6ff;
       border: 1px solid #bfdbfe;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 12px;
     }
 
@@ -111,6 +116,55 @@
 
     .card-info a {
       color: #1d4ed8;
+    }
+
+    .painel-filtros {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .campo label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #1e3a8a;
+      margin-bottom: 5px;
+    }
+
+    .campo select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #93c5fd;
+      border-radius: 9px;
+      font-size: 14px;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .campo select:focus {
+      outline: 2px solid #2563eb;
+      border-color: #2563eb;
+    }
+
+    .botoes-visualizacao {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .contador {
+      font-size: 13px;
+      color: #334155;
+      font-weight: 700;
+      margin: -4px 0 14px;
     }
 
     .aviso {
@@ -178,10 +232,109 @@
       border: 2px solid #1d4ed8;
     }
 
+    .area-cards {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .area-cards.ativo {
+      display: grid;
+    }
+
+    .card-plantao {
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 14px;
+      background: #ffffff;
+      box-shadow: 0 6px 14px rgba(30, 64, 175, 0.08);
+    }
+
+    .card-plantao.sabado {
+      background: #fffbeb;
+      border-color: #facc15;
+    }
+
+    .card-plantao.domingo,
+    .card-plantao.feriado {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    .card-plantao.proximo {
+      outline: 3px solid #1d4ed8;
+      outline-offset: -3px;
+      background: #eff6ff;
+    }
+
+    .card-data {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .card-data strong {
+      font-size: 17px;
+      color: #1e3a8a;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #dbeafe;
+      color: #1d4ed8;
+      white-space: nowrap;
+    }
+
+    .badge-feriado {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .linha-card {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 0;
+      border-top: 1px solid #e2e8f0;
+      font-size: 14px;
+    }
+
+    .linha-card span {
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .linha-card strong {
+      color: #0f172a;
+      text-align: right;
+    }
+
+    .obs-card {
+      margin-top: 10px;
+      background: rgba(219, 234, 254, 0.7);
+      border-radius: 10px;
+      padding: 9px;
+      font-size: 13px;
+      color: #1e3a8a;
+      white-space: pre-line;
+    }
+
     .tabela-wrapper {
       overflow-x: auto;
       border: 1px solid #93c5fd;
       border-radius: 10px;
+      display: none;
+    }
+
+    .tabela-wrapper.ativo {
+      display: block;
     }
 
     table {
@@ -231,7 +384,7 @@
     .observacoes {
       margin-top: 20px;
       border: 1px solid #bfdbfe;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 16px;
       background: #eff6ff;
       color: #1e3a8a;
@@ -252,11 +405,31 @@
       text-align: center;
     }
 
-    @media (max-width: 850px) {
+    .vazio {
+      padding: 16px;
+      background: #f8fafc;
+      border: 1px dashed #93c5fd;
+      border-radius: 12px;
+      color: #475569;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1000px) {
+      .area-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .painel-filtros {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 750px) {
       .container {
         margin: 0;
         border-radius: 0;
-        padding: 16px;
+        padding: 14px;
       }
 
       .topo {
@@ -265,7 +438,6 @@
 
       .acoes {
         width: 100%;
-        justify-content: stretch;
       }
 
       .acoes button {
@@ -273,17 +445,30 @@
       }
 
       .info-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .area-cards {
         grid-template-columns: 1fr;
       }
 
       h1 {
-        font-size: 24px;
+        font-size: 23px;
       }
 
-      th,
-      td {
-        font-size: 13px;
-        padding: 8px;
+      .botoes-visualizacao button {
+        flex: 1;
+      }
+
+      .card-info span,
+      .card-info a {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .info-grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -300,11 +485,18 @@
         border-radius: 0;
       }
 
-      .acoes {
+      .acoes,
+      .painel-filtros,
+      .legenda {
+        display: none !important;
+      }
+
+      .area-cards {
         display: none !important;
       }
 
       .tabela-wrapper {
+        display: block !important;
         overflow: visible;
       }
 
@@ -316,10 +508,6 @@
       td {
         font-size: 10px;
         padding: 5px;
-      }
-
-      .legenda {
-        font-size: 11px;
       }
 
       .observacoes {
@@ -372,6 +560,34 @@
 
     <div id="aviso" class="aviso"></div>
 
+    <div class="painel-filtros">
+      <div class="campo">
+        <label>Ver plantões de</label>
+        <select id="filtroPlantonista">
+          <option value="">Todos os plantonistas</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Período</label>
+        <select id="filtroPeriodo">
+          <option value="todos">Todos os plantões</option>
+          <option value="proximos">Próximos plantões</option>
+          <option value="hoje">Somente hoje</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Visualização</label>
+        <div class="botoes-visualizacao">
+          <button id="btnCards" class="btn-secundario btn-ativo" type="button">Cards</button>
+          <button id="btnTabela" class="btn-secundario" type="button">Tabela completa</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="contador" class="contador">-</div>
+
     <div class="legenda">
       <div class="legenda-item"><span class="cor cor-util"></span> Dia útil</div>
       <div class="legenda-item"><span class="cor cor-sabado"></span> Sábado</div>
@@ -379,7 +595,9 @@
       <div class="legenda-item"><span class="cor cor-proximo"></span> Próximo plantão</div>
     </div>
 
-    <div class="tabela-wrapper">
+    <div id="cards" class="area-cards ativo"></div>
+
+    <div id="tabelaWrapper" class="tabela-wrapper">
       <table id="tabela">
         <thead>
           <tr>
@@ -416,6 +634,10 @@
 
     const $ = (id) => document.getElementById(id);
 
+    let dadosEscala = null;
+    let linhasOriginais = [];
+    let modoVisualizacao = 'cards';
+
     function escapeHtml(valor) {
       return String(valor ?? '')
         .replaceAll('&', '&amp;')
@@ -448,6 +670,30 @@
       return new Date(a, m, d);
     }
 
+    function dataEhHoje(dataBr) {
+      const data = dataBrParaDate(dataBr);
+      if (!data) return false;
+
+      const hoje = new Date();
+
+      data.setHours(0, 0, 0, 0);
+      hoje.setHours(0, 0, 0, 0);
+
+      return data.getTime() === hoje.getTime();
+    }
+
+    function dataEhFuturaOuHoje(dataBr) {
+      const data = dataBrParaDate(dataBr);
+      if (!data) return false;
+
+      const hoje = new Date();
+
+      data.setHours(0, 0, 0, 0);
+      hoje.setHours(0, 0, 0, 0);
+
+      return data >= hoje;
+    }
+
     function formatarDataHora(valor) {
       if (!valor) return '-';
 
@@ -467,36 +713,100 @@
       return '';
     }
 
-    function marcarProximoPlantao() {
-      const hoje = new Date();
-      hoje.setHours(0, 0, 0, 0);
+    function nomesPlantonistas(linhas) {
+      return [...new Set(
+        linhas
+          .map((item) => item.plantonista)
+          .filter((nome) => nome && nome !== '-')
+      )].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    }
 
-      let marcado = false;
+    function preencherFiltroPlantonistas(linhas) {
+      const atual = $('filtroPlantonista').value;
+      const nomes = nomesPlantonistas(linhas);
 
-      document.querySelectorAll('#tbody tr').forEach((linha) => {
-        linha.classList.remove('proximo');
+      $('filtroPlantonista').innerHTML = `
+        <option value="">Todos os plantonistas</option>
+        ${nomes.map((nome) => `<option value="${escapeHtml(nome)}">${escapeHtml(nome)}</option>`).join('')}
+      `;
 
-        if (marcado) return;
+      if (nomes.includes(atual)) {
+        $('filtroPlantonista').value = atual;
+      }
+    }
 
-        const data = dataBrParaDate(linha.dataset.data);
-        if (!data) return;
+    function obterLinhasFiltradas() {
+      const nome = $('filtroPlantonista').value;
+      const periodo = $('filtroPeriodo').value;
 
-        data.setHours(0, 0, 0, 0);
+      return linhasOriginais.filter((item) => {
+        if (nome && item.plantonista !== nome) return false;
 
-        if (data >= hoje) {
-          linha.classList.add('proximo');
-          marcado = true;
-        }
+        if (periodo === 'proximos' && !dataEhFuturaOuHoje(item.data)) return false;
+        if (periodo === 'hoje' && !dataEhHoje(item.data)) return false;
+
+        return true;
       });
     }
 
-    function montarTabela(dados) {
-      const linhas = dados.linhas || [];
+    function descobrirProximoPlantao(linhas) {
+      const futuras = linhas
+        .filter((item) => dataEhFuturaOuHoje(item.data))
+        .sort((a, b) => {
+          const da = dataBrParaDate(a.data);
+          const db = dataBrParaDate(b.data);
+          return da - db;
+        });
 
+      return futuras[0] || null;
+    }
+
+    function montarCards(linhas, proximo) {
+      if (!linhas.length) {
+        $('cards').innerHTML = '<div class="vazio">Nenhum plantão encontrado para o filtro selecionado.</div>';
+        return;
+      }
+
+      $('cards').innerHTML = linhas.map((item) => {
+        const classe = classeLinha(item);
+        const ehProximo = proximo && item.data === proximo.data && item.plantonista === proximo.plantonista;
+        const telefone = item.telefone || dadosEscala?.telefoneNoc || '-';
+
+        return `
+          <div class="card-plantao ${classe} ${ehProximo ? 'proximo' : ''}">
+            <div class="card-data">
+              <strong>${escapeHtml(item.data)}</strong>
+              <span class="badge ${item.feriado ? 'badge-feriado' : ''}">
+                ${escapeHtml(item.feriado ? 'Feriado' : item.semana)}
+              </span>
+            </div>
+
+            <div class="linha-card">
+              <span>Plantonista</span>
+              <strong>${escapeHtml(item.plantonista || '-')}</strong>
+            </div>
+
+            <div class="linha-card">
+              <span>Horário</span>
+              <strong>${escapeHtml(item.horario || '-')}</strong>
+            </div>
+
+            <div class="linha-card">
+              <span>Telefone</span>
+              <strong>${escapeHtml(telefone)}</strong>
+            </div>
+
+            ${item.observacao ? `<div class="obs-card">${escapeHtml(item.observacao)}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function montarTabela(linhas, proximo) {
       if (!linhas.length) {
         $('tbody').innerHTML = `
           <tr>
-            <td colspan="7">Nenhuma linha de escala publicada.</td>
+            <td colspan="7">Nenhum plantão encontrado para o filtro selecionado.</td>
           </tr>
         `;
         return;
@@ -504,32 +814,70 @@
 
       $('tbody').innerHTML = linhas.map((item) => {
         const classe = classeLinha(item);
-        const telefone = item.telefone || dados.telefoneNoc || '';
+        const ehProximo = proximo && item.data === proximo.data && item.plantonista === proximo.plantonista;
+        const telefone = item.telefone || dadosEscala?.telefoneNoc || '-';
 
         return `
-          <tr class="${classe}" data-data="${escapeHtml(item.data)}">
+          <tr class="${classe} ${ehProximo ? 'proximo' : ''}" data-data="${escapeHtml(item.data)}">
             <td>${escapeHtml(item.data)}</td>
             <td>${escapeHtml(item.semana)}</td>
             <td>${item.feriado ? 'Sim' : 'Não'}</td>
             <td>${escapeHtml(item.plantonista || '-')}</td>
             <td>${escapeHtml(item.horario || '-')}</td>
-            <td>${escapeHtml(telefone || '-')}</td>
+            <td>${escapeHtml(telefone)}</td>
             <td>${escapeHtml(item.observacao || '')}</td>
           </tr>
         `;
       }).join('');
+    }
 
-      marcarProximoPlantao();
+    function atualizarContador(linhasFiltradas) {
+      const nome = $('filtroPlantonista').value;
+      const periodo = $('filtroPeriodo').value;
+
+      const partes = [];
+
+      partes.push(`${linhasFiltradas.length} plantão(ões)`);
+
+      if (nome) partes.push(`plantonista: ${nome}`);
+      if (periodo === 'proximos') partes.push('somente próximos');
+      if (periodo === 'hoje') partes.push('somente hoje');
+
+      $('contador').innerText = partes.join(' • ');
+    }
+
+    function aplicarFiltros() {
+      const linhas = obterLinhasFiltradas();
+      const proximo = descobrirProximoPlantao(linhas);
+
+      montarCards(linhas, proximo);
+      montarTabela(linhas, proximo);
+      atualizarContador(linhas);
+    }
+
+    function definirVisualizacao(modo) {
+      modoVisualizacao = modo;
+
+      const cardsAtivo = modo === 'cards';
+
+      $('cards').classList.toggle('ativo', cardsAtivo);
+      $('tabelaWrapper').classList.toggle('ativo', !cardsAtivo);
+
+      $('btnCards').classList.toggle('btn-ativo', cardsAtivo);
+      $('btnTabela').classList.toggle('btn-ativo', !cardsAtivo);
     }
 
     function preencherTela(dados, atualizadoBanco) {
+      dadosEscala = dados;
+      linhasOriginais = dados.linhas || [];
+
       const mes = dados.mes || '-';
       const ano = dados.ano || '-';
       const setor = dados.setor || 'NOC';
       const telefone = dados.telefoneNoc || '-';
       const whatsapp = dados.whatsappNoc || '';
 
-      $('subtitulo').innerText = `${mes} de ${ano}`;
+      $('subtitulo').innerText = `${dados.nomeEscala || 'Escala'} - ${mes} de ${ano}`;
       $('mesAno').innerText = `${mes} / ${ano}`;
       $('setor').innerText = setor;
 
@@ -542,7 +890,8 @@
       $('atualizadoEm').innerText = formatarDataHora(dados.atualizadoEm || atualizadoBanco);
       $('observacoes').innerText = dados.observacoes || '-';
 
-      montarTabela(dados);
+      preencherFiltroPlantonistas(linhasOriginais);
+      aplicarFiltros();
     }
 
     async function carregarEscala() {
@@ -588,6 +937,12 @@
 
     $('btnAtualizar').onclick = carregarEscala;
     $('btnPdf').onclick = baixarPdf;
+
+    $('filtroPlantonista').onchange = aplicarFiltros;
+    $('filtroPeriodo').onchange = aplicarFiltros;
+
+    $('btnCards').onclick = () => definirVisualizacao('cards');
+    $('btnTabela').onclick = () => definirVisualizacao('tabela');
 
     carregarEscala();
   </script>
