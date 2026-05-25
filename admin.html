@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Admin - Escala de Plantão NOC</title>
 
   <style>
@@ -15,6 +16,67 @@
       margin: 0;
       background: #eaf2ff;
       color: #0f172a;
+    }
+
+    .bloqueado {
+      display: none;
+    }
+
+    .login-overlay {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1d4ed8, #60a5fa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 380px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.25);
+      border: 1px solid #bfdbfe;
+    }
+
+    .login-card h2 {
+      margin: 0 0 8px;
+      color: #1d4ed8;
+      font-size: 24px;
+    }
+
+    .login-card p {
+      margin: 0 0 16px;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .login-card input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #93c5fd;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .login-card input:focus {
+      outline: 2px solid #2563eb;
+      border-color: #2563eb;
+    }
+
+    .login-card button {
+      width: 100%;
+    }
+
+    .erro-login {
+      margin-top: 12px;
+      color: #991b1b;
+      font-weight: 700;
+      font-size: 13px;
+      min-height: 18px;
     }
 
     .container {
@@ -543,7 +605,20 @@
 </head>
 
 <body>
-  <div class="container">
+  <div id="telaLogin" class="login-overlay">
+    <div class="login-card">
+      <h2>Acesso Admin</h2>
+      <p>Informe a senha para acessar a tela administrativa.</p>
+
+      <input id="senhaAdmin" type="password" placeholder="Digite a senha" autocomplete="current-password" />
+
+      <button id="btnEntrarAdmin" class="btn-primario" type="button">Entrar</button>
+
+      <div id="erroLogin" class="erro-login"></div>
+    </div>
+  </div>
+
+  <div id="conteudoAdmin" class="container bloqueado">
     <div class="topo">
       <div>
         <h1 contenteditable="true" id="tituloPagina">Admin - Escala de Plantão NOC</h1>
@@ -688,6 +763,9 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
     (() => {
       'use strict';
 
+      const SENHA_ADMIN = 'noc@2026';
+      const LOGIN_KEY = 'adminNocAutenticado';
+
       const colaboradores = ['André', 'Bruno', 'Emanuel', 'Guilherme', 'João'];
       const colaboradoresSemana = ['André', 'Bruno', 'Emanuel', 'Guilherme'];
       const colaboradoresFimSemana = ['André', 'Bruno', 'Emanuel', 'Guilherme', 'João'];
@@ -700,6 +778,33 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       const $ = (id) => document.getElementById(id);
       const bodyTabela = () => document.querySelector('#tabela tbody');
+
+      function liberarAdmin() {
+        $('telaLogin').style.display = 'none';
+        $('conteudoAdmin').classList.remove('bloqueado');
+      }
+
+      function verificarLoginSalvo() {
+        const autenticado = sessionStorage.getItem(LOGIN_KEY);
+
+        if (autenticado === 'sim') {
+          liberarAdmin();
+        }
+      }
+
+      function entrarAdmin() {
+        const senha = $('senhaAdmin').value;
+
+        if (senha === SENHA_ADMIN) {
+          sessionStorage.setItem(LOGIN_KEY, 'sim');
+          liberarAdmin();
+          return;
+        }
+
+        $('erroLogin').innerText = 'Senha incorreta.';
+        $('senhaAdmin').value = '';
+        $('senhaAdmin').focus();
+      }
 
       function escapeHtml(valor) {
         return String(valor ?? '')
@@ -1179,7 +1284,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       function montarDadosEscala() {
         return {
-          versao: 4,
+          versao: 5,
           atualizadoEm: new Date().toISOString(),
           titulo: $('tituloPagina').innerText.trim(),
           mesNumero: Number($('mes').value),
@@ -1431,6 +1536,14 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       function ligarEventos() {
+        $('btnEntrarAdmin').onclick = entrarAdmin;
+
+        $('senhaAdmin').addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') entrarAdmin();
+        });
+
+        verificarLoginSalvo();
+
         $('btnGerar').onclick = gerarEscala;
         $('btnPublicar').onclick = publicarEscala;
         $('btnFeriados').onclick = buscarFeriadosNacionais;
