@@ -580,7 +580,7 @@
       <div class="campo">
         <label>Visualização</label>
         <div class="botoes-visualizacao">
-          <button id="btnCards" class="btn-secundario btn-ativo" type="button">Cards</button>
+          <button id="btnCards" class="btn-secundario" type="button">Cards</button>
           <button id="btnTabela" class="btn-secundario" type="button">Tabela completa</button>
         </div>
       </div>
@@ -595,7 +595,7 @@
       <div class="legenda-item"><span class="cor cor-proximo"></span> Próximo plantão</div>
     </div>
 
-    <div id="cards" class="area-cards ativo"></div>
+    <div id="cards" class="area-cards"></div>
 
     <div id="tabelaWrapper" class="tabela-wrapper">
       <table id="tabela">
@@ -636,7 +636,7 @@
 
     let dadosEscala = null;
     let linhasOriginais = [];
-    let modoVisualizacao = 'cards';
+    let modoVisualizacao = window.innerWidth <= 750 ? 'cards' : 'tabela';
 
     function escapeHtml(valor) {
       return String(valor ?? '')
@@ -892,6 +892,7 @@
 
       preencherFiltroPlantonistas(linhasOriginais);
       aplicarFiltros();
+      definirVisualizacao(modoVisualizacao);
     }
 
     async function carregarEscala() {
@@ -944,6 +945,7 @@
     $('btnCards').onclick = () => definirVisualizacao('cards');
     $('btnTabela').onclick = () => definirVisualizacao('tabela');
 
+    definirVisualizacao(modoVisualizacao);
     carregarEscala();
   </script>
 </body>
