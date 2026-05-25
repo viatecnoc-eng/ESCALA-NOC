@@ -3,13 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Admin - Escala de Plantão NOC</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -18,9 +15,7 @@
       color: #0f172a;
     }
 
-    .bloqueado {
-      display: none;
-    }
+    .bloqueado { display: none; }
 
     .login-overlay {
       min-height: 100vh;
@@ -62,14 +57,7 @@
       margin-bottom: 12px;
     }
 
-    .login-card input:focus {
-      outline: 2px solid #2563eb;
-      border-color: #2563eb;
-    }
-
-    .login-card button {
-      width: 100%;
-    }
+    .login-card button { width: 100%; }
 
     .erro-login {
       margin-top: 12px;
@@ -151,16 +139,22 @@
       color: #ffffff;
     }
 
-    button:hover {
-      filter: brightness(0.96);
+    .btn-perigo {
+      background: #fee2e2;
+      color: #991b1b;
     }
+
+    button:hover { filter: brightness(0.96); }
 
     .grid5,
     .ferias-controle {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
       gap: 12px;
       margin-bottom: 16px;
+    }
+
+    .grid5 {
+      grid-template-columns: repeat(5, 1fr);
     }
 
     .ferias-controle {
@@ -264,9 +258,7 @@
       display: none;
     }
 
-    .status-salvamento.ativo {
-      display: block;
-    }
+    .status-salvamento.ativo { display: block; }
 
     .aviso {
       margin: 12px 0;
@@ -316,25 +308,11 @@
       border: 1px solid #93c5fd;
     }
 
-    .cor-util {
-      background: #ffffff;
-    }
-
-    .cor-sabado {
-      background: #fef3c7;
-    }
-
-    .cor-domingo {
-      background: #fee2e2;
-    }
-
-    .cor-ferias {
-      background: #dbeafe;
-    }
-
-    .cor-conflito {
-      background: #fecaca;
-    }
+    .cor-util { background: #ffffff; }
+    .cor-sabado { background: #fef3c7; }
+    .cor-domingo { background: #fee2e2; }
+    .cor-ferias { background: #dbeafe; }
+    .cor-conflito { background: #fecaca; }
 
     .tabela-topo {
       display: flex;
@@ -363,9 +341,7 @@
       border-radius: 10px;
     }
 
-    .tabela-wrapper.recolhida {
-      display: none;
-    }
+    .tabela-wrapper.recolhida { display: none; }
 
     table {
       width: 100%;
@@ -426,9 +402,7 @@
       font-weight: 700;
     }
 
-    .linha-oculta {
-      display: none;
-    }
+    .linha-oculta { display: none; }
 
     .linha-encontrada {
       outline: 2px solid #2563eb;
@@ -451,9 +425,7 @@
       background: #fef2f2 !important;
     }
 
-    .linha-conflito td {
-      background: #fef2f2;
-    }
+    .linha-conflito td { background: #fef2f2; }
 
     .linha-conflito .domingo,
     .linha-conflito .sabado {
@@ -525,9 +497,7 @@
       color: #1d4ed8;
     }
 
-    .obs {
-      margin-top: 20px;
-    }
+    .obs { margin-top: 20px; }
 
     .obs label {
       display: block;
@@ -579,11 +549,8 @@
     <div class="login-card">
       <h2>Acesso Admin</h2>
       <p>Informe a senha para acessar a tela administrativa.</p>
-
       <input id="senhaAdmin" type="password" placeholder="Digite a senha" autocomplete="current-password" />
-
       <button id="btnEntrarAdmin" class="btn-primario" type="button">Entrar</button>
-
       <div id="erroLogin" class="erro-login"></div>
     </div>
   </div>
@@ -600,6 +567,7 @@
           <button id="btnGerar" class="btn-primario" type="button">Gerar escala</button>
           <button id="btnNovaEscala" class="btn-secundario" type="button">Nova escala</button>
           <button id="btnPublicar" class="btn-publicar" type="button">Publicar escala</button>
+          <button id="btnDespublicar" class="btn-perigo" type="button">Despublicar escala</button>
           <button id="btnFeriados" class="btn-secundario" type="button">Buscar feriados nacionais</button>
           <button id="btnVerificar" class="btn-secundario" type="button">Verificar escala</button>
           <button id="btnProximo" class="btn-secundario" type="button">Próximo plantão</button>
@@ -1111,10 +1079,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         const jaExiste = feriadosManuais.some((f) => f.data === dataIso && f.nome === nome);
 
         if (!jaExiste) {
-          feriadosManuais.push({
-            data: dataIso,
-            nome: nome
-          });
+          feriadosManuais.push({ data: dataIso, nome: nome });
         }
 
         const checkbox = linha.querySelector('.check-feriado');
@@ -1174,7 +1139,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           if (mostrarAlerta) {
             alert('Gere a escala antes de buscar os feriados.');
           }
-
           return;
         }
 
@@ -1486,7 +1450,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       function montarDadosEscala() {
         return {
-          versao: 7,
+          versao: 8,
           atualizadoEm: new Date().toISOString(),
           escalaId: $('escalaId').value.trim(),
           nomeEscala: garantirNomeEscala(),
@@ -1658,6 +1622,38 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         }
       }
 
+      async function despublicarEscala() {
+        const confirmar = confirm(
+          'Tem certeza que deseja despublicar a escala?\n\nA tela dos plantonistas ficará sem escala publicada.\nO histórico não será apagado.'
+        );
+
+        if (!confirmar) return;
+
+        const confirmarNovamente = confirm(
+          'Confirme novamente: deseja remover a escala atual da tela dos plantonistas?'
+        );
+
+        if (!confirmarNovamente) return;
+
+        try {
+          const { error } = await supabase
+            .from('escalas')
+            .delete()
+            .eq('id', 'noc-atual');
+
+          if (error) {
+            console.error(error);
+            alert('Erro ao despublicar a escala. Verifique as políticas do Supabase.');
+            return;
+          }
+
+          alert('Escala despublicada com sucesso. A tela dos plantonistas não mostrará mais a escala atual.');
+        } catch (erro) {
+          console.error(erro);
+          alert('Erro inesperado ao despublicar a escala.');
+        }
+      }
+
       function baixarArquivo(nome, conteudo, tipo) {
         const blob = new Blob([conteudo], { type: tipo });
         const url = URL.createObjectURL(blob);
@@ -1812,6 +1808,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         $('btnGerar').onclick = gerarEscala;
         $('btnNovaEscala').onclick = novaEscala;
         $('btnPublicar').onclick = publicarEscala;
+        $('btnDespublicar').onclick = despublicarEscala;
         $('btnFeriados').onclick = () => buscarFeriadosNacionais(true);
         $('btnVerificar').onclick = verificarEscala;
         $('btnProximo').onclick = proximoPlantao;
