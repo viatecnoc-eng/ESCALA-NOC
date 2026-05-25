@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Escala de Plantão NOC</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      background: #eaf2ff;
+      color: #0f172a;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: 28px auto;
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(30, 64, 175, 0.16);
+      border: 1px solid #bfdbfe;
+    }
+
+    .topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      border-bottom: 2px solid #bfdbfe;
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+      color: #1d4ed8;
+    }
+
+    .subtitulo {
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .acoes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button {
+      border: none;
+      padding: 10px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .btn-primario {
+      background: #1d4ed8;
+      color: #ffffff;
+    }
+
+    .btn-secundario {
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+
+    button:hover {
+      filter: brightness(0.96);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .card-info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .card-info strong {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #1e3a8a;
+      margin-bottom: 5px;
+    }
+
+    .card-info span,
+    .card-info a {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      text-decoration: none;
+    }
+
+    .card-info a {
+      color: #1d4ed8;
+    }
+
+    .aviso {
+      margin: 12px 0 18px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 14px;
+      display: none;
+      white-space: pre-line;
+    }
+
+    .aviso.ok {
+      display: block;
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .aviso.erro {
+      display: block;
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .legenda {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 14px 0 18px;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    .legenda-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cor {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid #93c5fd;
+    }
+
+    .cor-util {
+      background: #ffffff;
+    }
+
+    .cor-sabado {
+      background: #fef3c7;
+    }
+
+    .cor-domingo {
+      background: #fee2e2;
+    }
+
+    .cor-proximo {
+      background: #dbeafe;
+      border: 2px solid #1d4ed8;
+    }
+
+    .tabela-wrapper {
+      overflow-x: auto;
+      border: 1px solid #93c5fd;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th,
+    td {
+      border: 1px solid #bfdbfe;
+      padding: 9px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background: #1d4ed8;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .sabado td {
+      background: #fef3c7;
+      color: #92400e;
+      font-weight: 700;
+    }
+
+    .domingo td,
+    .feriado td {
+      background: #fee2e2;
+      color: #991b1b;
+      font-weight: 700;
+    }
+
+    .proximo td {
+      background: #dbeafe !important;
+      color: #1e3a8a !important;
+      font-weight: 700;
+    }
+
+    .proximo {
+      outline: 3px solid #1d4ed8;
+      outline-offset: -3px;
+    }
+
+    .observacoes {
+      margin-top: 20px;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 16px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      white-space: pre-line;
+      font-size: 14px;
+    }
+
+    .observacoes h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #1d4ed8;
+    }
+
+    .rodape {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+    }
+
+    @media (max-width: 850px) {
+      .container {
+        margin: 0;
+        border-radius: 0;
+        padding: 16px;
+      }
+
+      .topo {
+        flex-direction: column;
+      }
+
+      .acoes {
+        width: 100%;
+        justify-content: stretch;
+      }
+
+      .acoes button {
+        flex: 1;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      th,
+      td {
+        font-size: 13px;
+        padding: 8px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .container {
+        margin: 0;
+        max-width: none;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+      }
+
+      .acoes {
+        display: none !important;
+      }
+
+      .tabela-wrapper {
+        overflow: visible;
+      }
+
+      table {
+        min-width: 0;
+      }
+
+      th,
+      td {
+        font-size: 10px;
+        padding: 5px;
+      }
+
+      .legenda {
+        font-size: 11px;
+      }
+
+      .observacoes {
+        font-size: 12px;
+      }
+
+      @page {
+        size: A4 landscape;
+        margin: 10mm;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" id="areaPdf">
+    <div class="topo">
+      <div>
+        <h1>Escala de Plantão NOC</h1>
+        <div class="subtitulo" id="subtitulo">Carregando escala...</div>
+      </div>
+
+      <div class="acoes">
+        <button id="btnAtualizar" class="btn-secundario" type="button">Atualizar escala</button>
+        <button id="btnPdf" class="btn-primario" type="button">Baixar PDF</button>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="card-info">
+        <strong>Mês/Ano</strong>
+        <span id="mesAno">-</span>
+      </div>
+
+      <div class="card-info">
+        <strong>Setor</strong>
+        <span id="setor">-</span>
+      </div>
+
+      <div class="card-info">
+        <strong>Telefone NOC</strong>
+        <span id="telefone">-</span>
+      </div>
+
+      <div class="card-info">
+        <strong>Atualizado em</strong>
+        <span id="atualizadoEm">-</span>
+      </div>
+    </div>
+
+    <div id="aviso" class="aviso"></div>
+
+    <div class="legenda">
+      <div class="legenda-item"><span class="cor cor-util"></span> Dia útil</div>
+      <div class="legenda-item"><span class="cor cor-sabado"></span> Sábado</div>
+      <div class="legenda-item"><span class="cor cor-domingo"></span> Domingo/Feriado</div>
+      <div class="legenda-item"><span class="cor cor-proximo"></span> Próximo plantão</div>
+    </div>
+
+    <div class="tabela-wrapper">
+      <table id="tabela">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Semana</th>
+            <th>Feriado?</th>
+            <th>Plantonista</th>
+            <th>Horário</th>
+            <th>Telefone</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="observacoes">
+      <h2>Observações gerais</h2>
+      <div id="observacoes">-</div>
+    </div>
+
+    <div class="rodape">
+      Escala de Plantão NOC
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL = "https://qbgwlfxsyqirwkvezkdu.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_oPqwuXv53mXcWAUgXc8XHg_XTLH7clz";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const $ = (id) => document.getElementById(id);
+
+    function escapeHtml(valor) {
+      return String(valor ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function aviso(msg, tipo) {
+      $('aviso').className = 'aviso ' + tipo;
+      $('aviso').innerText = msg;
+    }
+
+    function limparAviso() {
+      $('aviso').className = 'aviso';
+      $('aviso').innerText = '';
+    }
+
+    function dataBrParaDate(data) {
+      const p = String(data).split('/');
+      if (p.length !== 3) return null;
+
+      const d = Number(p[0]);
+      const m = Number(p[1]) - 1;
+      const a = Number(p[2]);
+
+      if (Number.isNaN(d) || Number.isNaN(m) || Number.isNaN(a)) return null;
+
+      return new Date(a, m, d);
+    }
+
+    function formatarDataHora(valor) {
+      if (!valor) return '-';
+
+      const data = new Date(valor);
+
+      if (Number.isNaN(data.getTime())) return '-';
+
+      return data.toLocaleString('pt-BR', {
+        dateStyle: 'short',
+        timeStyle: 'short'
+      });
+    }
+
+    function classeLinha(item) {
+      if (item.feriado || item.semana === 'Domingo') return 'domingo';
+      if (item.semana === 'Sábado') return 'sabado';
+      return '';
+    }
+
+    function marcarProximoPlantao() {
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+
+      let marcado = false;
+
+      document.querySelectorAll('#tbody tr').forEach((linha) => {
+        linha.classList.remove('proximo');
+
+        if (marcado) return;
+
+        const data = dataBrParaDate(linha.dataset.data);
+        if (!data) return;
+
+        data.setHours(0, 0, 0, 0);
+
+        if (data >= hoje) {
+          linha.classList.add('proximo');
+          marcado = true;
+        }
+      });
+    }
+
+    function montarTabela(dados) {
+      const linhas = dados.linhas || [];
+
+      if (!linhas.length) {
+        $('tbody').innerHTML = `
+          <tr>
+            <td colspan="7">Nenhuma linha de escala publicada.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      $('tbody').innerHTML = linhas.map((item) => {
+        const classe = classeLinha(item);
+        const telefone = item.telefone || dados.telefoneNoc || '';
+
+        return `
+          <tr class="${classe}" data-data="${escapeHtml(item.data)}">
+            <td>${escapeHtml(item.data)}</td>
+            <td>${escapeHtml(item.semana)}</td>
+            <td>${item.feriado ? 'Sim' : 'Não'}</td>
+            <td>${escapeHtml(item.plantonista || '-')}</td>
+            <td>${escapeHtml(item.horario || '-')}</td>
+            <td>${escapeHtml(telefone || '-')}</td>
+            <td>${escapeHtml(item.observacao || '')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      marcarProximoPlantao();
+    }
+
+    function preencherTela(dados, atualizadoBanco) {
+      const mes = dados.mes || '-';
+      const ano = dados.ano || '-';
+      const setor = dados.setor || 'NOC';
+      const telefone = dados.telefoneNoc || '-';
+      const whatsapp = dados.whatsappNoc || '';
+
+      $('subtitulo').innerText = `${mes} de ${ano}`;
+      $('mesAno').innerText = `${mes} / ${ano}`;
+      $('setor').innerText = setor;
+
+      if (whatsapp) {
+        $('telefone').innerHTML = `<a href="${escapeHtml(whatsapp)}" target="_blank">${escapeHtml(telefone)}</a>`;
+      } else {
+        $('telefone').innerText = telefone;
+      }
+
+      $('atualizadoEm').innerText = formatarDataHora(dados.atualizadoEm || atualizadoBanco);
+      $('observacoes').innerText = dados.observacoes || '-';
+
+      montarTabela(dados);
+    }
+
+    async function carregarEscala() {
+      limparAviso();
+      $('subtitulo').innerText = 'Carregando escala...';
+
+      try {
+        const { data, error } = await supabase
+          .from('escalas')
+          .select('dados, atualizado_em')
+          .eq('id', 'noc-atual')
+          .single();
+
+        if (error) {
+          console.error(error);
+          aviso('Não foi possível carregar a escala. Verifique se ela já foi publicada pelo Admin.', 'erro');
+          $('subtitulo').innerText = 'Erro ao carregar escala';
+          return;
+        }
+
+        if (!data || !data.dados) {
+          aviso('Nenhuma escala publicada ainda.', 'erro');
+          $('subtitulo').innerText = 'Nenhuma escala publicada';
+          return;
+        }
+
+        preencherTela(data.dados, data.atualizado_em);
+        aviso('Escala carregada com sucesso.', 'ok');
+
+        setTimeout(() => {
+          limparAviso();
+        }, 1800);
+      } catch (erro) {
+        console.error(erro);
+        aviso('Erro inesperado ao carregar a escala.', 'erro');
+        $('subtitulo').innerText = 'Erro ao carregar escala';
+      }
+    }
+
+    function baixarPdf() {
+      window.print();
+    }
+
+    $('btnAtualizar').onclick = carregarEscala;
+    $('btnPdf').onclick = baixarPdf;
+
+    carregarEscala();
+  </script>
+</body>
+</html>
