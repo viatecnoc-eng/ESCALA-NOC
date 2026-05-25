@@ -495,42 +495,137 @@
     .resumo {
       margin-top: 20px;
       border: 1px solid #bfdbfe;
-      border-radius: 10px;
+      border-radius: 14px;
       padding: 16px;
       background: #eff6ff;
     }
 
-    .resumo h2 {
-      margin: 0 0 12px;
-      font-size: 18px;
+    .resumo-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .resumo-topo h2 {
+      margin: 0;
+      font-size: 20px;
       color: #1d4ed8;
     }
 
-    .resumo-grid {
+    .resumo-topo p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .dashboard-geral {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .card-geral {
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .card-geral small {
+      display: block;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .card-geral strong {
+      display: block;
+      font-size: 24px;
+      color: #1d4ed8;
+    }
+
+    .subtitulo-resumo {
+      margin: 14px 0 10px;
+      color: #1e3a8a;
+      font-size: 15px;
+    }
+
+    .dashboard-colaboradores {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
     }
 
-    .card-resumo {
+    .card-colaborador {
       background: #ffffff;
       border: 1px solid #bfdbfe;
-      border-radius: 8px;
+      border-radius: 12px;
       padding: 12px;
-      text-align: center;
     }
 
-    .card-resumo strong {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 5px;
+    .card-colaborador .nome {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .card-colaborador .nome strong {
       color: #1e3a8a;
+      font-size: 15px;
     }
 
-    .card-resumo span {
-      font-size: 24px;
-      font-weight: 700;
+    .card-colaborador .total {
+      background: #dbeafe;
       color: #1d4ed8;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .linha-metrica {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 7px 0;
+      border-top: 1px solid #e2e8f0;
+      font-size: 13px;
+    }
+
+    .linha-metrica span {
+      color: #475569;
+    }
+
+    .linha-metrica strong {
+      color: #0f172a;
+    }
+
+    .barra-distribuicao {
+      display: flex;
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      margin-top: 10px;
+      background: #e2e8f0;
+    }
+
+    .barra-util {
+      background: #2563eb;
+    }
+
+    .barra-fds {
+      background: #f59e0b;
+    }
+
+    .barra-feriado {
+      background: #dc2626;
     }
 
     .obs {
@@ -561,22 +656,36 @@
       margin: 8px 0 16px;
     }
 
+    @media (max-width: 1050px) {
+      .dashboard-geral,
+      .dashboard-colaboradores {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     @media (max-width: 850px) {
       .grid5,
       .ferias-controle,
-      .pesquisa-area,
-      .resumo-grid {
+      .pesquisa-area {
         grid-template-columns: 1fr;
       }
 
       .topo,
-      .tabela-topo {
+      .tabela-topo,
+      .resumo-topo {
         flex-direction: column;
         align-items: stretch;
       }
 
       .tabela-botoes {
         flex-direction: column;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .dashboard-geral,
+      .dashboard-colaboradores {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -617,7 +726,6 @@
         </div>
 
         <div class="grupo-acoes">
-          <button id="btnResumo" class="btn-secundario" type="button">Atualizar resumo</button>
           <button id="btnExportarCsv" class="btn-secundario" type="button">Exportar CSV</button>
           <button id="btnLimpar" class="btn-secundario" type="button">Limpar</button>
         </div>
@@ -723,8 +831,19 @@
     </div>
 
     <div class="resumo">
-      <h2>Resumo de plantões</h2>
-      <div class="resumo-grid" id="resumo"></div>
+      <div class="resumo-topo">
+        <div>
+          <h2>Dashboard da escala</h2>
+          <p>Distribuição dos plantões por colaborador e tipo de dia.</p>
+        </div>
+
+        <button id="btnResumo" class="btn-secundario" type="button">Atualizar resumo</button>
+      </div>
+
+      <div class="dashboard-geral" id="dashboardGeral"></div>
+
+      <h3 class="subtitulo-resumo">Plantões por colaborador</h3>
+      <div class="dashboard-colaboradores" id="resumo"></div>
     </div>
 
     <div class="obs">
@@ -1116,17 +1235,130 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       function atualizarResumo() {
-        const contagem = Object.fromEntries(colaboradores.map((nome) => [nome, 0]));
+        const resumo = {};
+        const geral = {
+          total: 0,
+          uteis: 0,
+          finaisSemana: 0,
+          feriados: 0,
+          semPlantonista: 0
+        };
 
-        document.querySelectorAll('select.colaborador').forEach((select) => {
-          if (select.value && Object.prototype.hasOwnProperty.call(contagem, select.value)) {
-            contagem[select.value]++;
+        colaboradores.forEach((nome) => {
+          resumo[nome] = {
+            total: 0,
+            uteis: 0,
+            finaisSemana: 0,
+            feriados: 0
+          };
+        });
+
+        document.querySelectorAll('#tabela tbody tr').forEach((linha) => {
+          const semana = linha.cells[1]?.innerText.trim() || '';
+          const plantonista = linha.querySelector('select.colaborador')?.value || '';
+          const feriado = !!linha.querySelector('.check-feriado')?.checked;
+          const ehFimSemana = semana === 'Sábado' || semana === 'Domingo';
+
+          geral.total++;
+
+          if (feriado) {
+            geral.feriados++;
+          } else if (ehFimSemana) {
+            geral.finaisSemana++;
+          } else {
+            geral.uteis++;
+          }
+
+          if (!plantonista) {
+            geral.semPlantonista++;
+            return;
+          }
+
+          if (!resumo[plantonista]) {
+            resumo[plantonista] = {
+              total: 0,
+              uteis: 0,
+              finaisSemana: 0,
+              feriados: 0
+            };
+          }
+
+          resumo[plantonista].total++;
+
+          if (feriado) {
+            resumo[plantonista].feriados++;
+          } else if (ehFimSemana) {
+            resumo[plantonista].finaisSemana++;
+          } else {
+            resumo[plantonista].uteis++;
           }
         });
 
-        $('resumo').innerHTML = colaboradores
-          .map((nome) => `<div class="card-resumo"><strong>${escapeHtml(nome)}</strong><span>${contagem[nome]}</span></div>`)
-          .join('');
+        $('dashboardGeral').innerHTML = `
+          <div class="card-geral">
+            <small>Total de dias</small>
+            <strong>${geral.total}</strong>
+          </div>
+
+          <div class="card-geral">
+            <small>Dias úteis</small>
+            <strong>${geral.uteis}</strong>
+          </div>
+
+          <div class="card-geral">
+            <small>Finais de semana</small>
+            <strong>${geral.finaisSemana}</strong>
+          </div>
+
+          <div class="card-geral">
+            <small>Feriados</small>
+            <strong>${geral.feriados}</strong>
+          </div>
+
+          <div class="card-geral">
+            <small>Sem plantonista</small>
+            <strong>${geral.semPlantonista}</strong>
+          </div>
+        `;
+
+        $('resumo').innerHTML = colaboradores.map((nome) => {
+          const item = resumo[nome];
+          const total = item.total || 0;
+
+          const pctUtil = total ? (item.uteis / total) * 100 : 0;
+          const pctFds = total ? (item.finaisSemana / total) * 100 : 0;
+          const pctFeriado = total ? (item.feriados / total) * 100 : 0;
+
+          return `
+            <div class="card-colaborador">
+              <div class="nome">
+                <strong>${escapeHtml(nome)}</strong>
+                <span class="total">${total}</span>
+              </div>
+
+              <div class="linha-metrica">
+                <span>Dias úteis</span>
+                <strong>${item.uteis}</strong>
+              </div>
+
+              <div class="linha-metrica">
+                <span>Final de semana</span>
+                <strong>${item.finaisSemana}</strong>
+              </div>
+
+              <div class="linha-metrica">
+                <span>Feriados</span>
+                <strong>${item.feriados}</strong>
+              </div>
+
+              <div class="barra-distribuicao" title="Distribuição dos plantões">
+                <div class="barra-util" style="width:${pctUtil}%"></div>
+                <div class="barra-fds" style="width:${pctFds}%"></div>
+                <div class="barra-feriado" style="width:${pctFeriado}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
       }
 
       function linhaTemConflito(linha, index, linhas) {
@@ -1376,7 +1608,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       function montarDadosEscala() {
         return {
-          versao: 9,
+          versao: 10,
           atualizadoEm: new Date().toISOString(),
           escalaId: $('escalaId').value.trim(),
           nomeEscala: garantirNomeEscala(),
