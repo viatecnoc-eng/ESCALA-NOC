@@ -155,12 +155,16 @@
       filter: brightness(0.96);
     }
 
-    .grid4,
+    .grid5,
     .ferias-controle {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 12px;
       margin-bottom: 16px;
+    }
+
+    .ferias-controle {
+      grid-template-columns: repeat(4, 1fr);
     }
 
     .campo label,
@@ -553,7 +557,7 @@
     }
 
     @media (max-width: 850px) {
-      .grid4,
+      .grid5,
       .ferias-controle,
       .pesquisa-area,
       .resumo-grid {
@@ -568,37 +572,6 @@
 
       .tabela-botoes {
         flex-direction: column;
-      }
-    }
-
-    @media print {
-      .acoes,
-      .tabela-topo button,
-      .ferias-controle,
-      .lista-ferias,
-      .pesquisa-area,
-      .resultado-pesquisa,
-      .status-salvamento,
-      .aviso,
-      .nota {
-        display: none !important;
-      }
-
-      body {
-        background: #ffffff;
-      }
-
-      .container {
-        margin: 0;
-        box-shadow: none;
-        border-radius: 0;
-        max-width: none;
-      }
-
-      th,
-      td {
-        font-size: 11px;
-        padding: 6px;
       }
     }
   </style>
@@ -628,6 +601,7 @@
       <div class="acoes">
         <div class="grupo-acoes">
           <button id="btnGerar" class="btn-primario" type="button">Gerar escala</button>
+          <button id="btnNovaEscala" class="btn-secundario" type="button">Nova escala</button>
           <button id="btnPublicar" class="btn-publicar" type="button">Publicar escala</button>
           <button id="btnFeriados" class="btn-secundario" type="button">Buscar feriados nacionais</button>
           <button id="btnVerificar" class="btn-secundario" type="button">Verificar escala</button>
@@ -635,6 +609,7 @@
         </div>
 
         <div class="grupo-acoes">
+          <button id="btnCarregarPublicado" class="btn-secundario" type="button">Carregar escala publicada</button>
           <button id="btnCarregar" class="btn-secundario" type="button">Carregar rascunho</button>
         </div>
 
@@ -646,7 +621,14 @@
       </div>
     </div>
 
-    <div class="grid4">
+    <input id="escalaId" type="hidden">
+
+    <div class="grid5">
+      <div class="campo">
+        <label>Nome da escala</label>
+        <input id="nomeEscala" type="text" value="Escala NOC">
+      </div>
+
       <div class="campo">
         <label>Mês</label>
         <select id="mes"></select>
@@ -669,7 +651,7 @@
     </div>
 
     <div class="nota">
-      A escala é salva automaticamente neste navegador. Depois de conferir, clique em <strong>Publicar escala</strong> para enviar para a tela dos plantonistas.
+      A escala é salva automaticamente neste navegador. Depois de conferir, clique em <strong>Publicar escala</strong>. Se editar e publicar novamente, a mesma escala será atualizada.
     </div>
 
     <div id="statusSalvamento" class="status-salvamento">Alterações salvas automaticamente.</div>
@@ -815,6 +797,16 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           .replaceAll("'", '&#039;');
       }
 
+      function criarSlug(texto) {
+        return String(texto || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .slice(0, 60);
+      }
+
       function telefoneNoc() {
         return $('telefone').value.trim() || '98449-1917';
       }
@@ -892,6 +884,33 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         </select>`;
       }
 
+      function nomeEscalaPadrao() {
+        const mes = meses[Number($('mes').value)] || '';
+        const ano = $('ano').value || '';
+        const setor = $('setor').value.trim() || 'NOC';
+
+        return `Escala ${setor} - ${mes}/${ano}`;
+      }
+
+      function garantirNomeEscala() {
+        const nomeAtual = $('nomeEscala').value.trim();
+
+        if (nomeAtual) return nomeAtual;
+
+        const nome = nomeEscalaPadrao();
+        $('nomeEscala').value = nome;
+
+        return nome;
+      }
+
+      function gerarIdEscala(dados) {
+        const ano = dados.ano;
+        const mes = String(Number(dados.mesNumero) + 1).padStart(2, '0');
+        const slug = criarSlug(dados.nomeEscala || `${dados.mes}-${dados.ano}`);
+
+        return `noc-${ano}-${mes}-${slug}`;
+      }
+
       function escolherPlantonista(diaSemana, dataBr, contagem, ultimoPorSemana, ultimoPlantonista, feriado) {
         const nomeDia = nomesSemana[diaSemana];
 
@@ -957,6 +976,10 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           if (!confirmar) return;
         }
 
+        if (!$('nomeEscala').value.trim()) {
+          $('nomeEscala').value = nomeEscalaPadrao();
+        }
+
         const mes = Number($('mes').value);
         const ano = Number($('ano').value);
         const totalDias = new Date(ano, mes + 1, 0).getDate();
@@ -989,6 +1012,22 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         atualizarTudo();
         limparAviso();
         salvarAutomatico();
+      }
+
+      function novaEscala() {
+        const confirmar = confirm('Deseja iniciar uma nova escala? Isso limpa a tabela atual e cria um novo vínculo de publicação.');
+
+        if (!confirmar) return;
+
+        $('escalaId').value = '';
+        $('nomeEscala').value = nomeEscalaPadrao();
+
+        bodyTabela().innerHTML = '';
+        atualizarTudo();
+        limparAviso();
+        salvarAutomatico();
+
+        alert('Nova escala iniciada. Gere a tabela e depois publique.');
       }
 
       function atualizarResumo() {
@@ -1168,6 +1207,10 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         $('feriasColaborador').innerHTML = '<option value="">Selecione</option>' + colaboradores
           .map((nome) => `<option value="${escapeHtml(nome)}">${escapeHtml(nome)}</option>`)
           .join('');
+
+        if (!$('nomeEscala').value.trim()) {
+          $('nomeEscala').value = nomeEscalaPadrao();
+        }
       }
 
       function atualizarListaFerias() {
@@ -1284,8 +1327,10 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       function montarDadosEscala() {
         return {
-          versao: 5,
+          versao: 6,
           atualizadoEm: new Date().toISOString(),
+          escalaId: $('escalaId').value.trim(),
+          nomeEscala: garantirNomeEscala(),
           titulo: $('tituloPagina').innerText.trim(),
           mesNumero: Number($('mes').value),
           mes: meses[Number($('mes').value)],
@@ -1308,6 +1353,8 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       function carregarDadosEscala(dados) {
+        $('escalaId').value = dados.escalaId || '';
+        $('nomeEscala').value = dados.nomeEscala || nomeEscalaPadrao();
         $('tituloPagina').innerText = dados.titulo || 'Admin - Escala de Plantão NOC';
         $('mes').value = String(dados.mesNumero ?? 0);
         $('ano').value = dados.ano || new Date().getFullYear();
@@ -1332,7 +1379,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           localStorage.setItem(STORAGE_KEY, JSON.stringify(montarDadosEscala()));
 
           $('statusSalvamento').classList.add('ativo');
-          $('statusSalvamento').innerText = 'Alterações salvas automaticamente.';
+          $('statusSalvamento').innerText = 'Alterações salvas automaticamente neste navegador.';
 
           setTimeout(() => {
             $('statusSalvamento').classList.remove('ativo');
@@ -1352,6 +1399,39 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         alert('Rascunho carregado.');
       }
 
+      async function carregarEscalaPublicada() {
+        const confirmar = confirm('Deseja carregar a escala publicada atual? Isso vai substituir a tabela atual da tela Admin.');
+
+        if (!confirmar) return;
+
+        try {
+          const { data, error } = await supabase
+            .from('escalas')
+            .select('dados')
+            .eq('id', 'noc-atual')
+            .single();
+
+          if (error) {
+            console.error(error);
+            alert('Não foi possível carregar a escala publicada.');
+            return;
+          }
+
+          if (!data || !data.dados) {
+            alert('Nenhuma escala publicada encontrada.');
+            return;
+          }
+
+          carregarDadosEscala(data.dados);
+          salvarAutomatico();
+
+          alert('Escala publicada carregada. Agora você pode editar e publicar novamente.');
+        } catch (erro) {
+          console.error(erro);
+          alert('Erro inesperado ao carregar a escala publicada.');
+        }
+      }
+
       async function publicarEscala() {
         const dados = montarDadosEscala();
 
@@ -1367,18 +1447,36 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         try {
           dados.atualizadoEm = new Date().toISOString();
 
+          let idEscala = dados.escalaId;
+
+          if (!idEscala) {
+            idEscala = gerarIdEscala(dados);
+            dados.escalaId = idEscala;
+            $('escalaId').value = idEscala;
+          }
+
+          const agora = new Date().toISOString();
+
+          const registros = [
+            {
+              id: 'noc-atual',
+              nome: dados.nomeEscala,
+              dados: dados,
+              atualizado_em: agora
+            },
+            {
+              id: idEscala,
+              nome: dados.nomeEscala,
+              dados: dados,
+              atualizado_em: agora
+            }
+          ];
+
           const { error } = await supabase
             .from('escalas')
-            .upsert(
-              {
-                id: 'noc-atual',
-                dados: dados,
-                atualizado_em: new Date().toISOString()
-              },
-              {
-                onConflict: 'id'
-              }
-            );
+            .upsert(registros, {
+              onConflict: 'id'
+            });
 
           if (error) {
             console.error(error);
@@ -1386,7 +1484,11 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
             return;
           }
 
-          alert('Escala publicada com sucesso para os plantonistas.');
+          salvarAutomatico();
+
+          alert(
+            `Escala publicada com sucesso.\n\nNome: ${dados.nomeEscala}\nID: ${idEscala}\n\nSe você editar e publicar novamente, essa mesma escala será atualizada.`
+          );
         } catch (erro) {
           console.error(erro);
           alert('Erro inesperado ao publicar a escala.');
@@ -1545,11 +1647,13 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         verificarLoginSalvo();
 
         $('btnGerar').onclick = gerarEscala;
+        $('btnNovaEscala').onclick = novaEscala;
         $('btnPublicar').onclick = publicarEscala;
         $('btnFeriados').onclick = buscarFeriadosNacionais;
         $('btnVerificar').onclick = verificarEscala;
         $('btnProximo').onclick = proximoPlantao;
         $('btnResumo').onclick = atualizarResumo;
+        $('btnCarregarPublicado').onclick = carregarEscalaPublicada;
         $('btnCarregar').onclick = carregarRascunho;
         $('btnExportarCsv').onclick = exportarCsv;
         $('btnAlternarTabela').onclick = alternarTabela;
@@ -1572,7 +1676,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           salvarAutomatico();
         };
 
-        ['mes', 'ano', 'setor', 'observacoes'].forEach((id) => {
+        ['nomeEscala', 'mes', 'ano', 'setor', 'observacoes'].forEach((id) => {
           $(id).addEventListener('input', salvarAutomatico);
           $(id).addEventListener('change', salvarAutomatico);
         });
