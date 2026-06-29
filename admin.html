@@ -129,8 +129,8 @@
 
     .topo {
       display: grid;
-      grid-template-columns: 330px 1fr;
-      gap: 22px;
+      grid-template-columns: 310px 1fr;
+      gap: 20px;
       border-bottom: 2px solid #bfdbfe;
       padding-bottom: 18px;
       margin-bottom: 18px;
@@ -139,9 +139,9 @@
 
     h1 {
       margin: 0 0 6px;
-      font-size: 30px;
+      font-size: 28px;
       color: #1d4ed8;
-      line-height: 1.12;
+      line-height: 1.15;
     }
 
     .subtitulo {
@@ -189,86 +189,57 @@
     }
 
     .painel-acoes {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(260px, 1fr));
-      gap: 12px;
-      width: 100%;
-    }
-
-    .grupo-acoes {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-      padding: 34px 10px 10px;
-      border: 1px solid #bfdbfe;
-      border-radius: 14px;
-      background: #f8fbff;
-    }
-
-    .grupo-titulo {
-      position: absolute;
-      left: 10px;
-      top: 8px;
-      font-size: 12px;
-      font-weight: 800;
-      color: #1e3a8a;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-
-    .grupo-acoes button {
-      width: 100%;
-      min-height: 58px;
-      text-align: left;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 3px;
-      line-height: 1.15;
+      gap: 10px;
+      width: 100%;
     }
 
-    .grupo-acoes button small {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      opacity: 0.82;
-      line-height: 1.2;
-    }
-
-    .grupo-principal {
-      border-color: #bfdbfe;
+    .barra-acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
       background: #eff6ff;
     }
 
-    .grupo-publicacao {
-      border-color: #bbf7d0;
-      background: #f0fdf4;
+    .barra-acoes button {
+      min-height: 42px;
+      white-space: nowrap;
     }
 
-    .grupo-conferencia {
-      border-color: #fde68a;
-      background: #fffbeb;
-    }
-
-    .grupo-historico {
-      border-color: #c7d2fe;
-      background: #eef2ff;
-    }
-
-    .grupo-utilitarios {
-      border-color: #e2e8f0;
+    .barra-secundaria {
       background: #f8fafc;
+      border-color: #dbeafe;
     }
 
-    .btn-verde small,
-    .btn-publicar small,
-    .btn-primario small {
-      color: rgba(255, 255, 255, 0.9);
+    .ajuda-acoes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      background: #ffffff;
     }
 
-    .btn-perigo small {
-      color: #7f1d1d;
+    .ajuda-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 9px 10px;
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.3;
+    }
+
+    .ajuda-item strong {
+      display: block;
+      color: #1e3a8a;
+      font-size: 12px;
+      margin-bottom: 3px;
     }
 
     .grid5,
@@ -788,17 +759,6 @@
       justify-content: flex-end;
     }
 
-    .badge-atual {
-      display: inline-flex;
-      margin-top: 7px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #dcfce7;
-      color: #166534;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
     .vazio {
       padding: 14px;
       border: 1px dashed #93c5fd;
@@ -852,8 +812,8 @@
         grid-template-columns: 1fr;
       }
 
-      .painel-acoes {
-        max-width: none;
+      .ajuda-acoes {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -862,10 +822,6 @@
       .dashboard-colaboradores,
       .historico-lista {
         grid-template-columns: repeat(2, 1fr);
-      }
-
-      .painel-acoes {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -879,7 +835,6 @@
         grid-template-columns: 1fr;
       }
 
-      .topo,
       .tabela-topo,
       .resumo-topo,
       .historico-topo {
@@ -896,8 +851,12 @@
         flex-direction: column;
       }
 
-      .grupo-acoes button {
-        min-height: 54px;
+      .barra-acoes {
+        flex-direction: column;
+      }
+
+      .barra-acoes button {
+        width: 100%;
       }
 
       h1 {
@@ -936,89 +895,40 @@
       </div>
 
       <div class="acoes painel-acoes">
-        <div class="grupo-acoes grupo-principal">
-          <div class="grupo-titulo">1. Montar escala</div>
-
-          <button id="btnGerar" class="btn-primario" type="button">
-            Gerar tabela do mês
-            <small>Cria os dias da escala na tela</small>
-          </button>
-
-          <button id="btnNovaEscala" class="btn-secundario" type="button">
-            Nova escala em branco
-            <small>Limpa a tela sem apagar histórico</small>
-          </button>
+        <div class="barra-acoes">
+          <button id="btnGerar" class="btn-primario" type="button">Gerar escala</button>
+          <button id="btnNovaEscala" class="btn-secundario" type="button">Nova escala</button>
+          <button id="btnSalvarMes" class="btn-publicar" type="button">Salvar mês</button>
+          <button id="btnPublicarAtual" class="btn-verde" type="button">Forçar atual</button>
+          <button id="btnDespublicar" class="btn-perigo" type="button">Remover atual</button>
         </div>
 
-        <div class="grupo-acoes grupo-publicacao">
-          <div class="grupo-titulo">2. Salvar / publicar</div>
-
-          <button id="btnSalvarMes" class="btn-publicar" type="button">
-            Salvar escala do mês
-            <small>Grava como noc-ANO-MM</small>
-          </button>
-
-          <button id="btnPublicarAtual" class="btn-verde" type="button">
-            Forçar como atual agora
-            <small>Aparece imediatamente no user.html</small>
-          </button>
-
-          <button id="btnDespublicar" class="btn-perigo" type="button">
-            Remover atual manual
-            <small>Remove só o noc-atual</small>
-          </button>
+        <div class="barra-acoes barra-secundaria">
+          <button id="btnFeriados" class="btn-secundario" type="button">Buscar feriados</button>
+          <button id="btnVerificar" class="btn-secundario" type="button">Verificar</button>
+          <button id="btnProximo" class="btn-secundario" type="button">Próximo plantão</button>
+          <button id="btnCarregarAtual" class="btn-secundario" type="button">Carregar atual</button>
+          <button id="btnCarregar" class="btn-secundario" type="button">Carregar rascunho</button>
+          <button id="btnHistorico" class="btn-secundario" type="button">Histórico</button>
+          <button id="btnExportarCsv" class="btn-secundario" type="button">CSV</button>
+          <button id="btnLimpar" class="btn-secundario" type="button">Limpar tela</button>
         </div>
 
-        <div class="grupo-acoes grupo-conferencia">
-          <div class="grupo-titulo">3. Conferir escala</div>
+        <div class="ajuda-acoes">
+          <div class="ajuda-item">
+            <strong>Salvar mês</strong>
+            Grava como noc-ANO-MM. Exemplo: noc-2026-06. Aparece automaticamente quando chegar o mês.
+          </div>
 
-          <button id="btnFeriados" class="btn-secundario" type="button">
-            Buscar feriados
-            <small>Marca feriados nacionais</small>
-          </button>
+          <div class="ajuda-item">
+            <strong>Forçar atual</strong>
+            Use apenas se precisar mostrar essa escala imediatamente no user.html.
+          </div>
 
-          <button id="btnVerificar" class="btn-secundario" type="button">
-            Verificar problemas
-            <small>Conflitos, férias e horários</small>
-          </button>
-
-          <button id="btnProximo" class="btn-secundario" type="button">
-            Localizar próximo
-            <small>Destaca o próximo plantão</small>
-          </button>
-        </div>
-
-        <div class="grupo-acoes grupo-historico">
-          <div class="grupo-titulo">4. Carregar / histórico</div>
-
-          <button id="btnCarregarAtual" class="btn-secundario" type="button">
-            Carregar atual manual
-            <small>Abre o noc-atual</small>
-          </button>
-
-          <button id="btnCarregar" class="btn-secundario" type="button">
-            Carregar rascunho local
-            <small>Salvo neste navegador</small>
-          </button>
-
-          <button id="btnHistorico" class="btn-secundario" type="button">
-            Atualizar histórico
-            <small>Busca escalas no Supabase</small>
-          </button>
-        </div>
-
-        <div class="grupo-acoes grupo-utilitarios">
-          <div class="grupo-titulo">5. Utilitários</div>
-
-          <button id="btnExportarCsv" class="btn-secundario" type="button">
-            Exportar CSV
-            <small>Baixa a tabela</small>
-          </button>
-
-          <button id="btnLimpar" class="btn-secundario" type="button">
-            Limpar tela
-            <small>Não apaga o histórico</small>
-          </button>
+          <div class="ajuda-item">
+            <strong>Remover atual</strong>
+            Remove somente o noc-atual. Não apaga as escalas mensais salvas.
+          </div>
         </div>
       </div>
     </div>
@@ -1028,7 +938,7 @@
     <div class="nota-forte">
       <strong>Nova regra:</strong> ao salvar a escala do mês, ela fica gravada como <strong>noc-ANO-MM</strong>.
       A tela dos plantonistas carrega automaticamente a escala do mês atual.
-      Use <strong>Forçar como atual agora</strong> apenas se precisar mostrar uma escala imediatamente.
+      Use <strong>Forçar atual</strong> apenas se precisar mostrar uma escala imediatamente.
     </div>
 
     <div class="grid5">
@@ -1059,7 +969,7 @@
     </div>
 
     <div class="nota">
-      Ao clicar em <strong>Gerar tabela do mês</strong>, os feriados nacionais do mês serão marcados automaticamente.
+      Ao clicar em <strong>Gerar escala</strong>, os feriados nacionais do mês serão marcados automaticamente.
       Para feriados municipais, marque manualmente a coluna <strong>Feriado?</strong> na tabela.
     </div>
 
