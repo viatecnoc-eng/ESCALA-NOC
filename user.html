@@ -86,7 +86,7 @@
 
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 12px;
       margin-bottom: 18px;
     }
@@ -116,6 +116,22 @@
 
     .card-info a {
       color: #1d4ed8;
+    }
+
+    .badge-origem {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px !important;
+      font-weight: 800 !important;
+      background: #dbeafe;
+      color: #1d4ed8 !important;
+    }
+
+    .badge-emergencia {
+      background: #fef3c7;
+      color: #92400e !important;
     }
 
     .painel-filtros {
@@ -191,6 +207,13 @@
       border-color: #fecaca;
       background: #fef2f2;
       color: #991b1b;
+    }
+
+    .aviso.alerta {
+      display: block;
+      border-color: #fde68a;
+      background: #fffbeb;
+      color: #92400e;
     }
 
     .legenda {
@@ -423,6 +446,10 @@
       .painel-filtros {
         grid-template-columns: 1fr;
       }
+
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     @media (max-width: 750px) {
@@ -556,6 +583,11 @@
         <strong>Atualizado em</strong>
         <span id="atualizadoEm">-</span>
       </div>
+
+      <div class="card-info">
+        <strong>Origem</strong>
+        <span id="origemEscala" class="badge-origem">-</span>
+      </div>
     </div>
 
     <div id="aviso" class="aviso"></div>
@@ -637,6 +669,7 @@
     let dadosEscala = null;
     let linhasOriginais = [];
     let modoVisualizacao = window.innerWidth <= 750 ? 'cards' : 'tabela';
+    let origemAtual = '';
 
     function escapeHtml(valor) {
       return String(valor ?? '')
@@ -655,6 +688,14 @@
     function limparAviso() {
       $('aviso').className = 'aviso';
       $('aviso').innerText = '';
+    }
+
+    function idEscalaMesAtual() {
+      const hoje = new Date();
+      const ano = hoje.getFullYear();
+      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+
+      return `noc-${ano}-${mes}`;
     }
 
     function dataBrParaDate(data) {
@@ -867,9 +908,23 @@
       $('btnTabela').classList.toggle('btn-ativo', !cardsAtivo);
     }
 
-    function preencherTela(dados, atualizadoBanco) {
+    function preencherOrigem(idCarregado, carregouFallback) {
+      const origem = $('origemEscala');
+
+      if (carregouFallback) {
+        origem.innerText = 'Atual manual';
+        origem.className = 'badge-origem badge-emergencia';
+        return;
+      }
+
+      origem.innerText = idCarregado.replace('noc-', '');
+      origem.className = 'badge-origem';
+    }
+
+    function preencherTela(dados, atualizadoBanco, idCarregado, carregouFallback = false) {
       dadosEscala = dados;
       linhasOriginais = dados.linhas || [];
+      origemAtual = idCarregado;
 
       const mes = dados.mes || '-';
       const ano = dados.ano || '-';
@@ -890,41 +945,75 @@
       $('atualizadoEm').innerText = formatarDataHora(dados.atualizadoEm || atualizadoBanco);
       $('observacoes').innerText = dados.observacoes || '-';
 
+      preencherOrigem(idCarregado, carregouFallback);
       preencherFiltroPlantonistas(linhasOriginais);
       aplicarFiltros();
       definirVisualizacao(modoVisualizacao);
+    }
+
+    async function buscarEscalaPorId(id) {
+      const { data, error } = await supabase
+        .from('escalas')
+        .select('dados, atualizado_em')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (error) {
+        console.error(`Erro ao buscar ${id}:`, error);
+        return null;
+      }
+
+      if (!data || !data.dados) return null;
+
+      return data;
     }
 
     async function carregarEscala() {
       limparAviso();
       $('subtitulo').innerText = 'Carregando escala...';
 
+      const idMes = idEscalaMesAtual();
+
       try {
-        const { data, error } = await supabase
-          .from('escalas')
-          .select('dados, atualizado_em')
-          .eq('id', 'noc-atual')
-          .single();
+        const escalaMes = await buscarEscalaPorId(idMes);
 
-        if (error) {
-          console.error(error);
-          aviso('Não foi possível carregar a escala. Verifique se ela já foi publicada pelo Admin.', 'erro');
-          $('subtitulo').innerText = 'Erro ao carregar escala';
+        if (escalaMes) {
+          preencherTela(escalaMes.dados, escalaMes.atualizado_em, idMes, false);
+          aviso('Escala do mês atual carregada com sucesso.', 'ok');
+
+          setTimeout(() => {
+            limparAviso();
+          }, 1800);
+
           return;
         }
 
-        if (!data || !data.dados) {
-          aviso('Nenhuma escala publicada ainda.', 'erro');
-          $('subtitulo').innerText = 'Nenhuma escala publicada';
+        const escalaAtual = await buscarEscalaPorId('noc-atual');
+
+        if (escalaAtual) {
+          preencherTela(escalaAtual.dados, escalaAtual.atualizado_em, 'noc-atual', true);
+          aviso(
+            `Ainda não existe escala salva para o mês atual (${idMes}).\nMostrando a escala atual manual como emergência.`,
+            'alerta'
+          );
           return;
         }
 
-        preencherTela(data.dados, data.atualizado_em);
-        aviso('Escala carregada com sucesso.', 'ok');
+        aviso(
+          `Nenhuma escala publicada para o mês atual (${idMes}) e nenhuma escala atual manual encontrada.\nEntre em contato com o NOC.`,
+          'erro'
+        );
 
-        setTimeout(() => {
-          limparAviso();
-        }, 1800);
+        $('subtitulo').innerText = 'Nenhuma escala publicada';
+        $('mesAno').innerText = '-';
+        $('setor').innerText = '-';
+        $('telefone').innerText = '-';
+        $('atualizadoEm').innerText = '-';
+        $('origemEscala').innerText = '-';
+        $('observacoes').innerText = '-';
+        $('cards').innerHTML = '<div class="vazio">Nenhuma escala disponível.</div>';
+        $('tbody').innerHTML = '<tr><td colspan="7">Nenhuma escala disponível.</td></tr>';
+        $('contador').innerText = '0 plantão(ões)';
       } catch (erro) {
         console.error(erro);
         aviso('Erro inesperado ao carregar a escala.', 'erro');
