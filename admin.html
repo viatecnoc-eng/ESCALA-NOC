@@ -71,6 +71,44 @@
       width: 100%;
     }
 
+    .senha-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .senha-wrap input {
+      padding-right: 48px;
+    }
+
+    .btn-olho {
+      position: absolute;
+      right: 8px;
+      top: 6px;
+      width: 34px !important;
+      height: 34px;
+      padding: 0;
+      border-radius: 8px;
+      background: #dbeafe;
+      color: #1e3a8a;
+      font-size: 15px;
+    }
+
+    .lembrar-senha {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px 0 14px;
+      color: #475569;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .lembrar-senha input {
+      width: auto !important;
+      margin: 0;
+    }
+
     .erro-login {
       margin-top: 12px;
       color: #991b1b;
@@ -148,6 +186,11 @@
 
     .btn-publicar {
       background: #2563eb;
+      color: #ffffff;
+    }
+
+    .btn-verde {
+      background: #16a34a;
       color: #ffffff;
     }
 
@@ -300,6 +343,13 @@
       border-color: #fecaca;
       background: #fef2f2;
       color: #991b1b;
+    }
+
+    .aviso.alerta {
+      display: block;
+      border-color: #fde68a;
+      background: #fffbeb;
+      color: #92400e;
     }
 
     .legenda {
@@ -492,7 +542,8 @@
       font-weight: 700;
     }
 
-    .resumo {
+    .resumo,
+    .historico {
       margin-top: 20px;
       border: 1px solid #bfdbfe;
       border-radius: 14px;
@@ -500,7 +551,8 @@
       background: #eff6ff;
     }
 
-    .resumo-topo {
+    .resumo-topo,
+    .historico-topo {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -508,13 +560,15 @@
       margin-bottom: 14px;
     }
 
-    .resumo-topo h2 {
+    .resumo-topo h2,
+    .historico-topo h2 {
       margin: 0;
       font-size: 20px;
       color: #1d4ed8;
     }
 
-    .resumo-topo p {
+    .resumo-topo p,
+    .historico-topo p {
       margin: 4px 0 0;
       font-size: 13px;
       color: #475569;
@@ -628,6 +682,65 @@
       background: #dc2626;
     }
 
+    .historico-lista {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .historico-card {
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .historico-info strong {
+      display: block;
+      color: #1e3a8a;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .historico-info span {
+      display: block;
+      color: #64748b;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .historico-acoes {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .badge-atual {
+      display: inline-flex;
+      margin-top: 7px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .vazio {
+      padding: 14px;
+      border: 1px dashed #93c5fd;
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      text-align: center;
+    }
+
     .obs {
       margin-top: 20px;
     }
@@ -656,9 +769,20 @@
       margin: 8px 0 16px;
     }
 
+    .nota-forte {
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 16px;
+      color: #1e3a8a;
+      font-size: 13px;
+    }
+
     @media (max-width: 1050px) {
       .dashboard-geral,
-      .dashboard-colaboradores {
+      .dashboard-colaboradores,
+      .historico-lista {
         grid-template-columns: repeat(2, 1fr);
       }
     }
@@ -666,26 +790,28 @@
     @media (max-width: 850px) {
       .grid5,
       .ferias-controle,
-      .pesquisa-area {
+      .pesquisa-area,
+      .dashboard-geral,
+      .dashboard-colaboradores,
+      .historico-lista {
         grid-template-columns: 1fr;
       }
 
       .topo,
       .tabela-topo,
-      .resumo-topo {
+      .resumo-topo,
+      .historico-topo {
         flex-direction: column;
         align-items: stretch;
       }
 
-      .tabela-botoes {
+      .tabela-botoes,
+      .historico-acoes {
         flex-direction: column;
       }
-    }
 
-    @media (max-width: 650px) {
-      .dashboard-geral,
-      .dashboard-colaboradores {
-        grid-template-columns: 1fr;
+      .historico-card {
+        flex-direction: column;
       }
     }
   </style>
@@ -696,7 +822,17 @@
     <div class="login-card">
       <h2>Acesso Admin</h2>
       <p>Informe a senha para acessar a tela administrativa.</p>
-      <input id="senhaAdmin" type="password" placeholder="Digite a senha" autocomplete="current-password" />
+
+      <div class="senha-wrap">
+        <input id="senhaAdmin" type="password" placeholder="Digite a senha" autocomplete="current-password" />
+        <button id="btnMostrarSenha" class="btn-olho" type="button" title="Mostrar senha">👁️</button>
+      </div>
+
+      <label class="lembrar-senha">
+        <input id="salvarSenhaAdmin" type="checkbox">
+        Salvar senha neste navegador
+      </label>
+
       <button id="btnEntrarAdmin" class="btn-primario" type="button">Entrar</button>
       <div id="erroLogin" class="erro-login"></div>
     </div>
@@ -706,33 +842,44 @@
     <div class="topo">
       <div>
         <h1 contenteditable="true" id="tituloPagina">Admin - Escala de Plantão NOC</h1>
-        <div class="subtitulo">Monte, confira, salve automaticamente e publique a escala de plantão</div>
+        <div class="subtitulo">Monte, confira, salve por mês e gerencie o histórico de escalas</div>
       </div>
 
       <div class="acoes">
         <div class="grupo-acoes">
           <button id="btnGerar" class="btn-primario" type="button">Gerar escala</button>
           <button id="btnNovaEscala" class="btn-secundario" type="button">Nova escala</button>
-          <button id="btnPublicar" class="btn-publicar" type="button">Publicar escala</button>
-          <button id="btnDespublicar" class="btn-perigo" type="button">Despublicar escala</button>
+          <button id="btnSalvarMes" class="btn-publicar" type="button">Salvar escala do mês</button>
+          <button id="btnPublicarAtual" class="btn-verde" type="button">Publicar como atual agora</button>
+          <button id="btnDespublicar" class="btn-perigo" type="button">Despublicar atual</button>
+        </div>
+
+        <div class="grupo-acoes">
           <button id="btnFeriados" class="btn-secundario" type="button">Buscar feriados nacionais</button>
           <button id="btnVerificar" class="btn-secundario" type="button">Verificar escala</button>
           <button id="btnProximo" class="btn-secundario" type="button">Próximo plantão</button>
         </div>
 
         <div class="grupo-acoes">
-          <button id="btnCarregarPublicado" class="btn-secundario" type="button">Carregar escala publicada</button>
+          <button id="btnCarregarAtual" class="btn-secundario" type="button">Carregar atual manual</button>
           <button id="btnCarregar" class="btn-secundario" type="button">Carregar rascunho</button>
+          <button id="btnHistorico" class="btn-secundario" type="button">Atualizar histórico</button>
         </div>
 
         <div class="grupo-acoes">
           <button id="btnExportarCsv" class="btn-secundario" type="button">Exportar CSV</button>
-          <button id="btnLimpar" class="btn-secundario" type="button">Limpar</button>
+          <button id="btnLimpar" class="btn-secundario" type="button">Limpar tela</button>
         </div>
       </div>
     </div>
 
     <input id="escalaId" type="hidden">
+
+    <div class="nota-forte">
+      <strong>Nova regra:</strong> ao salvar a escala do mês, ela fica gravada como <strong>noc-ANO-MM</strong>.
+      A tela dos plantonistas carrega automaticamente a escala do mês atual.
+      Use <strong>Publicar como atual agora</strong> apenas se precisar forçar uma escala imediatamente.
+    </div>
 
     <div class="grid5">
       <div class="campo">
@@ -796,6 +943,21 @@
 
     <div id="resultadoPesquisa" class="resultado-pesquisa">Digite algo para localizar um plantão.</div>
     <div id="aviso" class="aviso"></div>
+
+    <div class="historico">
+      <div class="historico-topo">
+        <div>
+          <h2>Histórico de escalas salvas</h2>
+          <p>Abra escalas antigas, edite e salve novamente. A escala só aparece para os plantonistas quando chegar o mês correspondente.</p>
+        </div>
+
+        <button id="btnAtualizarHistorico2" class="btn-secundario" type="button">Atualizar histórico</button>
+      </div>
+
+      <div id="historicoLista" class="historico-lista">
+        <div class="vazio">Carregando histórico...</div>
+      </div>
+    </div>
 
     <div class="legenda">
       <div class="legenda-item"><span class="cor cor-util"></span> Dia útil</div>
@@ -870,6 +1032,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       const SENHA_ADMIN = 'noc@2026';
       const LOGIN_KEY = 'adminNocAutenticado';
+      const SENHA_SALVA_KEY = 'senhaAdminNocSalva';
 
       const colaboradores = ['André', 'Bruno', 'Emanuel', 'Guilherme', 'João'];
       const colaboradoresSemana = ['André', 'Bruno', 'Emanuel', 'Guilherme'];
@@ -897,17 +1060,54 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         }
       }
 
+      function carregarSenhaSalva() {
+        const senhaSalva = localStorage.getItem(SENHA_SALVA_KEY);
+
+        if (senhaSalva) {
+          $('senhaAdmin').value = senhaSalva;
+          $('salvarSenhaAdmin').checked = true;
+        }
+      }
+
+      function alternarMostrarSenha() {
+        const input = $('senhaAdmin');
+        const botao = $('btnMostrarSenha');
+
+        if (input.type === 'password') {
+          input.type = 'text';
+          botao.innerText = '🙈';
+          botao.title = 'Ocultar senha';
+        } else {
+          input.type = 'password';
+          botao.innerText = '👁️';
+          botao.title = 'Mostrar senha';
+        }
+      }
+
       function entrarAdmin() {
         const senha = $('senhaAdmin').value;
+        const salvarSenha = $('salvarSenhaAdmin').checked;
 
         if (senha === SENHA_ADMIN) {
           sessionStorage.setItem(LOGIN_KEY, 'sim');
+
+          if (salvarSenha) {
+            localStorage.setItem(SENHA_SALVA_KEY, senha);
+          } else {
+            localStorage.removeItem(SENHA_SALVA_KEY);
+          }
+
           liberarAdmin();
+          carregarHistorico();
           return;
         }
 
         $('erroLogin').innerText = 'Senha incorreta.';
-        $('senhaAdmin').value = '';
+
+        if (!salvarSenha) {
+          $('senhaAdmin').value = '';
+        }
+
         $('senhaAdmin').focus();
       }
 
@@ -918,16 +1118,6 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           .replaceAll('>', '&gt;')
           .replaceAll('"', '&quot;')
           .replaceAll("'", '&#039;');
-      }
-
-      function criarSlug(texto) {
-        return String(texto || '')
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-+|-+$/g, '')
-          .slice(0, 60);
       }
 
       function telefoneNoc() {
@@ -1028,12 +1218,11 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         return nome;
       }
 
-      function gerarIdEscala(dados) {
+      function gerarIdEscalaMensal(dados) {
         const ano = dados.ano;
         const mes = String(Number(dados.mesNumero) + 1).padStart(2, '0');
-        const slug = criarSlug(dados.nomeEscala || `${dados.mes}-${dados.ano}`);
 
-        return `noc-${ano}-${mes}-${slug}`;
+        return `noc-${ano}-${mes}`;
       }
 
       function escolherPlantonista(diaSemana, dataBr, contagem, ultimoPorSemana, ultimoPlantonista, feriado) {
@@ -1097,7 +1286,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       async function gerarEscala() {
         if (bodyTabela().rows.length) {
-          const confirmar = confirm('Gerar uma nova escala vai apagar a tabela atual. Deseja continuar?');
+          const confirmar = confirm('Gerar uma nova escala vai limpar somente a tabela atual da tela. O histórico salvo no Supabase não será apagado. Deseja continuar?');
           if (!confirmar) return;
         }
 
@@ -1142,7 +1331,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       function novaEscala() {
-        const confirmar = confirm('Deseja iniciar uma nova escala? Isso limpa a tabela atual e cria um novo vínculo de publicação.');
+        const confirmar = confirm('Deseja iniciar uma nova escala na tela? O histórico salvo no Supabase não será apagado.');
 
         if (!confirmar) return;
 
@@ -1154,7 +1343,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         limparAviso();
         salvarAutomatico();
 
-        alert('Nova escala iniciada. Gere a tabela e depois publique.');
+        alert('Nova escala iniciada. Gere a tabela e salve a escala do mês.');
       }
 
       function adicionarTextoObservacao(linha, texto) {
@@ -1295,30 +1484,11 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         });
 
         $('dashboardGeral').innerHTML = `
-          <div class="card-geral">
-            <small>Total de dias</small>
-            <strong>${geral.total}</strong>
-          </div>
-
-          <div class="card-geral">
-            <small>Dias úteis</small>
-            <strong>${geral.uteis}</strong>
-          </div>
-
-          <div class="card-geral">
-            <small>Finais de semana</small>
-            <strong>${geral.finaisSemana}</strong>
-          </div>
-
-          <div class="card-geral">
-            <small>Feriados</small>
-            <strong>${geral.feriados}</strong>
-          </div>
-
-          <div class="card-geral">
-            <small>Sem plantonista</small>
-            <strong>${geral.semPlantonista}</strong>
-          </div>
+          <div class="card-geral"><small>Total de dias</small><strong>${geral.total}</strong></div>
+          <div class="card-geral"><small>Dias úteis</small><strong>${geral.uteis}</strong></div>
+          <div class="card-geral"><small>Finais de semana</small><strong>${geral.finaisSemana}</strong></div>
+          <div class="card-geral"><small>Feriados</small><strong>${geral.feriados}</strong></div>
+          <div class="card-geral"><small>Sem plantonista</small><strong>${geral.semPlantonista}</strong></div>
         `;
 
         $('resumo').innerHTML = colaboradores.map((nome) => {
@@ -1535,9 +1705,13 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       function preencherSelects() {
+        const hoje = new Date();
+
         $('mes').innerHTML = meses
-          .map((nome, index) => `<option value="${index}" ${index === 4 ? 'selected' : ''}>${nome}</option>`)
+          .map((nome, index) => `<option value="${index}" ${index === hoje.getMonth() ? 'selected' : ''}>${nome}</option>`)
           .join('');
+
+        $('ano').value = hoje.getFullYear();
 
         $('feriasColaborador').innerHTML = '<option value="">Selecione</option>' + colaboradores
           .map((nome) => `<option value="${escapeHtml(nome)}">${escapeHtml(nome)}</option>`)
@@ -1607,8 +1781,8 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       function montarDadosEscala() {
-        return {
-          versao: 10,
+        const dados = {
+          versao: 11,
           atualizadoEm: new Date().toISOString(),
           escalaId: $('escalaId').value.trim(),
           nomeEscala: garantirNomeEscala(),
@@ -1631,6 +1805,11 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
             observacao: linha.cells[6]?.innerText.trim() || ''
           }))
         };
+
+        dados.escalaId = gerarIdEscalaMensal(dados);
+        $('escalaId').value = dados.escalaId;
+
+        return dados;
       }
 
       function carregarDadosEscala(dados) {
@@ -1680,8 +1859,8 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         alert('Rascunho carregado.');
       }
 
-      async function carregarEscalaPublicada() {
-        const confirmar = confirm('Deseja carregar a escala publicada atual? Isso vai substituir a tabela atual da tela Admin.');
+      async function carregarEscalaAtualManual() {
+        const confirmar = confirm('Deseja carregar a escala atual manual? Isso vai substituir a tabela atual da tela Admin.');
 
         if (!confirmar) return;
 
@@ -1690,101 +1869,240 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
             .from('escalas')
             .select('dados')
             .eq('id', 'noc-atual')
-            .single();
+            .maybeSingle();
 
           if (error) {
             console.error(error);
-            alert('Não foi possível carregar a escala publicada.');
+            alert('Não foi possível carregar a escala atual manual.');
             return;
           }
 
           if (!data || !data.dados) {
-            alert('Nenhuma escala publicada encontrada.');
+            alert('Nenhuma escala atual manual encontrada.');
             return;
           }
 
           carregarDadosEscala(data.dados);
           salvarAutomatico();
 
-          alert('Escala publicada carregada. Agora você pode editar e publicar novamente.');
+          alert('Escala atual manual carregada.');
         } catch (erro) {
           console.error(erro);
-          alert('Erro inesperado ao carregar a escala publicada.');
+          alert('Erro inesperado ao carregar a escala atual manual.');
         }
       }
 
-      async function publicarEscala() {
+      async function salvarEscalaDoMes(mostrarMensagem = true) {
         const dados = montarDadosEscala();
 
         if (!dados.linhas.length) {
-          alert('Gere a escala antes de publicar.');
-          return;
+          alert('Gere a escala antes de salvar.');
+          return null;
         }
 
-        const confirmar = confirm('Deseja publicar esta escala para os plantonistas?');
+        dados.atualizadoEm = new Date().toISOString();
+
+        const idEscala = gerarIdEscalaMensal(dados);
+        dados.escalaId = idEscala;
+        $('escalaId').value = idEscala;
+
+        const agora = new Date().toISOString();
+
+        const registro = {
+          id: idEscala,
+          nome: dados.nomeEscala,
+          dados: dados,
+          atualizado_em: agora
+        };
+
+        const { error } = await supabase
+          .from('escalas')
+          .upsert(registro, {
+            onConflict: 'id'
+          });
+
+        if (error) {
+          console.error(error);
+          alert('Erro ao salvar a escala do mês. Verifique as políticas do Supabase.');
+          return null;
+        }
+
+        salvarAutomatico();
+        await carregarHistorico();
+
+        if (mostrarMensagem) {
+          alert(
+            `Escala do mês salva com sucesso.\n\nID: ${idEscala}\n\nEla aparecerá automaticamente para os plantonistas quando chegar esse mês.`
+          );
+        }
+
+        return {
+          id: idEscala,
+          dados: dados,
+          atualizadoEm: agora
+        };
+      }
+
+      async function publicarComoAtualAgora() {
+        const confirmar = confirm(
+          'Deseja publicar esta escala como atual agora?\n\nUse isso apenas se precisar forçar a visualização imediata para os plantonistas.'
+        );
 
         if (!confirmar) return;
 
+        const salvo = await salvarEscalaDoMes(false);
+
+        if (!salvo) return;
+
+        const { error } = await supabase
+          .from('escalas')
+          .upsert({
+            id: 'noc-atual',
+            nome: salvo.dados.nomeEscala,
+            dados: salvo.dados,
+            atualizado_em: new Date().toISOString()
+          }, {
+            onConflict: 'id'
+          });
+
+        if (error) {
+          console.error(error);
+          alert('Erro ao publicar como atual agora. Verifique as políticas do Supabase.');
+          return;
+        }
+
+        await carregarHistorico();
+
+        alert('Escala publicada como atual agora.');
+      }
+
+      async function publicarHistoricoComoAtual(id) {
+        const confirmar = confirm('Deseja publicar esta escala do histórico como atual agora?');
+
+        if (!confirmar) return;
+
+        const { data, error } = await supabase
+          .from('escalas')
+          .select('dados, nome')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (error || !data || !data.dados) {
+          console.error(error);
+          alert('Não foi possível carregar a escala do histórico.');
+          return;
+        }
+
+        const { error: erroPublicar } = await supabase
+          .from('escalas')
+          .upsert({
+            id: 'noc-atual',
+            nome: data.nome || data.dados.nomeEscala || id,
+            dados: data.dados,
+            atualizado_em: new Date().toISOString()
+          }, {
+            onConflict: 'id'
+          });
+
+        if (erroPublicar) {
+          console.error(erroPublicar);
+          alert('Erro ao publicar a escala como atual.');
+          return;
+        }
+
+        await carregarHistorico();
+
+        alert('Escala publicada como atual agora.');
+      }
+
+      async function abrirEscalaHistorico(id) {
+        const confirmar = confirm('Deseja abrir esta escala na tela de edição?');
+
+        if (!confirmar) return;
+
+        const { data, error } = await supabase
+          .from('escalas')
+          .select('dados')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (error || !data || !data.dados) {
+          console.error(error);
+          alert('Não foi possível abrir a escala.');
+          return;
+        }
+
+        carregarDadosEscala(data.dados);
+        salvarAutomatico();
+
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+
+      async function carregarHistorico() {
         try {
-          dados.atualizadoEm = new Date().toISOString();
+          $('historicoLista').innerHTML = '<div class="vazio">Carregando histórico...</div>';
 
-          let idEscala = dados.escalaId;
-
-          if (!idEscala) {
-            idEscala = gerarIdEscala(dados);
-            dados.escalaId = idEscala;
-            $('escalaId').value = idEscala;
-          }
-
-          const agora = new Date().toISOString();
-
-          const registros = [
-            {
-              id: 'noc-atual',
-              nome: dados.nomeEscala,
-              dados: dados,
-              atualizado_em: agora
-            },
-            {
-              id: idEscala,
-              nome: dados.nomeEscala,
-              dados: dados,
-              atualizado_em: agora
-            }
-          ];
-
-          const { error } = await supabase
+          const { data, error } = await supabase
             .from('escalas')
-            .upsert(registros, {
-              onConflict: 'id'
+            .select('id, nome, dados, atualizado_em')
+            .like('id', 'noc-%')
+            .order('atualizado_em', {
+              ascending: false
             });
 
           if (error) {
             console.error(error);
-            alert('Erro ao publicar a escala. Verifique as políticas do Supabase.');
+            $('historicoLista').innerHTML = '<div class="vazio">Não foi possível carregar o histórico.</div>';
             return;
           }
 
-          salvarAutomatico();
+          const registros = (data || []).filter((item) => item.id !== 'noc-atual');
 
-          alert(
-            `Escala publicada com sucesso.\n\nNome: ${dados.nomeEscala}\nID: ${idEscala}\n\nSe você editar e publicar novamente, essa mesma escala será atualizada.`
-          );
+          if (!registros.length) {
+            $('historicoLista').innerHTML = '<div class="vazio">Nenhuma escala salva ainda.</div>';
+            return;
+          }
+
+          $('historicoLista').innerHTML = registros.map((item) => {
+            const dados = item.dados || {};
+            const nome = item.nome || dados.nomeEscala || item.id;
+            const mesAno = `${dados.mes || '-'} / ${dados.ano || '-'}`;
+            const atualizado = item.atualizado_em ? new Date(item.atualizado_em).toLocaleString('pt-BR') : '-';
+
+            return `
+              <div class="historico-card">
+                <div class="historico-info">
+                  <strong>${escapeHtml(nome)}</strong>
+                  <span>ID: ${escapeHtml(item.id)}</span>
+                  <span>Mês/Ano: ${escapeHtml(mesAno)}</span>
+                  <span>Atualizado em: ${escapeHtml(atualizado)}</span>
+                </div>
+
+                <div class="historico-acoes">
+                  <button class="btn-secundario" type="button" data-abrir-historico="${escapeHtml(item.id)}">Abrir</button>
+                  <button class="btn-verde" type="button" data-publicar-historico="${escapeHtml(item.id)}">Publicar atual</button>
+                </div>
+              </div>
+            `;
+          }).join('');
         } catch (erro) {
           console.error(erro);
-          alert('Erro inesperado ao publicar a escala.');
+          $('historicoLista').innerHTML = '<div class="vazio">Erro inesperado ao carregar o histórico.</div>';
         }
       }
 
       async function despublicarEscala() {
         const confirmar = confirm(
-          'Tem certeza que deseja despublicar a escala?\n\nA tela dos plantonistas ficará sem escala publicada.\nO histórico não será apagado.'
+          'Tem certeza que deseja despublicar a escala atual manual?\n\nIsso remove apenas o registro noc-atual.\nAs escalas mensais salvas continuarão no histórico.'
         );
 
         if (!confirmar) return;
 
         const confirmarNovamente = confirm(
-          'Confirme novamente: deseja remover a escala atual da tela dos plantonistas?'
+          'Confirme novamente: deseja remover a escala atual manual?'
         );
 
         if (!confirmarNovamente) return;
@@ -1797,14 +2115,16 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
           if (error) {
             console.error(error);
-            alert('Erro ao despublicar a escala. Verifique as políticas do Supabase.');
+            alert('Erro ao despublicar a escala atual manual. Verifique as políticas do Supabase.');
             return;
           }
 
-          alert('Escala despublicada com sucesso. A tela dos plantonistas não mostrará mais a escala atual.');
+          await carregarHistorico();
+
+          alert('Escala atual manual despublicada com sucesso. O histórico mensal foi preservado.');
         } catch (erro) {
           console.error(erro);
-          alert('Erro inesperado ao despublicar a escala.');
+          alert('Erro inesperado ao despublicar a escala atual manual.');
         }
       }
 
@@ -1934,7 +2254,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       function limparTabela() {
-        if (!confirm('Tem certeza que deseja limpar a tabela?')) return;
+        if (!confirm('Tem certeza que deseja limpar a tabela da tela? O histórico salvo no Supabase não será apagado.')) return;
 
         bodyTabela().innerHTML = '';
         atualizarTudo();
@@ -1952,27 +2272,50 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       function ligarEventos() {
         $('btnEntrarAdmin').onclick = entrarAdmin;
+        $('btnMostrarSenha').onclick = alternarMostrarSenha;
 
         $('senhaAdmin').addEventListener('keydown', (event) => {
           if (event.key === 'Enter') entrarAdmin();
         });
 
+        $('salvarSenhaAdmin').addEventListener('change', () => {
+          if (!$('salvarSenhaAdmin').checked) {
+            localStorage.removeItem(SENHA_SALVA_KEY);
+          }
+        });
+
+        carregarSenhaSalva();
         verificarLoginSalvo();
+
+        if (sessionStorage.getItem(LOGIN_KEY) === 'sim') {
+          carregarHistorico();
+        }
 
         $('btnGerar').onclick = gerarEscala;
         $('btnNovaEscala').onclick = novaEscala;
-        $('btnPublicar').onclick = publicarEscala;
+        $('btnSalvarMes').onclick = () => salvarEscalaDoMes(true);
+        $('btnPublicarAtual').onclick = publicarComoAtualAgora;
         $('btnDespublicar').onclick = despublicarEscala;
         $('btnFeriados').onclick = () => buscarFeriadosNacionais(true);
         $('btnVerificar').onclick = verificarEscala;
         $('btnProximo').onclick = proximoPlantao;
         $('btnResumo').onclick = atualizarResumo;
-        $('btnCarregarPublicado').onclick = carregarEscalaPublicada;
+        $('btnCarregarAtual').onclick = carregarEscalaAtualManual;
         $('btnCarregar').onclick = carregarRascunho;
         $('btnExportarCsv').onclick = exportarCsv;
         $('btnAlternarTabela').onclick = alternarTabela;
         $('btnLimpar').onclick = limparTabela;
         $('btnAdicionarFerias').onclick = adicionarFerias;
+        $('btnHistorico').onclick = carregarHistorico;
+        $('btnAtualizarHistorico2').onclick = carregarHistorico;
+
+        $('historicoLista').onclick = (event) => {
+          const abrirId = event.target.getAttribute('data-abrir-historico');
+          const publicarId = event.target.getAttribute('data-publicar-historico');
+
+          if (abrirId) abrirEscalaHistorico(abrirId);
+          if (publicarId) publicarHistoricoComoAtual(publicarId);
+        };
 
         $('btnLimparPesquisa').onclick = () => {
           $('pesquisa').value = '';
