@@ -18,8 +18,9 @@
       color: #0f172a;
     }
 
-    .bloqueado {
-      display: none;
+    .bloqueado,
+    .oculto {
+      display: none !important;
     }
 
     .login-overlay {
@@ -118,7 +119,7 @@
     }
 
     .container {
-      max-width: 1320px;
+      max-width: 1280px;
       margin: 28px auto;
       background: #ffffff;
       padding: 24px;
@@ -128,13 +129,13 @@
     }
 
     .topo {
-      display: grid;
-      grid-template-columns: 310px 1fr;
-      gap: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
       border-bottom: 2px solid #bfdbfe;
       padding-bottom: 18px;
       margin-bottom: 18px;
-      align-items: start;
+      align-items: flex-start;
     }
 
     h1 {
@@ -188,58 +189,82 @@
       filter: brightness(0.96);
     }
 
-    .painel-acoes {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-    }
-
-    .barra-acoes {
+    .acoes-topo {
       display: flex;
       flex-wrap: wrap;
+      justify-content: flex-end;
       gap: 8px;
-      padding: 10px;
-      border: 1px solid #bfdbfe;
-      border-radius: 14px;
-      background: #eff6ff;
+      max-width: 760px;
     }
 
-    .barra-acoes button {
-      min-height: 42px;
-      white-space: nowrap;
-    }
-
-    .barra-secundaria {
-      background: #f8fafc;
-      border-color: #dbeafe;
-    }
-
-    .ajuda-acoes {
+    .etapas {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .etapa {
+      border: 1px solid #bfdbfe;
+      background: #f8fafc;
+      border-radius: 12px;
       padding: 10px;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .etapa strong {
+      display: block;
+      color: #1e3a8a;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .etapa.ativa {
+      background: #eff6ff;
+      border-color: #2563eb;
+      box-shadow: inset 0 0 0 1px #2563eb;
+    }
+
+    .bloco {
       border: 1px solid #bfdbfe;
       border-radius: 14px;
       background: #ffffff;
+      padding: 16px;
+      margin-bottom: 18px;
     }
 
-    .ajuda-item {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 9px 10px;
-      font-size: 12px;
+    .bloco-destaque {
+      background: #eff6ff;
+    }
+
+    .bloco-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .bloco-topo h2 {
+      margin: 0;
+      color: #1d4ed8;
+      font-size: 20px;
+    }
+
+    .bloco-topo p {
+      margin: 4px 0 0;
       color: #475569;
-      line-height: 1.3;
+      font-size: 13px;
+      line-height: 1.35;
     }
 
-    .ajuda-item strong {
-      display: block;
-      color: #1e3a8a;
-      font-size: 12px;
-      margin-bottom: 3px;
+    .acoes-bloco {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .grid5,
@@ -433,27 +458,6 @@
       background: #fecaca;
     }
 
-    .tabela-topo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-top: 14px;
-      margin-bottom: 10px;
-    }
-
-    .tabela-topo h2 {
-      margin: 0;
-      font-size: 18px;
-      color: #1d4ed8;
-    }
-
-    .tabela-botoes {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
     .tabela-wrapper {
       overflow-x: auto;
       border: 1px solid #93c5fd;
@@ -582,7 +586,8 @@
     }
 
     .resumo,
-    .historico {
+    .historico,
+    .finalizacao {
       margin-top: 20px;
       border: 1px solid #bfdbfe;
       border-radius: 14px;
@@ -591,7 +596,8 @@
     }
 
     .resumo-topo,
-    .historico-topo {
+    .historico-topo,
+    .finalizacao-topo {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -600,17 +606,20 @@
     }
 
     .resumo-topo h2,
-    .historico-topo h2 {
+    .historico-topo h2,
+    .finalizacao-topo h2 {
       margin: 0;
       font-size: 20px;
       color: #1d4ed8;
     }
 
     .resumo-topo p,
-    .historico-topo p {
+    .historico-topo p,
+    .finalizacao-topo p {
       margin: 4px 0 0;
       font-size: 13px;
       color: #475569;
+      line-height: 1.35;
     }
 
     .dashboard-geral {
@@ -795,6 +804,7 @@
       font-size: 13px;
       color: #475569;
       margin: 8px 0 16px;
+      line-height: 1.35;
     }
 
     .nota-forte {
@@ -805,23 +815,48 @@
       margin-bottom: 16px;
       color: #1e3a8a;
       font-size: 13px;
+      line-height: 1.35;
     }
 
-    @media (max-width: 1150px) {
-      .topo {
-        grid-template-columns: 1fr;
-      }
+    .caixa-ajuda-final {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
 
-      .ajuda-acoes {
-        grid-template-columns: 1fr;
-      }
+    .ajuda-final {
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    .ajuda-final strong {
+      display: block;
+      color: #1e3a8a;
+      margin-bottom: 4px;
     }
 
     @media (max-width: 1050px) {
+      .etapas,
       .dashboard-geral,
       .dashboard-colaboradores,
-      .historico-lista {
+      .historico-lista,
+      .caixa-ajuda-final {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .topo {
+        flex-direction: column;
+      }
+
+      .acoes-topo {
+        justify-content: flex-start;
+        max-width: none;
       }
     }
 
@@ -831,36 +866,43 @@
       .pesquisa-area,
       .dashboard-geral,
       .dashboard-colaboradores,
-      .historico-lista {
+      .historico-lista,
+      .etapas,
+      .caixa-ajuda-final {
         grid-template-columns: 1fr;
       }
 
-      .tabela-topo,
+      .bloco-topo,
       .resumo-topo,
-      .historico-topo {
+      .historico-topo,
+      .finalizacao-topo {
         flex-direction: column;
         align-items: stretch;
       }
 
-      .tabela-botoes,
-      .historico-acoes {
+      .acoes-bloco,
+      .historico-acoes,
+      .acoes-topo {
         flex-direction: column;
+      }
+
+      .acoes-topo button,
+      .acoes-bloco button,
+      .historico-acoes button {
+        width: 100%;
       }
 
       .historico-card {
         flex-direction: column;
       }
 
-      .barra-acoes {
-        flex-direction: column;
-      }
-
-      .barra-acoes button {
-        width: 100%;
-      }
-
       h1 {
         font-size: 25px;
+      }
+
+      .container {
+        margin: 0;
+        border-radius: 0;
       }
     }
   </style>
@@ -891,118 +933,220 @@
     <div class="topo">
       <div>
         <h1 contenteditable="true" id="tituloPagina">Admin - Escala de Plantão NOC</h1>
-        <div class="subtitulo">Monte, confira, salve por mês e gerencie o histórico de escalas</div>
+        <div class="subtitulo">Fluxo guiado: iniciar, configurar, gerar, conferir e salvar.</div>
       </div>
 
-      <div class="acoes painel-acoes">
-        <div class="barra-acoes">
-          <button id="btnGerar" class="btn-primario" type="button">Gerar escala</button>
-          <button id="btnNovaEscala" class="btn-secundario" type="button">Nova escala</button>
-          <button id="btnSalvarMes" class="btn-publicar" type="button">Salvar mês</button>
-          <button id="btnPublicarAtual" class="btn-verde" type="button">Forçar atual</button>
-          <button id="btnDespublicar" class="btn-perigo" type="button">Remover atual</button>
-        </div>
+      <div class="acoes-topo">
+        <button id="btnNovaEscala" class="btn-primario" type="button">Iniciar nova escala</button>
+        <button id="btnHistorico" class="btn-secundario" type="button">Atualizar histórico</button>
+        <button id="btnCarregar" class="btn-secundario" type="button">Carregar rascunho</button>
+        <button id="btnCarregarAtual" class="btn-secundario" type="button">Carregar atual manual</button>
+      </div>
+    </div>
 
-        <div class="barra-acoes barra-secundaria">
-          <button id="btnFeriados" class="btn-secundario" type="button">Buscar feriados</button>
-          <button id="btnVerificar" class="btn-secundario" type="button">Verificar</button>
-          <button id="btnProximo" class="btn-secundario" type="button">Próximo plantão</button>
-          <button id="btnCarregarAtual" class="btn-secundario" type="button">Carregar atual</button>
-          <button id="btnCarregar" class="btn-secundario" type="button">Carregar rascunho</button>
-          <button id="btnHistorico" class="btn-secundario" type="button">Histórico</button>
-          <button id="btnExportarCsv" class="btn-secundario" type="button">CSV</button>
-          <button id="btnLimpar" class="btn-secundario" type="button">Limpar tela</button>
-        </div>
+    <div class="etapas">
+      <div id="etapa1" class="etapa ativa">
+        <strong>1. Iniciar</strong>
+        Comece uma nova escala.
+      </div>
 
-        <div class="ajuda-acoes">
-          <div class="ajuda-item">
-            <strong>Salvar mês</strong>
-            Grava como noc-ANO-MM. Exemplo: noc-2026-06. Aparece automaticamente quando chegar o mês.
-          </div>
+      <div id="etapa2" class="etapa">
+        <strong>2. Configurar</strong>
+        Informe mês, ano, setor e férias.
+      </div>
 
-          <div class="ajuda-item">
-            <strong>Forçar atual</strong>
-            Use apenas se precisar mostrar essa escala imediatamente no user.html.
-          </div>
+      <div id="etapa3" class="etapa">
+        <strong>3. Gerar</strong>
+        Crie a tabela do mês.
+      </div>
 
-          <div class="ajuda-item">
-            <strong>Remover atual</strong>
-            Remove somente o noc-atual. Não apaga as escalas mensais salvas.
-          </div>
-        </div>
+      <div id="etapa4" class="etapa">
+        <strong>4. Conferir</strong>
+        Ajuste plantonistas e feriados.
+      </div>
+
+      <div id="etapa5" class="etapa">
+        <strong>5. Salvar</strong>
+        Grave a escala no Supabase.
       </div>
     </div>
 
     <input id="escalaId" type="hidden">
 
-    <div class="nota-forte">
-      <strong>Nova regra:</strong> ao salvar a escala do mês, ela fica gravada como <strong>noc-ANO-MM</strong>.
-      A tela dos plantonistas carrega automaticamente a escala do mês atual.
-      Use <strong>Forçar atual</strong> apenas se precisar mostrar uma escala imediatamente.
-    </div>
-
-    <div class="grid5">
-      <div class="campo">
-        <label>Nome da escala</label>
-        <input id="nomeEscala" type="text" value="Escala NOC">
-      </div>
-
-      <div class="campo">
-        <label>Mês</label>
-        <select id="mes"></select>
-      </div>
-
-      <div class="campo">
-        <label>Ano</label>
-        <input id="ano" type="number" value="2026">
-      </div>
-
-      <div class="campo">
-        <label>Setor</label>
-        <input id="setor" type="text" value="NOC">
-      </div>
-
-      <div class="campo">
-        <label>Telefone NOC</label>
-        <input id="telefone" type="text" value="98449-1917">
-      </div>
-    </div>
-
-    <div class="nota">
-      Ao clicar em <strong>Gerar escala</strong>, os feriados nacionais do mês serão marcados automaticamente.
-      Para feriados municipais, marque manualmente a coluna <strong>Feriado?</strong> na tabela.
-    </div>
-
     <div id="statusSalvamento" class="status-salvamento">Alterações salvas automaticamente.</div>
-
-    <div class="ferias-controle">
-      <div>
-        <label>Colaborador em férias</label>
-        <select id="feriasColaborador"></select>
-      </div>
-
-      <div>
-        <label>Início</label>
-        <input id="feriasInicio" type="date">
-      </div>
-
-      <div>
-        <label>Fim</label>
-        <input id="feriasFim" type="date">
-      </div>
-
-      <button id="btnAdicionarFerias" class="btn-secundario" type="button">Adicionar férias</button>
-    </div>
-
-    <div id="listaFerias" class="lista-ferias"></div>
-
-    <div class="pesquisa-area">
-      <input id="pesquisa" type="text" placeholder="Pesquisar por data, nome, dia, horário ou observação...">
-      <button id="btnLimparPesquisa" class="btn-secundario" type="button">Limpar pesquisa</button>
-    </div>
-
-    <div id="resultadoPesquisa" class="resultado-pesquisa">Digite algo para localizar um plantão.</div>
     <div id="aviso" class="aviso"></div>
+
+    <div id="painelConfiguracao" class="bloco bloco-destaque oculto">
+      <div class="bloco-topo">
+        <div>
+          <h2>Configuração da escala</h2>
+          <p>Configure o mês, ano, setor, telefone e férias antes de gerar a tabela.</p>
+        </div>
+
+        <div class="acoes-bloco">
+          <button id="btnGerar" class="btn-primario" type="button">Gerar tabela da escala</button>
+        </div>
+      </div>
+
+      <div class="grid5">
+        <div class="campo">
+          <label>Nome da escala</label>
+          <input id="nomeEscala" type="text" value="Escala NOC">
+        </div>
+
+        <div class="campo">
+          <label>Mês</label>
+          <select id="mes"></select>
+        </div>
+
+        <div class="campo">
+          <label>Ano</label>
+          <input id="ano" type="number" value="2026">
+        </div>
+
+        <div class="campo">
+          <label>Setor</label>
+          <input id="setor" type="text" value="NOC">
+        </div>
+
+        <div class="campo">
+          <label>Telefone NOC</label>
+          <input id="telefone" type="text" value="98449-1917">
+        </div>
+      </div>
+
+      <div class="nota">
+        Ao clicar em <strong>Gerar tabela da escala</strong>, os feriados nacionais do mês serão marcados automaticamente.
+        Para feriados municipais, depois marque manualmente a coluna <strong>Feriado?</strong> na tabela.
+      </div>
+
+      <div class="ferias-controle">
+        <div>
+          <label>Colaborador em férias</label>
+          <select id="feriasColaborador"></select>
+        </div>
+
+        <div>
+          <label>Início</label>
+          <input id="feriasInicio" type="date">
+        </div>
+
+        <div>
+          <label>Fim</label>
+          <input id="feriasFim" type="date">
+        </div>
+
+        <button id="btnAdicionarFerias" class="btn-secundario" type="button">Adicionar férias</button>
+      </div>
+
+      <div id="listaFerias" class="lista-ferias"></div>
+    </div>
+
+    <div id="painelTabela" class="oculto">
+      <div class="bloco">
+        <div class="bloco-topo">
+          <div>
+            <h2>Conferência da escala</h2>
+            <p>Revise a tabela, ajuste plantonistas, marque feriados municipais e verifique possíveis conflitos.</p>
+          </div>
+
+          <div class="acoes-bloco">
+            <button id="btnFeriados" class="btn-secundario" type="button">Buscar feriados</button>
+            <button id="btnVerificar" class="btn-secundario" type="button">Verificar problemas</button>
+            <button id="btnProximo" class="btn-secundario" type="button">Próximo plantão</button>
+            <button id="btnAlternarTabela" class="btn-secundario" type="button">Minimizar tabela</button>
+          </div>
+        </div>
+
+        <div class="pesquisa-area">
+          <input id="pesquisa" type="text" placeholder="Pesquisar por data, nome, dia, horário ou observação...">
+          <button id="btnLimparPesquisa" class="btn-secundario" type="button">Limpar pesquisa</button>
+        </div>
+
+        <div id="resultadoPesquisa" class="resultado-pesquisa">Digite algo para localizar um plantão.</div>
+
+        <div class="legenda">
+          <div class="legenda-item"><span class="cor cor-util"></span> Dia útil</div>
+          <div class="legenda-item"><span class="cor cor-sabado"></span> Sábado</div>
+          <div class="legenda-item"><span class="cor cor-domingo"></span> Domingo/Feriado</div>
+          <div class="legenda-item"><span class="cor cor-ferias"></span> Férias</div>
+          <div class="legenda-item"><span class="cor cor-conflito"></span> Problema/conflito</div>
+        </div>
+
+        <div id="tabelaWrapper" class="tabela-wrapper">
+          <table id="tabela">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Semana</th>
+                <th>Feriado?</th>
+                <th>Plantonista</th>
+                <th>Horário</th>
+                <th>Telefone</th>
+                <th>Observação</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="obs">
+          <label>Observações gerais</label>
+          <textarea id="observacoes">REGRAS DE ESCALA:
+Segunda a sexta: 17:45 às 21:50
+Sábado: 12:00 às 19:00
+Domingo e feriados: 08:00 às 19:00
+João: fixo em todas as segundas-feiras, salvo férias.
+Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
+        </div>
+      </div>
+
+      <div class="resumo">
+        <div class="resumo-topo">
+          <div>
+            <h2>Dashboard da escala</h2>
+            <p>Distribuição dos plantões por colaborador e tipo de dia.</p>
+          </div>
+
+          <button id="btnResumo" class="btn-secundario" type="button">Atualizar resumo</button>
+        </div>
+
+        <div class="dashboard-geral" id="dashboardGeral"></div>
+
+        <h3 class="subtitulo-resumo">Plantões por colaborador</h3>
+        <div class="dashboard-colaboradores" id="resumo"></div>
+      </div>
+
+      <div class="finalizacao">
+        <div class="finalizacao-topo">
+          <div>
+            <h2>Finalizar escala</h2>
+            <p>Depois de conferir tudo, salve a escala do mês no Supabase.</p>
+          </div>
+
+          <div class="acoes-bloco">
+            <button id="btnSalvarMes" class="btn-publicar" type="button">Salvar escala do mês</button>
+            <button id="btnPublicarAtual" class="btn-verde" type="button">Forçar como atual agora</button>
+            <button id="btnExportarCsv" class="btn-secundario" type="button">Exportar CSV</button>
+            <button id="btnLimpar" class="btn-secundario" type="button">Limpar tela</button>
+            <button id="btnDespublicar" class="btn-perigo" type="button">Remover atual manual</button>
+          </div>
+        </div>
+
+        <div class="caixa-ajuda-final">
+          <div class="ajuda-final">
+            <strong>Salvar escala do mês</strong>
+            Grava como <strong>noc-ANO-MM</strong>. Exemplo: <strong>noc-2026-06</strong>.
+            Essa escala aparecerá automaticamente no user.html quando chegar o mês.
+          </div>
+
+          <div class="ajuda-final">
+            <strong>Forçar como atual agora</strong>
+            Também grava como <strong>noc-atual</strong>. Use somente se precisar mostrar a escala imediatamente aos plantonistas.
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="historico">
       <div class="historico-topo">
@@ -1017,65 +1161,6 @@
       <div id="historicoLista" class="historico-lista">
         <div class="vazio">Carregando histórico...</div>
       </div>
-    </div>
-
-    <div class="legenda">
-      <div class="legenda-item"><span class="cor cor-util"></span> Dia útil</div>
-      <div class="legenda-item"><span class="cor cor-sabado"></span> Sábado</div>
-      <div class="legenda-item"><span class="cor cor-domingo"></span> Domingo/Feriado</div>
-      <div class="legenda-item"><span class="cor cor-ferias"></span> Férias</div>
-      <div class="legenda-item"><span class="cor cor-conflito"></span> Problema/conflito</div>
-    </div>
-
-    <div class="tabela-topo">
-      <h2>Tabela da escala</h2>
-
-      <div class="tabela-botoes">
-        <button id="btnAlternarTabela" class="btn-secundario" type="button">Minimizar tabela</button>
-      </div>
-    </div>
-
-    <div id="tabelaWrapper" class="tabela-wrapper">
-      <table id="tabela">
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Semana</th>
-            <th>Feriado?</th>
-            <th>Plantonista</th>
-            <th>Horário</th>
-            <th>Telefone</th>
-            <th>Observação</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <div class="resumo">
-      <div class="resumo-topo">
-        <div>
-          <h2>Dashboard da escala</h2>
-          <p>Distribuição dos plantões por colaborador e tipo de dia.</p>
-        </div>
-
-        <button id="btnResumo" class="btn-secundario" type="button">Atualizar resumo</button>
-      </div>
-
-      <div class="dashboard-geral" id="dashboardGeral"></div>
-
-      <h3 class="subtitulo-resumo">Plantões por colaborador</h3>
-      <div class="dashboard-colaboradores" id="resumo"></div>
-    </div>
-
-    <div class="obs">
-      <label>Observações gerais</label>
-      <textarea id="observacoes">REGRAS DE ESCALA:
-Segunda a sexta: 17:45 às 21:50
-Sábado: 12:00 às 19:00
-Domingo e feriados: 08:00 às 19:00
-João: fixo em todas as segundas-feiras, salvo férias.
-Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
     </div>
   </div>
 
@@ -1285,6 +1370,23 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         return `noc-${ano}-${mes}`;
       }
 
+      function atualizarEtapas(etapa) {
+        ['etapa1', 'etapa2', 'etapa3', 'etapa4', 'etapa5'].forEach((id, index) => {
+          $(id).classList.toggle('ativa', index + 1 <= etapa);
+        });
+      }
+
+      function mostrarConfiguracao() {
+        $('painelConfiguracao').classList.remove('oculto');
+        atualizarEtapas(2);
+      }
+
+      function mostrarTabela() {
+        $('painelConfiguracao').classList.remove('oculto');
+        $('painelTabela').classList.remove('oculto');
+        atualizarEtapas(5);
+      }
+
       function escolherPlantonista(diaSemana, dataBr, contagem, ultimoPorSemana, ultimoPlantonista, feriado) {
         const nomeDia = nomesSemana[diaSemana];
 
@@ -1344,9 +1446,34 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         aplicarClasse(linha, diaSemana, feriado);
       }
 
+      function novaEscala() {
+        const temTabela = bodyTabela().rows.length > 0;
+
+        if (temTabela) {
+          const confirmar = confirm(
+            'Deseja iniciar uma nova escala?\n\nA tabela atual da tela será limpa, mas as escalas já salvas no Supabase continuarão no histórico.'
+          );
+
+          if (!confirmar) return;
+        }
+
+        $('escalaId').value = '';
+        $('nomeEscala').value = nomeEscalaPadrao();
+
+        bodyTabela().innerHTML = '';
+        $('painelTabela').classList.add('oculto');
+
+        atualizarTudo();
+        limparAviso();
+        salvarAutomatico();
+        mostrarConfiguracao();
+
+        alert('Nova escala iniciada. Configure mês, ano, setor, telefone e férias. Depois clique em Gerar tabela da escala.');
+      }
+
       async function gerarEscala() {
         if (bodyTabela().rows.length) {
-          const confirmar = confirm('Gerar uma nova escala vai limpar somente a tabela atual da tela. O histórico salvo no Supabase não será apagado. Deseja continuar?');
+          const confirmar = confirm('Gerar uma nova tabela vai limpar somente a tabela atual da tela. O histórico salvo no Supabase não será apagado. Deseja continuar?');
           if (!confirmar) return;
         }
 
@@ -1385,25 +1512,15 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
         await buscarFeriadosNacionais(false);
 
-        atualizarTudo();
-        limparAviso();
-        salvarAutomatico();
-      }
-
-      function novaEscala() {
-        const confirmar = confirm('Deseja iniciar uma nova escala na tela? O histórico salvo no Supabase não será apagado.');
-
-        if (!confirmar) return;
-
-        $('escalaId').value = '';
-        $('nomeEscala').value = nomeEscalaPadrao();
-
-        bodyTabela().innerHTML = '';
+        mostrarTabela();
         atualizarTudo();
         limparAviso();
         salvarAutomatico();
 
-        alert('Nova escala iniciada. Gere a tabela e salve a escala do mês.');
+        window.scrollTo({
+          top: $('painelTabela').offsetTop - 20,
+          behavior: 'smooth'
+        });
       }
 
       function adicionarTextoObservacao(linha, texto) {
@@ -1431,7 +1548,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
         if (!bodyTabela().rows.length) {
           if (mostrarAlerta) {
-            alert('Gere a escala antes de buscar os feriados.');
+            alert('Gere a tabela da escala antes de buscar os feriados.');
           }
 
           return;
@@ -1842,7 +1959,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       function montarDadosEscala() {
         const dados = {
-          versao: 11,
+          versao: 12,
           atualizadoEm: new Date().toISOString(),
           escalaId: $('escalaId').value.trim(),
           nomeEscala: garantirNomeEscala(),
@@ -1887,6 +2004,12 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
         bodyTabela().innerHTML = '';
         (dados.linhas || []).forEach(montarLinha);
+
+        if ((dados.linhas || []).length) {
+          mostrarTabela();
+        } else {
+          mostrarConfiguracao();
+        }
 
         atualizarTudo();
         limparAviso();
@@ -1956,7 +2079,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         const dados = montarDadosEscala();
 
         if (!dados.linhas.length) {
-          alert('Gere a escala antes de salvar.');
+          alert('Gere a tabela da escala antes de salvar.');
           return null;
         }
 
@@ -2156,7 +2279,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
       async function despublicarEscala() {
         const confirmar = confirm(
-          'Tem certeza que deseja despublicar a escala atual manual?\n\nIsso remove apenas o registro noc-atual.\nAs escalas mensais salvas continuarão no histórico.'
+          'Tem certeza que deseja remover a escala atual manual?\n\nIsso remove apenas o registro noc-atual.\nAs escalas mensais salvas continuarão no histórico.'
         );
 
         if (!confirmar) return;
@@ -2175,16 +2298,16 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
           if (error) {
             console.error(error);
-            alert('Erro ao despublicar a escala atual manual. Verifique as políticas do Supabase.');
+            alert('Erro ao remover a escala atual manual. Verifique as políticas do Supabase.');
             return;
           }
 
           await carregarHistorico();
 
-          alert('Escala atual manual despublicada com sucesso. O histórico mensal foi preservado.');
+          alert('Escala atual manual removida com sucesso. O histórico mensal foi preservado.');
         } catch (erro) {
           console.error(erro);
-          alert('Erro inesperado ao despublicar a escala atual manual.');
+          alert('Erro inesperado ao remover a escala atual manual.');
         }
       }
 
@@ -2317,9 +2440,11 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         if (!confirm('Tem certeza que deseja limpar a tabela da tela? O histórico salvo no Supabase não será apagado.')) return;
 
         bodyTabela().innerHTML = '';
+        $('painelTabela').classList.add('oculto');
         atualizarTudo();
         limparAviso();
         salvarAutomatico();
+        mostrarConfiguracao();
       }
 
       function alternarTabela() {
@@ -2351,8 +2476,8 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           carregarHistorico();
         }
 
-        $('btnGerar').onclick = gerarEscala;
         $('btnNovaEscala').onclick = novaEscala;
+        $('btnGerar').onclick = gerarEscala;
         $('btnSalvarMes').onclick = () => salvarEscalaDoMes(true);
         $('btnPublicarAtual').onclick = publicarComoAtualAgora;
         $('btnDespublicar').onclick = despublicarEscala;
