@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Admin - Escala de Plantão NOC</title>
+  <title>Admin - Escala de Plantão</title>
 
   <style>
     * {
@@ -136,6 +136,19 @@
       padding-bottom: 18px;
       margin-bottom: 18px;
       align-items: flex-start;
+    }
+
+    .marca-topo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-viatec {
+      width: 92px;
+      max-height: 58px;
+      object-fit: contain;
+      flex-shrink: 0;
     }
 
     h1 {
@@ -807,17 +820,6 @@
       line-height: 1.35;
     }
 
-    .nota-forte {
-      border: 1px solid #bfdbfe;
-      background: #eff6ff;
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 16px;
-      color: #1e3a8a;
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
     .caixa-ajuda-final {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -839,6 +841,10 @@
       display: block;
       color: #1e3a8a;
       margin-bottom: 4px;
+    }
+
+    .cabecalho-pdf {
+      display: none;
     }
 
     @media (max-width: 1050px) {
@@ -896,6 +902,14 @@
         flex-direction: column;
       }
 
+      .marca-topo {
+        align-items: flex-start;
+      }
+
+      .logo-viatec {
+        width: 76px;
+      }
+
       h1 {
         font-size: 25px;
       }
@@ -903,6 +917,161 @@
       .container {
         margin: 0;
         border-radius: 0;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .login-overlay,
+      .topo,
+      .etapas,
+      #painelConfiguracao,
+      .historico,
+      .finalizacao,
+      .acoes-bloco,
+      .pesquisa-area,
+      .resultado-pesquisa,
+      .legenda,
+      .status-salvamento,
+      .aviso {
+        display: none !important;
+      }
+
+      .container {
+        margin: 0;
+        max-width: none;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+      }
+
+      #painelTabela {
+        display: block !important;
+      }
+
+      .cabecalho-pdf {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #1d4ed8;
+        padding-bottom: 8px;
+        margin-bottom: 10px;
+      }
+
+      .cabecalho-pdf img {
+        width: 95px;
+        max-height: 55px;
+        object-fit: contain;
+      }
+
+      .cabecalho-pdf h2 {
+        margin: 0;
+        color: #1d4ed8;
+        font-size: 18px;
+      }
+
+      .cabecalho-pdf p {
+        margin: 3px 0 0;
+        font-size: 11px;
+        color: #334155;
+      }
+
+      .bloco,
+      .resumo {
+        border: none;
+        background: #ffffff;
+        padding: 0;
+        margin: 0 0 12px;
+      }
+
+      .bloco-topo {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .bloco-topo h2 {
+        display: none;
+      }
+
+      .bloco-topo p {
+        display: none;
+      }
+
+      .tabela-wrapper {
+        overflow: visible;
+        border: none;
+      }
+
+      table {
+        min-width: 0;
+        width: 100%;
+      }
+
+      th,
+      td {
+        font-size: 10px;
+        padding: 5px;
+      }
+
+      .whatsapp-icon {
+        display: none;
+      }
+
+      .whatsapp-link {
+        color: #000000;
+        font-weight: 700;
+      }
+
+      .obs {
+        margin-top: 10px;
+      }
+
+      .obs textarea {
+        border: none;
+        min-height: auto;
+        font-size: 11px;
+        padding: 0;
+      }
+
+      .resumo {
+        page-break-inside: avoid;
+      }
+
+      .resumo-topo h2 {
+        font-size: 14px;
+      }
+
+      .resumo-topo p {
+        display: none;
+      }
+
+      .dashboard-geral,
+      .dashboard-colaboradores {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+      }
+
+      .card-geral,
+      .card-colaborador {
+        padding: 6px;
+      }
+
+      .card-geral strong {
+        font-size: 16px;
+      }
+
+      .card-geral small,
+      .linha-metrica {
+        font-size: 10px;
+      }
+
+      @page {
+        size: A4 landscape;
+        margin: 10mm;
       }
     }
   </style>
@@ -931,9 +1100,12 @@
 
   <div id="conteudoAdmin" class="container bloqueado">
     <div class="topo">
-      <div>
-        <h1 contenteditable="true" id="tituloPagina">Admin - Escala de Plantão NOC</h1>
-        <div class="subtitulo">Fluxo guiado: iniciar, configurar, gerar, conferir e salvar.</div>
+      <div class="marca-topo">
+        <img class="logo-viatec" src="logo-viatec.png" alt="Logo ViaTec">
+        <div>
+          <h1 contenteditable="true" id="tituloPagina">Admin - Escala de Plantão</h1>
+          <div class="subtitulo">Fluxo guiado: iniciar, configurar, gerar, conferir e salvar.</div>
+        </div>
       </div>
 
       <div class="acoes-topo">
@@ -1043,6 +1215,14 @@
     </div>
 
     <div id="painelTabela" class="oculto">
+      <div class="cabecalho-pdf">
+        <img src="logo-viatec.png" alt="Logo ViaTec">
+        <div>
+          <h2 id="tituloPdf">Escala de Plantão</h2>
+          <p id="subtituloPdf">ViaTec Telecom</p>
+        </div>
+      </div>
+
       <div class="bloco">
         <div class="bloco-topo">
           <div>
@@ -1127,6 +1307,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           <div class="acoes-bloco">
             <button id="btnSalvarMes" class="btn-publicar" type="button">Salvar escala do mês</button>
             <button id="btnPublicarAtual" class="btn-verde" type="button">Forçar como atual agora</button>
+            <button id="btnBaixarPdf" class="btn-secundario" type="button">Baixar PDF</button>
             <button id="btnExportarCsv" class="btn-secundario" type="button">Exportar CSV</button>
             <button id="btnLimpar" class="btn-secundario" type="button">Limpar tela</button>
             <button id="btnDespublicar" class="btn-perigo" type="button">Remover atual manual</button>
@@ -1184,7 +1365,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       const colaboradoresFimSemana = ['André', 'Bruno', 'Emanuel', 'Guilherme', 'João'];
       const nomesSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
       const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-      const STORAGE_KEY = 'escalaPlantaoNocAdmin';
+      const STORAGE_KEY = 'escalaPlantaoAdmin';
 
       let ferias = [];
       let timerSalvamento = null;
@@ -1263,6 +1444,15 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           .replaceAll('>', '&gt;')
           .replaceAll('"', '&quot;')
           .replaceAll("'", '&#039;');
+      }
+
+      function textoParaId(valor) {
+        return String(valor || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '') || 'setor';
       }
 
       function telefoneNoc() {
@@ -1366,8 +1556,14 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       function gerarIdEscalaMensal(dados) {
         const ano = dados.ano;
         const mes = String(Number(dados.mesNumero) + 1).padStart(2, '0');
+        const setorId = textoParaId(dados.setor || 'NOC');
 
-        return `noc-${ano}-${mes}`;
+        return `${setorId}-${ano}-${mes}`;
+      }
+
+      function gerarIdEscalaAtual(dados) {
+        const setorId = textoParaId(dados.setor || 'NOC');
+        return `${setorId}-atual`;
       }
 
       function atualizarEtapas(etapa) {
@@ -1385,6 +1581,13 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         $('painelConfiguracao').classList.remove('oculto');
         $('painelTabela').classList.remove('oculto');
         atualizarEtapas(5);
+      }
+
+      function atualizarCabecalhoPdf() {
+        const dados = montarDadosEscala();
+
+        $('tituloPdf').innerText = dados.nomeEscala || 'Escala de Plantão';
+        $('subtituloPdf').innerText = `${dados.setor} - ${dados.mes}/${dados.ano}`;
       }
 
       function escolherPlantonista(diaSemana, dataBr, contagem, ultimoPorSemana, ultimoPlantonista, feriado) {
@@ -1514,6 +1717,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
         mostrarTabela();
         atualizarTudo();
+        atualizarCabecalhoPdf();
         limparAviso();
         salvarAutomatico();
 
@@ -1585,6 +1789,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           });
 
           atualizarTudo();
+          atualizarCabecalhoPdf();
           limparAviso();
           salvarAutomatico();
 
@@ -1844,6 +2049,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         if (select) validarColaborador(select);
 
         atualizarTudo();
+        atualizarCabecalhoPdf();
         limparAviso();
         salvarAutomatico();
       }
@@ -1945,6 +2151,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         });
 
         atualizarTudo();
+        atualizarCabecalhoPdf();
         limparAviso();
         salvarAutomatico();
       }
@@ -1953,13 +2160,14 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         ferias.splice(index, 1);
         atualizarListaFerias();
         atualizarTudo();
+        atualizarCabecalhoPdf();
         limparAviso();
         salvarAutomatico();
       }
 
       function montarDadosEscala() {
         const dados = {
-          versao: 12,
+          versao: 13,
           atualizadoEm: new Date().toISOString(),
           escalaId: $('escalaId').value.trim(),
           nomeEscala: garantirNomeEscala(),
@@ -1968,6 +2176,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           mes: meses[Number($('mes').value)],
           ano: Number($('ano').value),
           setor: $('setor').value.trim() || 'NOC',
+          setorId: textoParaId($('setor').value.trim() || 'NOC'),
           telefoneNoc: telefoneNoc(),
           whatsappNoc: whatsappNoc(),
           observacoes: $('observacoes').value,
@@ -1992,7 +2201,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       function carregarDadosEscala(dados) {
         $('escalaId').value = dados.escalaId || '';
         $('nomeEscala').value = dados.nomeEscala || nomeEscalaPadrao();
-        $('tituloPagina').innerText = dados.titulo || 'Admin - Escala de Plantão NOC';
+        $('tituloPagina').innerText = dados.titulo || 'Admin - Escala de Plantão';
         $('mes').value = String(dados.mesNumero ?? 0);
         $('ano').value = dados.ano || new Date().getFullYear();
         $('setor').value = dados.setor || 'NOC';
@@ -2012,6 +2221,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         }
 
         atualizarTudo();
+        atualizarCabecalhoPdf();
         limparAviso();
       }
 
@@ -2043,7 +2253,13 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       async function carregarEscalaAtualManual() {
-        const confirmar = confirm('Deseja carregar a escala atual manual? Isso vai substituir a tabela atual da tela Admin.');
+        const setor = $('setor')?.value?.trim() || 'NOC';
+        const setorId = textoParaId(setor);
+        const idAtual = `${setorId}-atual`;
+
+        const confirmar = confirm(
+          `Deseja carregar a escala atual manual deste setor?\n\nSetor: ${setor}\nID: ${idAtual}\n\nIsso vai substituir a tabela atual da tela Admin.`
+        );
 
         if (!confirmar) return;
 
@@ -2051,7 +2267,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           const { data, error } = await supabase
             .from('escalas')
             .select('dados')
-            .eq('id', 'noc-atual')
+            .eq('id', idAtual)
             .maybeSingle();
 
           if (error) {
@@ -2061,7 +2277,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           }
 
           if (!data || !data.dados) {
-            alert('Nenhuma escala atual manual encontrada.');
+            alert('Nenhuma escala atual manual encontrada para este setor.');
             return;
           }
 
@@ -2127,11 +2343,33 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       async function publicarComoAtualAgora() {
+        if (!bodyTabela().rows.length) {
+          alert('Gere a tabela da escala antes de forçar como atual.');
+          return;
+        }
+
+        const dados = montarDadosEscala();
+        const idEscala = gerarIdEscalaMensal(dados);
+        const idAtual = gerarIdEscalaAtual(dados);
+
         const confirmar = confirm(
-          'Deseja publicar esta escala como atual agora?\n\nUse isso apenas se precisar forçar a visualização imediata para os plantonistas.'
+          `ATENÇÃO!\n\nVocê está prestes a FORÇAR esta escala como atual agora.\n\n` +
+          `Escala: ${dados.nomeEscala}\n` +
+          `Setor: ${dados.setor}\n` +
+          `Mês/Ano: ${dados.mes}/${dados.ano}\n` +
+          `ID mensal: ${idEscala}\n` +
+          `ID atual manual: ${idAtual}\n\n` +
+          `Isso fará essa escala aparecer imediatamente no user.html deste setor, mesmo que ainda não seja o mês dela.\n\n` +
+          `Deseja continuar?`
         );
 
         if (!confirmar) return;
+
+        const confirmarNovamente = confirm(
+          'Confirme novamente:\n\nDeseja realmente substituir a escala atual manual por esta escala?'
+        );
+
+        if (!confirmarNovamente) return;
 
         const salvo = await salvarEscalaDoMes(false);
 
@@ -2140,7 +2378,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         const { error } = await supabase
           .from('escalas')
           .upsert({
-            id: 'noc-atual',
+            id: idAtual,
             nome: salvo.dados.nomeEscala,
             dados: salvo.dados,
             atualizado_em: new Date().toISOString()
@@ -2176,10 +2414,21 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           return;
         }
 
+        const idAtual = gerarIdEscalaAtual(data.dados);
+
+        const confirmarNovamente = confirm(
+          `Confirme a publicação manual:\n\n` +
+          `Escala: ${data.nome || data.dados.nomeEscala || id}\n` +
+          `ID atual manual: ${idAtual}\n\n` +
+          `Deseja realmente publicar como atual agora?`
+        );
+
+        if (!confirmarNovamente) return;
+
         const { error: erroPublicar } = await supabase
           .from('escalas')
           .upsert({
-            id: 'noc-atual',
+            id: idAtual,
             nome: data.nome || data.dados.nomeEscala || id,
             dados: data.dados,
             atualizado_em: new Date().toISOString()
@@ -2231,7 +2480,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           const { data, error } = await supabase
             .from('escalas')
             .select('id, nome, dados, atualizado_em')
-            .like('id', 'noc-%')
+            .like('id', '%-%')
             .order('atualizado_em', {
               ascending: false
             });
@@ -2242,7 +2491,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
             return;
           }
 
-          const registros = (data || []).filter((item) => item.id !== 'noc-atual');
+          const registros = (data || []).filter((item) => !item.id.endsWith('-atual'));
 
           if (!registros.length) {
             $('historicoLista').innerHTML = '<div class="vazio">Nenhuma escala salva ainda.</div>';
@@ -2253,12 +2502,14 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
             const dados = item.dados || {};
             const nome = item.nome || dados.nomeEscala || item.id;
             const mesAno = `${dados.mes || '-'} / ${dados.ano || '-'}`;
+            const setor = dados.setor || '-';
             const atualizado = item.atualizado_em ? new Date(item.atualizado_em).toLocaleString('pt-BR') : '-';
 
             return `
               <div class="historico-card">
                 <div class="historico-info">
                   <strong>${escapeHtml(nome)}</strong>
+                  <span>Setor: ${escapeHtml(setor)}</span>
                   <span>ID: ${escapeHtml(item.id)}</span>
                   <span>Mês/Ano: ${escapeHtml(mesAno)}</span>
                   <span>Atualizado em: ${escapeHtml(atualizado)}</span>
@@ -2278,8 +2529,14 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       }
 
       async function despublicarEscala() {
+        const dados = montarDadosEscala();
+        const idAtual = gerarIdEscalaAtual(dados);
+
         const confirmar = confirm(
-          'Tem certeza que deseja remover a escala atual manual?\n\nIsso remove apenas o registro noc-atual.\nAs escalas mensais salvas continuarão no histórico.'
+          `Tem certeza que deseja remover a escala atual manual?\n\n` +
+          `Setor: ${dados.setor}\n` +
+          `ID: ${idAtual}\n\n` +
+          `Isso remove apenas o registro atual manual.\nAs escalas mensais salvas continuarão no histórico.`
         );
 
         if (!confirmar) return;
@@ -2294,7 +2551,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           const { error } = await supabase
             .from('escalas')
             .delete()
-            .eq('id', 'noc-atual');
+            .eq('id', idAtual);
 
           if (error) {
             console.error(error);
@@ -2329,6 +2586,11 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
       function exportarCsv() {
         const dados = montarDadosEscala();
 
+        if (!dados.linhas.length) {
+          alert('Gere a tabela da escala antes de exportar CSV.');
+          return;
+        }
+
         const linhas = [['Data', 'Semana', 'Feriado', 'Plantonista', 'Horario', 'Telefone', 'Observacao']];
 
         dados.linhas.forEach((item) => {
@@ -2347,7 +2609,17 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           .map((linha) => linha.map((valor) => `"${String(valor).replaceAll('"', '""')}"`).join(';'))
           .join('\n');
 
-        baixarArquivo(`escala-plantao-noc-${dados.mes}-${dados.ano}.csv`, '\ufeff' + csv, 'text/csv;charset=utf-8');
+        baixarArquivo(`escala-plantao-${dados.setorId}-${dados.mes}-${dados.ano}.csv`, '\ufeff' + csv, 'text/csv;charset=utf-8');
+      }
+
+      function baixarPdf() {
+        if (!bodyTabela().rows.length) {
+          alert('Gere a tabela da escala antes de baixar o PDF.');
+          return;
+        }
+
+        atualizarCabecalhoPdf();
+        window.print();
       }
 
       function verificarEscala() {
@@ -2487,6 +2759,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
         $('btnResumo').onclick = atualizarResumo;
         $('btnCarregarAtual').onclick = carregarEscalaAtualManual;
         $('btnCarregar').onclick = carregarRascunho;
+        $('btnBaixarPdf').onclick = baixarPdf;
         $('btnExportarCsv').onclick = exportarCsv;
         $('btnAlternarTabela').onclick = alternarTabela;
         $('btnLimpar').onclick = limparTabela;
@@ -2515,12 +2788,20 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           });
 
           atualizarTudo();
+          atualizarCabecalhoPdf();
           salvarAutomatico();
         };
 
         ['nomeEscala', 'mes', 'ano', 'setor', 'observacoes'].forEach((id) => {
-          $(id).addEventListener('input', salvarAutomatico);
-          $(id).addEventListener('change', salvarAutomatico);
+          $(id).addEventListener('input', () => {
+            atualizarCabecalhoPdf();
+            salvarAutomatico();
+          });
+
+          $(id).addEventListener('change', () => {
+            atualizarCabecalhoPdf();
+            salvarAutomatico();
+          });
         });
 
         $('tituloPagina').addEventListener('input', salvarAutomatico);
@@ -2536,6 +2817,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
           if (event.target.classList.contains('colaborador')) {
             validarColaborador(event.target);
             atualizarTudo();
+            atualizarCabecalhoPdf();
             limparAviso();
             salvarAutomatico();
           }
@@ -2543,6 +2825,7 @@ Regra: nenhum plantonista pode ficar dois dias seguidos.</textarea>
 
         bodyTabela().addEventListener('input', () => {
           atualizarTudo();
+          atualizarCabecalhoPdf();
           salvarAutomatico();
         });
       }
