@@ -1074,6 +1074,416 @@
         margin: 10mm;
       }
     }
+
+    body { background:#f3f6fb; }
+    .container { max-width:1400px; }
+    .topo { align-items:center; }
+    .home-heading { display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap; }
+    .home-heading h2 { margin:0 0 6px;font-size:23px;color:#172554; }
+    .home-heading p { margin:0;color:#64748b;font-size:14px; }
+    .home-filter { display:flex;gap:10px;align-items:center;flex-wrap:wrap; }
+    .home-filter select { padding:10px;border:1px solid #cbd5e1;border-radius:10px;max-width:360px;background:white; }
+    .home-dashboard { padding:24px;margin:22px 0;border:1px solid #dbe4f0;border-radius:16px;background:#fff; }
+    .home-stats { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px; }
+    .home-stat { background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px; }
+    .home-stat small { display:block;color:#64748b;font-size:13px;margin-bottom:10px; }
+    .home-stat strong { display:block;color:#172554;font-size:28px; }
+    .home-stat span { display:block;margin-top:8px;font-size:12px;color:#64748b; }
+    .home-duty { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0 22px; }
+    .home-duty .home-stat { background:#eff6ff;border-color:#bfdbfe; }
+    .home-duty strong { font-size:22px; }
+    .home-table { width:100%;border-collapse:collapse;min-width:560px; }
+    .home-table th,.home-table td { padding:12px;text-align:left;border-bottom:1px solid #e2e8f0; }
+    .home-table th { background:#f8fafc;color:#64748b;font-size:12px; }
+    .home-table td { background:white;font-size:14px; }
+    .home-table td:first-child { font-weight:bold;color:#172554; }
+    .home-empty { padding:24px;color:#64748b;background:#f8fafc;border-radius:12px;margin-top:18px; }
+    .home-badge { display:inline-block;padding:5px 9px;border-radius:20px;background:#dbeafe;color:#1e40af;font-size:12px; }
+    .team-chips { display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px; }
+    .team-chips span { border:1px solid #dbe4f0;border-radius:9px;padding:9px 12px;background:#fff;font-size:13px; }
+    .team-chips .special { background:#eff6ff;border-color:#93c5fd; }
+    .creation-footer { display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:20px;padding-top:18px;border-top:1px solid #dbe4f0;flex-wrap:wrap; }
+    .creation-footer p { margin:0;color:#64748b;font-size:13px; }
+    .secondary-actions { margin:0; }
+    .secondary-actions summary,.history-fold summary { cursor:pointer;color:#1e40af;font-weight:bold;padding:12px; }
+    .secondary-actions[open] { padding-bottom:12px; }
+    .history-fold { margin-top:24px;border:1px solid #dbe4f0;border-radius:12px; }
+    .history-fold .historico { margin-top:0;border:0; }
+    .etapas { margin:18px 0; }
+    @media(max-width:760px){ .home-stats { grid-template-columns:1fr 1fr; } .home-duty { grid-template-columns:1fr; } .home-dashboard { padding:16px; } }
+    @media print { .home-dashboard,.history-fold,.secondary-actions { display:none!important; } }
+
+
+    .main-nav { display:flex;gap:8px;border-bottom:1px solid #e2e8f0;padding:0 0 14px;margin:20px 0; }
+    .main-nav button { padding:12px 20px;border:0;border-radius:9px;background:transparent;color:#64748b;font-size:14px;font-weight:bold;cursor:pointer; }
+    .main-nav button[aria-selected="true"] { background:#1d4ed8;color:white; }
+    .page-view[hidden],.wizard-panel[hidden],#painelTabela[hidden] { display:none!important; }
+    .wizard-steps { display:flex;gap:10px;margin:20px 0; }
+    .wizard-steps button { flex:1;text-align:left;padding:15px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;color:#64748b;cursor:pointer;font-size:13px; }
+    .wizard-steps button strong { display:block;font-size:15px;margin-bottom:5px; }
+    .wizard-steps button[aria-current="step"] { border-color:#2563eb;background:#eff6ff;color:#1e40af; }
+    .wizard-title { margin:0 0 6px;color:#172554; }
+    .wizard-description { color:#64748b;margin:0 0 22px;font-size:14px; }
+    #painelConfiguracao { background:white;border-color:#e2e8f0;padding:24px; }
+    #painelConfiguracao .grid5 { grid-template-columns:repeat(2,minmax(0,1fr));gap:18px; }
+    #painelConfiguracao .grid5 .campo:first-child { grid-column:1/-1; }
+    .team-chips span { display:flex;flex-direction:column;gap:5px;min-width:125px; }
+    .team-chips small { color:#64748b;font-size:11px; }
+    .rules-note { display:flex;gap:12px;flex-wrap:wrap;margin:20px 0;color:#475569;font-size:13px; }
+    .rules-note span { background:#f8fafc;padding:10px 12px;border-radius:8px; }
+    .creation-footer { justify-content:flex-end; }
+    .creation-footer [hidden] { display:none!important; }
+    #wizardBack { margin-right:auto; }
+    .history-fold { margin-top:0;border:0; }
+    .history-fold > summary { display:none; }
+    .history-fold .historico { background:white;padding:20px; }
+    .home-dashboard { margin-top:0; }
+    .secondary-actions { margin:0 0 15px;background:#f8fafc;border-radius:10px; }
+    @media(max-width:680px){ .main-nav button { flex:1;padding:10px; } .wizard-steps button { padding:10px;font-size:11px; } .wizard-steps button strong { font-size:13px; } #painelConfiguracao .grid5 { grid-template-columns:1fr; } #painelConfiguracao { padding:16px; } }
+    @media print { .main-nav,.wizard-steps,#wizardContext,.page-view[hidden] {display:none!important;} }
+
+
+    .home-dashboard { padding:24px; }
+    .home-heading h2 { font-size:25px; }
+    .live-section { padding-bottom:26px;border-bottom:1px solid #e2e8f0;margin-top:22px; }
+    .live-section .home-duty { margin:12px 0 8px; }
+    .live-heading { display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center; }
+    .live-heading h3 { margin:0;color:#172554;font-size:16px; }
+    .live-heading span,.live-source { font-size:12px;color:#64748b; }
+    .home-duty .home-stat:first-child { background:#ecfdf5;border-color:#a7f3d0; }
+    .home-duty .home-stat:first-child strong { color:#065f46; }
+    .home-duty .home-stat small { font-size:13px;font-weight:bold;color:#475569; }
+    .month-heading { display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;margin:26px 0 18px; }
+    .month-heading h3 { margin:0 0 5px;color:#172554;font-size:18px; }
+    .month-heading p { margin:0;font-size:13px;color:#64748b; }
+    .home-stats { margin-top:0; }
+    .home-stat strong { font-size:26px; }
+    .home-stats .home-stat:first-child { background:#eff6ff;border-color:#bfdbfe; }
+    .home-table { border:0!important; }
+    .home-table th,.home-table td { border:0!important;border-bottom:1px solid #e2e8f0!important;padding:14px 16px; }
+    .home-table tbody tr:last-child td { border-bottom:0!important; }
+    .home-table th:not(:first-child),.home-table td:not(:first-child) { text-align:right; }
+    .home-table th { font-weight:normal;background:#f8fafc; }
+    .home-table td:nth-child(2) { color:#1d4ed8;font-weight:bold; }
+    .home-table tbody tr:hover td { background:#f8fafc; }
+    .person-name { display:flex;align-items:center;gap:10px; }
+    .person-avatar { display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#eff6ff;color:#1d4ed8;font-size:12px; }
+    .home-table td:first-child small { display:block;margin:4px 0 0 40px;font-size:11px;color:#64748b;font-weight:normal; }
+    .month-footnote { font-size:12px;color:#64748b;margin:14px 0 0; }
+    .distribution-header { display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin:26px 0 12px; }
+    .distribution-header h3 { margin:0;font-size:16px;color:#172554; }
+    .distribution-header span { font-size:12px;color:#64748b; }
+
+
+    .home-dashboard { border:0;padding:6px 0;background:transparent; }
+    .home-heading h2 { font-size:22px; }
+    .live-heading h3 { display:none; }
+    .live-section { margin-top:12px;padding-bottom:24px;border-bottom:0; }
+    .home-duty { gap:20px!important; }
+    .home-duty .home-stat { background:white!important;border:1px solid #e2e8f0!important;border-radius:14px;padding:24px; }
+    .home-duty .home-stat:first-child { border-left:5px solid #10b981!important; }
+    .home-duty .home-stat:last-child { border-left:5px solid #3b82f6!important; }
+    .home-duty .home-stat strong { font-size:30px;margin:8px 0; }
+    .month-heading { margin:0;padding:22px 24px;background:white;border:1px solid #e2e8f0;border-bottom:0;border-radius:14px 14px 0 0; }
+    #homeContent { background:white;border:1px solid #e2e8f0;border-top:0;border-radius:0 0 14px 14px;padding:0 24px 24px; }
+    .month-summary { display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:16px 0 22px;border-top:1px solid #e2e8f0; }
+    .month-summary strong { color:#172554;font-size:30px; }
+    .month-summary span { color:#64748b;font-size:14px; }
+    .hours-cell { width:48%; }
+    .hours-number { display:flex;justify-content:space-between;gap:12px;align-items:center; }
+    .hours-track { height:5px;background:#eff6ff;border-radius:5px;overflow:hidden;margin-top:8px; }
+    .hours-track span { display:block;height:100%;background:#3b82f6;border-radius:5px; }
+    .home-table { min-width:440px; }
+    .home-table td:nth-child(2) { text-align:left; }
+    .metrics-detail { margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0; }
+    .metrics-detail summary { color:#475569;cursor:pointer;font-size:13px; }
+    .metrics-detail p { font-size:12px;color:#64748b; }
+    .metrics-detail .home-table { margin-top:12px; }
+    .home-stat span:empty { display:none; }
+    .live-source:empty { display:none; }
+    @media(max-width:680px){ #homeContent { padding:0 14px 18px; } .month-heading { padding:18px 14px; } .month-summary strong {font-size:25px;} }
+
+
+    /* Tipografia de sistema inspirada na interface da Apple. */
+    :root { --noc-font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI Variable","Segoe UI",Helvetica,Arial,sans-serif; }
+    body { font-family:var(--noc-font);font-size:15px;line-height:1.5;color:#1d1d1f;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale; }
+    button,input,select,textarea { font-family:var(--noc-font);font-size:14px;line-height:1.4; }
+    h1,h2,h3,p { font-family:var(--noc-font); }
+    h1 { font-weight:650;letter-spacing:-.035em;line-height:1.15; }
+    h2 { font-weight:650;letter-spacing:-.025em;line-height:1.25; }
+    h3 { font-weight:600;letter-spacing:-.015em;line-height:1.3; }
+    strong { font-weight:600; }
+    button,.main-nav button { font-weight:600;letter-spacing:-.01em; }
+    .marca-topo h1 { color:#1d1d1f;font-size:30px; }
+    .subtitulo { color:#6e6e73;font-size:14px;line-height:1.5;margin-top:6px; }
+    .home-heading h2 { color:#1d1d1f;font-size:26px;font-weight:650;letter-spacing:-.025em; }
+    .home-heading p,.wizard-description,.month-heading p { font-size:14px;line-height:1.55;color:#6e6e73; }
+    .home-duty .home-stat small { font-size:14px;font-weight:500;color:#6e6e73;letter-spacing:0; }
+    .home-duty .home-stat strong { font-size:34px;font-weight:600;letter-spacing:-.035em;line-height:1.15; }
+    .home-stat span { font-size:13px;line-height:1.5;color:#6e6e73; }
+    .month-heading h3 { font-size:22px;font-weight:600;letter-spacing:-.025em; }
+    .month-summary strong { font-size:32px;font-weight:600;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1.2; }
+    .month-summary span { font-size:14px;color:#6e6e73; }
+    .home-table th { font-size:13px;font-weight:500;text-transform:none;letter-spacing:0;color:#6e6e73; }
+    .home-table td { font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums; }
+    .home-table td:first-child { font-weight:500;color:#1d1d1f; }
+    .home-table td:nth-child(2) { font-weight:500; }
+    .campo label,.ferias-controle label { font-size:13px;font-weight:500;text-transform:none;letter-spacing:0;color:#6e6e73; }
+    input,select,textarea { color:#1d1d1f; }
+    .wizard-steps button strong { font-weight:600;font-size:15px;letter-spacing:-.01em; }
+    .wizard-steps button { font-weight:400;line-height:1.45; }
+    .wizard-title { color:#1d1d1f; }
+    .historico-info strong { font-size:15px;font-weight:600;letter-spacing:-.01em; }
+    .team-chips span { font-weight:500; }
+    .team-chips small { font-weight:400;line-height:1.4; }
+    .month-footnote,.live-source { font-size:12px;line-height:1.6;color:#6e6e73; }
+    @media(max-width:680px){ .marca-topo h1 {font-size:26px;} .home-heading h2 {font-size:23px;} .home-duty .home-stat strong {font-size:29px;} .month-summary strong {font-size:27px;} }
+
+    /* Área administrativa ocupa toda a janela, com margens internas. */
+    @media screen {
+      body { background:#ffffff; }
+      #conteudoAdmin.container { width:100%;max-width:none;min-height:100vh;margin:0;padding:28px 36px;border:0;border-radius:0;box-shadow:none; }
+    }
+    @media screen and (max-width:760px) {
+      #conteudoAdmin.container { padding:20px 16px; }
+    }
+    /* Plantões atuais em uma faixa discreta e compacta. */
+    .home-heading h2 { font-size:20px; }
+    .home-heading p { font-size:12px;margin-top:3px; }
+    .live-section { margin-top:10px;padding-bottom:16px; }
+    .live-heading { margin-bottom:8px; }
+    .live-heading span { font-size:11px; }
+    .home-duty { gap:12px!important;margin:8px 0!important; }
+    .home-duty .home-stat { display:grid;grid-template-columns:auto 1fr;column-gap:12px;row-gap:2px;align-items:center;padding:12px 16px;border-radius:10px;background:#fafbfc!important; }
+    .home-duty .home-stat:first-child,.home-duty .home-stat:last-child { border-left-width:3px!important; }
+    .home-duty .home-stat small { grid-row:1 / 3;margin:0;min-width:52px;font-size:12px;color:#86868b;font-weight:400; }
+    .home-duty .home-stat strong { margin:0;font-size:20px;line-height:1.25;font-weight:550;letter-spacing:-.02em;color:#1d1d1f!important; }
+    .home-duty .home-stat span { margin:0;font-size:11px;line-height:1.4;color:#86868b; }
+    .live-source { margin-top:6px;font-size:11px; }
+    @media(max-width:760px){ .home-duty { grid-template-columns:1fr;gap:8px!important; } .home-duty .home-stat { padding:11px 14px; } }
+
+    .topo { position:relative;justify-content:center;align-items:center;padding:22px 0 26px;border-bottom:1px solid #e5e5ea; }
+    .marca-topo { justify-content:center;align-items:center;gap:20px; }
+    .marca-topo .logo-viatec { width:155px;height:auto;max-height:88px;object-fit:contain; }
+    .marca-topo h1 { font-size:38px;font-weight:600;margin:0;letter-spacing:-.035em; }
+    .marca-topo .subtitulo { display:none; }
+    .acoes-topo { position:absolute;right:0; }
+    .acoes-topo button { font-size:12px;padding:9px 12px; }
+    .main-nav { justify-content:center;border-bottom:0;gap:6px;margin:20px 0 30px; }
+    .main-nav button { min-width:130px; }
+    .home-dashboard { max-width:1150px;margin:0 auto; }
+    .home-heading { display:none; }
+    .month-heading { border:0;background:transparent;padding:0 0 20px;border-radius:0; }
+    #homeContent { border:0;padding:0;background:transparent; }
+    .pie-layout { display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:stretch; }
+    .month-total { background:#f5f7fb;border:1px solid #e8edf5;border-radius:20px;padding:28px;display:flex;flex-direction:column; }
+    .month-total small { color:#6e6e73;font-size:14px; }
+    .month-total strong { font-size:42px;letter-spacing:-.045em;line-height:1.15;margin:18px 0 8px;font-weight:600;color:#1d1d1f;font-variant-numeric:tabular-nums; }
+    .month-total p { color:#6e6e73;font-size:14px;margin:0; }
+    .month-total .shift-note { margin-top:auto;padding-top:32px;border-top:1px solid #e2e8f0;font-size:12px;line-height:1.7; }
+    .pie-card { border:1px solid #e5e5ea;background:#fff;border-radius:20px;padding:26px; }
+    .pie-card h3 { font-size:19px;margin:0 0 5px;font-weight:600; }
+    .pie-card > p { color:#6e6e73;font-size:13px;margin:0 0 20px; }
+    .pie-body { display:grid;grid-template-columns:minmax(200px,280px) 1fr;align-items:center;gap:24px; }
+    .pie-svg { width:100%;height:auto;overflow:visible; }
+    .pie-slice { cursor:pointer;stroke:white;stroke-width:2;transition:opacity .15s ease;outline:none; }
+    .pie-svg:hover .pie-slice { opacity:.7; }
+    .pie-svg .pie-slice:hover,.pie-svg .pie-slice:focus { opacity:1;stroke:#1d1d1f;stroke-width:2; }
+    .pie-legend { display:flex;flex-direction:column;gap:7px; }
+    .pie-legend button { display:flex;align-items:center;gap:10px;text-align:left;border:0;background:transparent;border-radius:9px;padding:9px 10px;color:#1d1d1f;font-weight:400;cursor:pointer; }
+    .pie-legend button:hover,.pie-legend button:focus-visible { background:#f5f5f7;outline:2px solid #dbeafe; }
+    .pie-dot { width:11px;height:11px;border-radius:50%;flex-shrink:0; }
+    .pie-detail { min-height:48px;background:#f5f5f7;border-radius:10px;padding:12px 14px;font-size:13px;color:#6e6e73;margin-top:20px; }
+    .pie-detail strong { color:#1d1d1f;font-weight:600; }
+    .live-section { margin-top:24px; }
+    .live-heading { display:none; }
+    .metrics-detail { margin-top:24px; }
+    @media(max-width:1000px){ .acoes-topo {position:static;} .topo {flex-wrap:wrap;} .pie-layout {grid-template-columns:240px 1fr;} .pie-body {grid-template-columns:1fr;} .pie-svg {max-width:250px;margin:auto;} .pie-legend {display:grid;grid-template-columns:1fr 1fr;} }
+    @media(max-width:680px){ .marca-topo .logo-viatec {width:110px;} .marca-topo h1 {font-size:30px;} .marca-topo {gap:14px;} .pie-layout {grid-template-columns:1fr;} .month-total strong {font-size:36px;} .month-total .shift-note {padding-top:15px;margin-top:18px;} .pie-card {padding:20px;} .main-nav button {min-width:0;} }
+
+    /* Resumo mensal compacto acima do gráfico. */
+    .pie-layout { grid-template-columns:1fr;gap:18px; }
+    .month-total { display:grid;grid-template-columns:minmax(200px,1fr) auto;align-items:center;column-gap:28px;row-gap:4px;padding:18px 22px;background:#f8fafc;border-radius:12px; }
+    .month-total small { grid-column:1;font-size:13px; }
+    .month-total strong { grid-column:1;margin:2px 0;font-size:30px;line-height:1.15;letter-spacing:-.03em; }
+    .month-total p { grid-column:1;font-size:12px; }
+    .month-total .shift-note { grid-column:2;grid-row:1 / 5;margin:0;padding:0 0 0 24px;border-top:0;border-left:1px solid #e2e8f0;font-size:12px;line-height:1.8; }
+    .pie-body { grid-template-columns:minmax(220px,300px) 1fr;justify-content:center;max-width:660px;margin:0 auto; }
+    @media(max-width:680px){ .month-total { grid-template-columns:1fr;padding:16px 18px; } .month-total strong {font-size:28px;} .month-total .shift-note {grid-column:1;grid-row:auto;border-left:0;padding:10px 0 0;margin-top:6px;border-top:1px solid #e2e8f0;} .pie-body {grid-template-columns:1fr;} }
+    /* Navegação vertical à direita da área principal. */
+    @media screen and (min-width:901px) {
+      #conteudoAdmin.container { display:grid;grid-template-columns:minmax(0,1fr) 160px;column-gap:26px;align-items:start; }
+      #conteudoAdmin > .topo { grid-column:1 / -1; }
+      #conteudoAdmin > .main-nav { grid-column:2;grid-row:2;display:flex;flex-direction:column;align-items:stretch;gap:10px;margin:0;padding:0;border:0;position:sticky;top:24px; }
+      .main-nav button { width:100%;min-width:0;text-align:left;padding:13px 18px; }
+      #conteudoAdmin > .page-view { grid-column:1;grid-row:2;min-width:0; }
+      .home-dashboard { width:100%; }
+    }
+    @media screen and (max-width:900px) {
+      .main-nav { justify-content:flex-end;flex-direction:column;align-items:flex-end;gap:6px;margin:14px 0 20px; }
+      .main-nav button { width:150px;min-width:0;text-align:left; }
+    }
+    @media print { #conteudoAdmin.container {display:block;} }
+    /* Coluna de plantões à esquerda do resumo mensal. */
+    .home-dashboard { display:grid;grid-template-columns:240px minmax(0,1fr);column-gap:22px;row-gap:0;align-items:start;max-width:none; }
+    .home-dashboard > .month-heading { grid-column:1 / -1;grid-row:1; }
+    .home-dashboard > .live-section { grid-column:1;grid-row:2;margin:0;padding:0; }
+    .home-dashboard > #homeContent { grid-column:2;grid-row:2;min-width:0; }
+    .home-dashboard .home-duty { grid-template-columns:1fr;gap:12px!important;margin:0!important; }
+    .home-dashboard .home-duty .home-stat { padding:18px 16px;grid-template-columns:1fr;gap:5px; }
+    .home-dashboard .home-duty .home-stat small { grid-row:auto;min-width:0;font-size:12px; }
+    .home-dashboard .home-duty .home-stat strong { font-size:23px; }
+    .home-dashboard .home-duty .home-stat span { font-size:12px; }
+    .home-dashboard .live-source { margin-top:10px; }
+    @media(max-width:900px){
+      .home-dashboard {grid-template-columns:190px minmax(0,1fr);gap:16px;}
+      .month-total {grid-template-columns:1fr;}
+      .month-total .shift-note {grid-column:1;grid-row:auto;border-left:0;border-top:1px solid #e2e8f0;padding:10px 0 0;margin-top:8px;}
+    }
+    @media(max-width:680px){
+      .home-dashboard {display:flex;flex-direction:column;gap:18px;}
+      .home-dashboard > .month-heading {order:1;width:100%;padding-bottom:0;}
+      .home-dashboard > .live-section {order:2;width:100%;}
+      .home-dashboard > #homeContent {order:3;width:100%;}
+    }
+    /* Hoje e mais quatro plantões, alinhados ao painel mensal. */
+    @media(min-width:681px){
+      .home-dashboard .home-duty { min-height:var(--altura-plantoes,auto);grid-auto-rows:minmax(85px,1fr); }
+      .home-dashboard .home-duty .home-stat { align-content:center;padding:14px 16px; }
+    }
+    .home-dashboard .home-duty .home-stat:not(:first-child) { border-left:3px solid #d6e4ff!important; }
+    .home-dashboard .home-duty .home-stat:nth-child(2) { border-left-color:#3b82f6!important; }
+    .home-dashboard .home-duty .home-stat strong { font-size:21px; }
+    @media(max-width:680px){ .home-dashboard .home-duty {min-height:0;grid-auto-rows:auto;} }
+    /* Mesmas linhas: Hoje / horas; próximos plantões / pizza. */
+    @media(min-width:681px){
+      .home-dashboard .home-duty { gap:18px!important;grid-template-rows:var(--altura-resumo,110px) repeat(var(--quantidade-proximos,4),minmax(0,1fr));grid-auto-rows:auto;height:var(--altura-plantoes,auto);min-height:0; }
+      .home-dashboard .home-duty .home-stat { min-height:0; }
+    }
+    /* Detalhamento mensal com hierarquia e números alinhados. */
+    .metrics-detail {border:1px solid #e5e5ea;border-radius:14px;background:white;padding:0;overflow:hidden;}
+    .metrics-detail summary {padding:18px 20px;font-size:15px;font-weight:550;color:#1d1d1f;}
+    .metrics-detail summary small {margin-left:12px;font-size:12px;font-weight:400;color:#86868b;}
+    .metrics-table-wrap {overflow-x:auto;padding:0 8px;}
+    .metrics-detail .home-table {margin:0;width:100%;table-layout:auto;min-width:620px;}
+    .metrics-detail .home-table thead th {background:#f8fafc;padding:12px 16px;}
+    .metrics-detail .home-table th:first-child {text-align:left;width:25%;}
+    .metrics-detail .home-table th:not(:first-child),.metrics-detail .home-table td {text-align:right;}
+    .metrics-detail .home-table tbody th {background:white;font-size:14px;font-weight:500;color:#1d1d1f;padding:14px 16px;}
+    .metrics-detail .home-table td {font-size:14px;font-weight:400;color:#475569;padding:14px 16px;}
+    .metrics-detail .home-table tbody tr:nth-child(even) th,.metrics-detail .home-table tbody tr:nth-child(even) td {background:#fafbfc;}
+    .metrics-detail .home-table tbody tr:hover th,.metrics-detail .home-table tbody tr:hover td {background:#f1f5fb;}
+    .table-person {display:flex;align-items:center;gap:10px;}
+    .shift-count {display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:26px;border-radius:7px;background:#eff6ff;color:#1d4ed8;font-weight:500;}
+    .metrics-detail .home-table tfoot th,.metrics-detail .home-table tfoot td {background:#f5f7fb;font-weight:600;color:#1d1d1f;padding:15px 16px;border-top:1px solid #e2e8f0!important;}
+    .metrics-note {margin:0;padding:12px 20px;font-size:11px!important;color:#86868b!important;}
+    @media(max-width:680px){.metrics-detail summary small {display:block;margin:5px 0 0 15px;}}
+    /* Navegação lateral com botões alinhados e área de clique uniforme. */
+    #conteudoAdmin > .main-nav {gap:8px;padding:8px;background:#f7f8fa;border:1px solid #e8ebf0;border-radius:14px;box-sizing:border-box;}
+    #conteudoAdmin > .main-nav button {display:flex;align-items:center;justify-content:flex-start;width:100%;min-width:0;min-height:44px;margin:0;padding:12px 14px;border:1px solid transparent;border-radius:9px;font-size:13px;font-weight:500;line-height:1.3;text-align:left;color:#62666e;background:transparent;box-sizing:border-box;cursor:pointer;transition:background .15s ease,color .15s ease,box-shadow .15s ease;}
+    #conteudoAdmin > .main-nav button:hover {background:#e9edf3;color:#1d1d1f;}
+    #conteudoAdmin > .main-nav button[aria-selected="true"] {background:#1d4ed8;color:white;font-weight:600;box-shadow:0 2px 5px rgba(29,78,216,.15);}
+    #conteudoAdmin > .main-nav button:focus-visible {outline:2px solid #93c5fd;outline-offset:2px;}
+    @media screen and (min-width:901px){ #conteudoAdmin > .main-nav {margin:0;align-self:start;} }
+    @media screen and (max-width:900px){ #conteudoAdmin > .main-nav {width:176px;margin-left:auto;align-items:stretch;} }
+    @media(prefers-reduced-motion:reduce){ #conteudoAdmin > .main-nav button {transition:none;} }
+    /* Conflitos em roxo, distintos dos domingos e feriados em vermelho. */
+    .cor-conflito { background:#ede9fe;border:1px solid #7c3aed; }
+    #tabela .linha-conflito { outline:3px solid #7c3aed;outline-offset:-3px;background:#f5f3ff!important;color:#5b21b6; }
+    #tabela .linha-conflito td { background:#f5f3ff!important;color:#5b21b6; }
+    #tabela .linha-conflito .domingo,#tabela .linha-conflito .sabado { background:#f5f3ff!important; }
+    /* Resumo de conferência compacto e atualizado automaticamente. */
+    #painelTabela .resumo { background:white;border:1px solid #e5e5ea;border-radius:16px;padding:22px;margin-top:24px; }
+    #painelTabela .resumo-topo h2 { color:#1d1d1f;font-size:21px;font-weight:600; }
+    #painelTabela .resumo-topo p { color:#6e6e73;font-size:13px;max-width:750px;line-height:1.5; }
+    #dashboardGeral { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0; }
+    .review-metric { border:1px solid #e8ebf0;background:#f8fafc;border-radius:10px;padding:16px; }
+    .review-metric small { display:block;color:#6e6e73;font-size:12px;margin-bottom:7px; }
+    .review-metric strong { color:#1d1d1f;font-size:24px;font-weight:550;letter-spacing:-.025em;font-variant-numeric:tabular-nums; }
+    .review-metric strong span {color:#86868b;font-size:15px;font-weight:400;}
+    .review-warning { background:#f5f3ff;border-color:#ddd6fe; }
+    .review-warning strong { color:#6d28d9; }
+    #resumo { display:block; }
+    .review-context {display:flex;gap:18px;flex-wrap:wrap;color:#6e6e73;font-size:12px;margin:10px 0 16px;}
+    .review-table-wrap {overflow-x:auto;}
+    .review-table {width:100%;min-width:580px;border-collapse:collapse;border:0;}
+    .review-table th,.review-table td {padding:12px 14px;border:0;border-bottom:1px solid #e8ebf0;color:#475569;font-size:14px;text-align:right;background:white;font-variant-numeric:tabular-nums;}
+    .review-table th:first-child {text-align:left;}
+    .review-table thead th {background:#f8fafc;font-weight:500;font-size:12px;color:#6e6e73;}
+    .review-table tbody th {font-weight:500;color:#1d1d1f;}
+    .review-table tbody tr:last-child th,.review-table tbody tr:last-child td {border-bottom:0;}
+    @media(max-width:760px){#dashboardGeral {grid-template-columns:1fr 1fr;} .review-metric strong {font-size:21px;} #painelTabela .resumo {padding:16px;}}
+    /* Navegação acompanha a página; ações acompanham a conferência. */
+    #conteudoAdmin > .main-nav { position:static;top:auto; }
+    #painelTabela .finalizacao { background:#f7f8fa;border:1px solid #e5e5ea;border-radius:14px;padding:12px;margin:0; }
+    #painelTabela .finalizacao-topo {display:flex;flex-direction:column;align-items:stretch;gap:14px;}
+    #painelTabela .finalizacao-topo h2 {font-size:15px;color:#1d1d1f;margin:0 0 5px;}
+    #painelTabela .finalizacao-topo p {font-size:12px;line-height:1.5;color:#6e6e73;margin:0;}
+    #painelTabela .finalizacao .acoes-bloco {display:flex;flex-direction:column;align-items:stretch;gap:8px;}
+    #painelTabela .finalizacao button {width:100%;min-height:42px;margin:0;padding:11px 10px;border-radius:9px;line-height:1.35;font-size:12px;text-align:left;}
+    #painelTabela .caixa-ajuda-final {display:block;padding:0;margin-top:14px;background:transparent;border:0;}
+    #painelTabela .caixa-ajuda-final summary {font-size:11px;color:#6e6e73;cursor:pointer;line-height:1.5;}
+    #painelTabela .ajuda-final {font-size:11px;line-height:1.6;margin-top:10px;padding:0;background:transparent;border:0;overflow-wrap:anywhere;}
+    @media screen and (min-width:901px){
+      #painelTabela {display:grid;grid-template-columns:minmax(0,1fr) 160px;gap:24px 26px;align-items:start;width:calc(100% + 186px);}
+      #painelTabela > .cabecalho-pdf {grid-column:1;}
+      #painelTabela > .bloco {grid-column:1;grid-row:1;min-width:0;margin:0;}
+      #painelTabela > .resumo {grid-column:1;grid-row:2;min-width:0;margin:0;}
+      #painelTabela > .finalizacao {grid-column:2;grid-row:1 / 3;position:sticky;top:24px;align-self:start;}
+    }
+    @media screen and (max-width:900px){
+      #painelTabela > .finalizacao {max-width:240px;margin:20px 0 0 auto;}
+    }
+    @media print {#painelTabela {display:block;width:auto;} }
+    /* Mini dashboard permanece abaixo da tabela da escala. */
+    #painelTabela > .resumo {display:block;}
+    .mini-team-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+    .mini-person {background:white;border:1px solid #e5e5ea;border-radius:12px;padding:18px;}
+    .mini-person > strong {color:#1d1d1f;font-size:15px;font-weight:600;}
+    .mini-person-hours {font-size:24px;letter-spacing:-.03em;color:#1d4ed8;margin:12px 0 3px;font-variant-numeric:tabular-nums;}
+    .mini-person-count {font-size:13px;color:#6e6e73;}
+    .mini-person-days {display:flex;flex-direction:column;gap:6px;margin-top:14px;border-top:1px solid #f0f1f4;padding-top:12px;font-size:12px;color:#6e6e73;}
+    .mini-person-days span {display:flex;justify-content:space-between;gap:12px;}
+    .mini-person-days b {font-weight:500;color:#1d1d1f;}
+    @media(max-width:760px){.mini-team-grid {grid-template-columns:1fr 1fr;}}
+    @media(max-width:450px){.mini-team-grid {grid-template-columns:1fr;}}
+    /* Cartões por colaborador conforme a referência. */
+    #painelTabela .resumo {background:#eff6ff;border-color:#bfdbfe;padding:20px 14px;}
+    #painelTabela .subtitulo-resumo {font-size:19px;color:#1e40af;margin:18px 0 12px;font-weight:600;}
+    #resumo {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;}
+    #resumo .card-colaborador {background:white;border:1px solid #bfdbfe;border-radius:15px;padding:15px;min-width:0;}
+    #resumo .nome {display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 12px;}
+    #resumo .nome strong {font-size:19px;color:#1e40af;font-weight:600;}
+    #resumo .total {border-radius:24px;background:#dbeafe;color:#1d4ed8;font-size:17px;font-weight:650;padding:5px 12px;white-space:nowrap;}
+    #resumo .linha-metrica {display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #dbe4f0;padding:8px 0;font-size:15px;color:#475569;}
+    #resumo .linha-metrica strong {color:#0f172a;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;}
+    #resumo .barra-distribuicao {display:flex;height:10px;border-radius:8px;overflow:hidden;margin-top:14px;background:#f1f5f9;}
+    #resumo .barra-util {background:#2563eb;}
+    #resumo .barra-fds {background:#f59e0b;}
+    #resumo .barra-feriado {background:#dc2626;}
+    @media(max-width:1300px){#resumo {grid-template-columns:repeat(3,minmax(0,1fr));}}
+    @media(max-width:800px){#resumo {grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media(max-width:500px){#resumo {grid-template-columns:1fr;}}
+    /* Todas as escalas em um único painel pesquisável. */
+    #viewHistory .historico {border:1px solid #e5e5ea;border-radius:16px;padding:24px;background:white;margin:0;}
+    .historico-topo h2 {font-size:22px;color:#1d1d1f;}
+    .historico-topo p {font-size:13px;color:#6e6e73;}
+    .history-search {display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:20px 0;}
+    .history-search label {font-size:13px;font-weight:500;color:#475569;}
+    .history-search input {flex:1;min-width:240px;border:1px solid #dbe1e8;border-radius:10px;background:#f8fafc;padding:12px 14px;font-size:14px;}
+    .history-search input:focus {outline:2px solid #93c5fd;outline-offset:1px;}
+    .history-search span {font-size:12px;color:#86868b;}
+    #historicoLista {display:block;}
+    .history-table-wrap {overflow-x:auto;}
+    .history-table {width:100%;min-width:700px;border:0;border-collapse:collapse;}
+    .history-table th,.history-table td {padding:15px 14px;text-align:left;border:0;border-bottom:1px solid #e8ebf0;background:white;font-size:13px;color:#475569;}
+    .history-table thead th {background:#f8fafc;font-size:12px;font-weight:500;color:#6e6e73;}
+    .history-table td strong {display:block;font-weight:550;color:#1d1d1f;font-size:14px;}
+    .history-table td small {display:block;color:#86868b;margin-top:4px;}
+    .history-table tr:last-child td {border-bottom:0;}
+    .history-table .historico-acoes {display:flex;gap:8px;flex-wrap:nowrap;}
+    .history-table button {padding:9px 12px;font-size:12px;white-space:nowrap;border-radius:8px;}
+    @media(max-width:680px){#viewHistory .historico {padding:16px;}.history-search input {min-width:0;flex-basis:100%;}}
   </style>
 </head>
 
@@ -1101,65 +1511,50 @@
   <div id="conteudoAdmin" class="container bloqueado">
     <div class="topo">
       <div class="marca-topo">
-        <img class="logo-viatec" src="logo-viatec.png" alt="Logo ViaTec">
+        <img class="logo-viatec" src="logo_viatec.png" alt="Logo ViaTec">
         <div>
-          <h1 contenteditable="true" id="tituloPagina">Admin - Escala de Plantão</h1>
-          <div class="subtitulo">Fluxo guiado: iniciar, configurar, gerar, conferir e salvar.</div>
+          <h1 id="tituloPagina">Escala NOC</h1>
+          <div class="subtitulo">Acompanhe os plantões publicados e prepare a próxima escala.</div>
         </div>
       </div>
 
-      <div class="acoes-topo">
-        <button id="btnNovaEscala" class="btn-primario" type="button">Iniciar nova escala</button>
-        <button id="btnHistorico" class="btn-secundario" type="button">Atualizar histórico</button>
-        <button id="btnCarregar" class="btn-secundario" type="button">Carregar rascunho</button>
-        <button id="btnCarregarAtual" class="btn-secundario" type="button">Carregar atual manual</button>
-      </div>
+      
     </div>
 
-    <div class="etapas">
-      <div id="etapa1" class="etapa ativa">
-        <strong>1. Iniciar</strong>
-        Comece uma nova escala.
-      </div>
 
-      <div id="etapa2" class="etapa">
-        <strong>2. Configurar</strong>
-        Informe mês, ano, setor e férias.
-      </div>
+    <nav class="main-nav" role="tablist" aria-label="Áreas da escala">
+      <button id="tabDashboard" role="tab" aria-controls="viewDashboard" aria-selected="true">Dashboard</button>
+      <button id="tabCreate" role="tab" aria-controls="viewCreate" aria-selected="false" tabindex="-1">Criar escala</button>
+      <button id="tabHistory" role="tab" aria-controls="viewHistory" aria-selected="false" tabindex="-1">Histórico</button>
+    </nav>
+    <div id="viewDashboard" class="page-view" role="tabpanel" aria-labelledby="tabDashboard">
+    <section class="home-dashboard" aria-labelledby="homeTitle">
+      <div class="home-heading"><div><h2 id="homeTitle">Plantões NOC</h2><p id="homeSubtitle">Todos os plantões: 08:00 às 21:50.</p></div></div>
 
-      <div id="etapa3" class="etapa">
-        <strong>3. Gerar</strong>
-        Crie a tabela do mês.
-      </div>
-
-      <div id="etapa4" class="etapa">
-        <strong>4. Conferir</strong>
-        Ajuste plantonistas e feriados.
-      </div>
-
-      <div id="etapa5" class="etapa">
-        <strong>5. Salvar</strong>
-        Grave a escala no Supabase.
-      </div>
+      <div class="month-heading"><div><h3 id="homeMonthTitle">Resumo mensal</h3><p id="homeMonthLabel">Selecione o mês para consultar a distribuição.</p></div><div class="home-filter"><label for="homePeriod">Mês</label><select id="homePeriod"><option value="">Carregando…</option></select></div></div>
+      <div id="homeContent" aria-live="polite"><div class="home-empty">Carregando resumo do mês…</div></div>
+      <div class="live-section"><div class="live-heading"><h3>Hoje e próximo plantão</h3><span id="homeToday"></span></div><div id="homeLive" aria-live="polite"><div class="home-empty">Carregando escala em uso…</div></div></div>
+    </section>
     </div>
+    <div id="viewCreate" class="page-view" role="tabpanel" aria-labelledby="tabCreate" hidden>
+    <details class="secondary-actions"><summary>Recuperar uma escala para edição</summary>
+      <button id="btnCarregar" class="btn-secundario" type="button">Carregar rascunho deste navegador</button>
+      <button id="btnCarregarAtual" class="btn-secundario" type="button">Abrir escala atual manual</button>
+    </details>
 
+    <div id="wizardContext"><h2 class="wizard-title">Preparar escala</h2><p class="wizard-description">Configure o período e a equipe. A publicação acontece somente depois da conferência.</p></div>
+    <div class="wizard-steps" aria-label="Etapas de criação">
+      <button id="wizardStep1" type="button" aria-current="step"><strong>1. Período</strong>Mês, ano e informações</button>
+      <button id="wizardStep2" type="button"><strong>2. Equipe</strong>Disponibilidade e regras</button>
+      <button id="wizardStep3" type="button"><strong>3. Conferência</strong>Revisar e publicar</button>
+    </div>
     <input id="escalaId" type="hidden">
 
     <div id="statusSalvamento" class="status-salvamento">Alterações salvas automaticamente.</div>
     <div id="aviso" class="aviso"></div>
 
-    <div id="painelConfiguracao" class="bloco bloco-destaque oculto">
-      <div class="bloco-topo">
-        <div>
-          <h2>Configuração da escala</h2>
-          <p>Configure o mês, ano, setor, telefone e férias antes de gerar a tabela.</p>
-        </div>
-
-        <div class="acoes-bloco">
-          <button id="btnGerar" class="btn-primario" type="button">Gerar tabela da escala</button>
-        </div>
-      </div>
-
+    <div id="painelConfiguracao" class="bloco bloco-destaque">
+      <div id="wizardPeriod" class="wizard-panel"><h3 class="wizard-title">Qual período você quer preparar?</h3><p class="wizard-description">Todos os dias terão plantão das 08:00 às 21:50.</p>
       <div class="grid5">
         <div class="campo">
           <label>Nome da escala</label>
@@ -1187,14 +1582,13 @@
         </div>
       </div>
 
-      <div class="nota">
-        Ao clicar em <strong>Gerar tabela da escala</strong>, os feriados nacionais do mês serão marcados automaticamente.
-        Para feriados municipais, depois marque manualmente a coluna <strong>Feriado?</strong> na tabela.
       </div>
+      <div id="wizardTeam" class="wizard-panel" hidden><h3 class="wizard-title">Confira a equipe e registre as ausências</h3><p class="wizard-description">Adicione férias ou outras indisponibilidades antes de gerar.</p>
 
+      <div class="team-chips"><span>André<small>Todos os dias</small></span><span>Bruno<small>Todos os dias</small></span><span>Emanuel<small>Todos os dias</small></span><span>Guilherme<small>Todos os dias</small></span><span class="special">João<small>Segunda, sábado e domingo</small></span><span>Ricardo<small>Todos os dias</small></span></div>
       <div class="ferias-controle">
         <div>
-          <label>Colaborador em férias</label>
+          <label>Colaborador indisponível</label>
           <select id="feriasColaborador"></select>
         </div>
 
@@ -1208,15 +1602,23 @@
           <input id="feriasFim" type="date">
         </div>
 
-        <button id="btnAdicionarFerias" class="btn-secundario" type="button">Adicionar férias</button>
+        <button id="btnAdicionarFerias" class="btn-secundario" type="button">Adicionar indisponibilidade</button>
       </div>
 
+      <div class="rules-note"><span>13h50 por plantão</span><span>Ninguém em dias consecutivos</span><span>Férias e ausências obrigatórias</span></div>
       <div id="listaFerias" class="lista-ferias"></div>
+      <p class="wizard-description">Os feriados nacionais são consultados na geração. Feriados municipais podem ser marcados na conferência.</p></div>
+      <div id="wizardReview" class="wizard-panel" hidden><h3 class="wizard-title">Confira antes de publicar</h3><p class="wizard-description">Revise a tabela abaixo, resolva os conflitos e publique o mês quando estiver pronto.</p></div>
+      <div class="creation-footer">
+        <button id="wizardBack" class="btn-secundario" type="button" hidden>Voltar</button>
+        <button id="wizardNext" class="btn-primario" type="button">Continuar para equipe</button>
+        <button id="btnGerar" class="btn-primario" type="button" hidden>Gerar escala para conferência</button>
+      </div>
     </div>
 
     <div id="painelTabela" class="oculto">
       <div class="cabecalho-pdf">
-        <img src="logo-viatec.png" alt="Logo ViaTec">
+        <img src="logo_viatec.png" alt="Logo ViaTec">
         <div>
           <h2 id="tituloPdf">Escala de Plantão</h2>
           <p id="subtituloPdf">ViaTec Telecom</p>
@@ -1272,13 +1674,7 @@
 
         <div class="obs">
           <label>Observações gerais</label>
-          <textarea id="observacoes">REGRAS DE ESCALA:
-Segunda a sexta: 17:45 às 21:50
-Sábado: 12:00 às 21:50
-Domingo e feriados: 08:00 às 21:50
-João: fixo em todas as segundas-feiras, salvo férias.
-Regra automática: ao gerar a escala, João entra preferencialmente nas segundas, finais de semana e feriados.
-Ajuste manual: se necessário, o administrador pode colocar João em outro dia manualmente.</textarea>
+          <textarea id="observacoes">Todos os plantões: 08:00 às 21:50 (13h50). João: segunda, sábado e domingo, inclusive em feriados. Ninguém pode fazer dois dias consecutivos. Férias e indisponibilidades são obrigatórias.</textarea>
         </div>
       </div>
 
@@ -1286,10 +1682,8 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         <div class="resumo-topo">
           <div>
             <h2>Dashboard da escala</h2>
-            <p>Distribuição dos plantões por colaborador e tipo de dia.</p>
+            <p>Atualizado automaticamente a cada ajuste. Os dados só aparecem no dashboard principal após a publicação.</p>
           </div>
-
-          <button id="btnResumo" class="btn-secundario" type="button">Atualizar resumo</button>
         </div>
 
         <div class="dashboard-geral" id="dashboardGeral"></div>
@@ -1301,12 +1695,12 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
       <div class="finalizacao">
         <div class="finalizacao-topo">
           <div>
-            <h2>Finalizar escala</h2>
-            <p>Depois de conferir tudo, salve a escala do mês no Supabase.</p>
+            <h2>Ações da escala</h2>
+            <p>Após uma troca, publique o mês novamente para atualizar as horas e a página dos colaboradores.</p>
           </div>
 
           <div class="acoes-bloco">
-            <button id="btnSalvarMes" class="btn-publicar" type="button">Salvar escala do mês</button>
+            <button id="btnSalvarMes" class="btn-publicar" type="button">Publicar escala do mês</button>
             <button id="btnPublicarAtual" class="btn-verde" type="button">Forçar como atual agora</button>
             <button id="btnBaixarPdf" class="btn-secundario" type="button">Baixar PDF</button>
             <button id="btnExportarCsv" class="btn-secundario" type="button">Exportar CSV</button>
@@ -1315,9 +1709,9 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           </div>
         </div>
 
-        <div class="caixa-ajuda-final">
+        <details class="caixa-ajuda-final"><summary>Como funciona a publicação</summary>
           <div class="ajuda-final">
-            <strong>Salvar escala do mês</strong>
+            <strong>Publicar escala do mês</strong>
             Grava como <strong>setor-ANO-MM</strong>. Exemplo: <strong>noc-2026-06</strong>.
             Essa escala aparecerá automaticamente no user.html quando chegar o mês.
           </div>
@@ -1326,31 +1720,36 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
             <strong>Forçar como atual agora</strong>
             Também grava como <strong>setor-atual</strong>. Use somente se precisar mostrar a escala imediatamente aos plantonistas.
           </div>
-        </div>
+        </details>
       </div>
     </div>
 
+    </div>
+    <div id="viewHistory" class="page-view" role="tabpanel" aria-labelledby="tabHistory" hidden>
+    <details open class="history-fold" id="homeHistory"><summary>Histórico · abrir, editar ou publicar escalas anteriores</summary>
     <div class="historico">
       <div class="historico-topo">
         <div>
           <h2>Histórico de escalas salvas</h2>
-          <p>Abra escalas antigas, edite e salve novamente. A escala só aparece para os plantonistas quando chegar o mês correspondente.</p>
+          <p>Consulte os meses salvos, abra para editar ou publique como escala atual.</p>
         </div>
-
-        <button id="btnAtualizarHistorico2" class="btn-secundario" type="button">Atualizar histórico</button>
       </div>
 
+      <div class="history-search"><label for="pesquisaHistorico">Pesquisar escalas</label><input id="pesquisaHistorico" type="search" placeholder="Mês, data ou plantonista — ex.: novembro, 02/11/2026, João" autocomplete="off"><span id="historicoContagem" aria-live="polite"></span></div>
       <div id="historicoLista" class="historico-lista">
         <div class="vazio">Carregando histórico...</div>
       </div>
     </div>
+    </details>
+    </div>
   </div>
 
+  <script src="noc-rules.js"></script>
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    const SUPABASE_URL = "https://qbgwlfxsyqirwkvezkdu.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_oPqwuXv53mXcWAUgXc8XHg_XTLH7clz";
+    const SUPABASE_URL = "https://zvhvxkwxrinflonpxzmp.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_4RJB6lPQupdRhD94p2rOZA_KALCaBUZ";
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -1361,9 +1760,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
       const LOGIN_KEY = 'adminNocAutenticado';
       const SENHA_SALVA_KEY = 'senhaAdminNocSalva';
 
-      const colaboradores = ['André', 'Bruno', 'Emanuel', 'Guilherme', 'João'];
-      const colaboradoresSemana = ['André', 'Bruno', 'Emanuel', 'Guilherme'];
-      const colaboradoresFimSemana = ['André', 'Bruno', 'Emanuel', 'Guilherme', 'João'];
+      const colaboradores = NocRules.team;
       const nomesSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
       const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
       const STORAGE_KEY = 'escalaPlantaoAdmin';
@@ -1505,11 +1902,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         return ferias.find((f) => f.nome === nome && iso >= f.inicio && iso <= f.fim) || null;
       }
 
-      function horarioPorDia(diaSemana, feriado) {
-        if (feriado || diaSemana === 0) return '08:00 às 21:50';
-        if (diaSemana === 6) return '12:00 às 21:50';
-        return '17:45 às 21:50';
-      }
+      function horarioPorDia() { return NocRules.horario; }
 
       function classeDia(diaSemana, feriado) {
         if (feriado || diaSemana === 0) return 'domingo';
@@ -1543,6 +1936,10 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         return `Escala ${setor} - ${mes}/${ano}`;
       }
 
+      function sincronizarNome() {
+        if($('nomeEscala').dataset.personalizado!=='sim') $('nomeEscala').value=nomeEscalaPadrao();
+      }
+
       function garantirNomeEscala() {
         const nomeAtual = $('nomeEscala').value.trim();
 
@@ -1567,21 +1964,36 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         return `${setorId}-atual`;
       }
 
-      function atualizarEtapas(etapa) {
-        ['etapa1', 'etapa2', 'etapa3', 'etapa4', 'etapa5'].forEach((id, index) => {
-          $(id).classList.toggle('ativa', index + 1 <= etapa);
+      let etapaCriacao = 1;
+      function mudarArea(area) {
+        ['Dashboard','Create','History'].forEach(nome=>{
+          const ativo=nome===area;
+          $('view'+nome).hidden=!ativo;
+          $('tab'+nome).setAttribute('aria-selected',String(ativo));
+          $('tab'+nome).tabIndex=ativo?0:-1;
         });
       }
-
-      function mostrarConfiguracao() {
-        $('painelConfiguracao').classList.remove('oculto');
-        atualizarEtapas(2);
+      function definirEtapa(etapa) {
+        if(etapa===3 && !bodyTabela().rows.length){aviso('Gere a escala na etapa Equipe para iniciar a conferência.','erro');return;}
+        etapaCriacao=etapa;
+        ['wizardPeriod','wizardTeam','wizardReview'].forEach((id,i)=>$(id).hidden=i+1!==etapa);
+        for(let i=1;i<=3;i++){const b=$('wizardStep'+i);if(i===etapa)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');}
+        $('wizardBack').hidden=etapa===1;
+        $('wizardNext').hidden=etapa!==1;
+        $('btnGerar').hidden=etapa!==2;
+        $('painelTabela').hidden=etapa!==3;
       }
-
+      function atualizarEtapas(etapa) { definirEtapa(etapa>=4?3:1); }
+      function mostrarConfiguracao() {
+        mudarArea('Create');
+        $('painelConfiguracao').classList.remove('oculto');
+        definirEtapa(1);
+      }
       function mostrarTabela() {
+        mudarArea('Create');
         $('painelConfiguracao').classList.remove('oculto');
         $('painelTabela').classList.remove('oculto');
-        atualizarEtapas(5);
+        definirEtapa(3);
       }
 
       function atualizarCabecalhoPdf() {
@@ -1591,41 +2003,30 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         $('subtituloPdf').innerText = `${dados.setor} - ${dados.mes}/${dados.ano}`;
       }
 
-      function escolherPlantonista(diaSemana, dataBr, contagem, ultimoPorSemana, ultimoPlantonista, feriado) {
-        const nomeDia = nomesSemana[diaSemana];
-
-        if (diaSemana === 1 && ultimoPlantonista !== 'João' && !feriasNoDia('João', dataBr)) {
-          contagem.João = (contagem.João || 0) + 1;
-          ultimoPorSemana[nomeDia] = 'João';
-          return 'João';
+      let limitesEscala = [];
+      async function carregarLimites(dados) {
+        const limites = [];
+        for (const deslocamento of [-1, 1]) {
+          const d = new Date(dados.ano, dados.mesNumero + deslocamento, 1);
+          const id = textoParaId(dados.setor || 'NOC') + '-' + d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+          const {data,error} = await supabase.from('escalas').select('dados').eq('id',id).maybeSingle();
+          if(error) throw new Error('Não foi possível verificar os meses vizinhos: '+error.message);
+          limites.push(...(data?.dados?.linhas || []));
         }
+        limitesEscala = limites;
+        return limites;
+      }
+      async function validarParaSalvar(dados) {
+        try {
+          const limites = await carregarLimites(dados);
+          const problemas = NocRules.errors(dados, limites);
+          if(problemas.length){aviso(problemas.join('\n'),'erro');alert('Escala bloqueada. Corrija os problemas indicados na conferência.');return false;}
+          return true;
+        } catch(e){alert(e.message);return false;}
+      }
 
-        let permitidos = (feriado || diaSemana === 6) ? colaboradoresFimSemana.slice() : colaboradoresSemana.slice();
-
-        if (diaSemana === 0) {
-          permitidos = colaboradoresSemana.slice();
-        }
-
-        permitidos = permitidos.filter((nome) => nome !== ultimoPlantonista && !feriasNoDia(nome, dataBr));
-
-        if (!permitidos.length) {
-          permitidos = colaboradores.filter((nome) => nome !== ultimoPlantonista && !feriasNoDia(nome, dataBr));
-        }
-
-        if (!permitidos.length) return '';
-
-        permitidos.sort((a, b) => {
-          const pa = (contagem[a] || 0) + (ultimoPorSemana[nomeDia] === a ? 2 : 0);
-          const pb = (contagem[b] || 0) + (ultimoPorSemana[nomeDia] === b ? 2 : 0);
-          return pa - pb;
-        });
-
-        const escolhido = permitidos[0];
-
-        contagem[escolhido] = (contagem[escolhido] || 0) + 1;
-        ultimoPorSemana[nomeDia] = escolhido;
-
-        return escolhido;
+      function limparObservacaoAutomatica(texto) {
+        return String(texto || '').split('|').map(parte=>parte.trim()).filter(parte=>parte && parte!=='Sem colaborador disponível por férias').join(' | ');
       }
 
       function montarLinha(item) {
@@ -1642,11 +2043,12 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           <td class="celula-bloqueada">${escapeHtml(semana)}</td>
           <td><input type="checkbox" class="check-feriado" ${feriado ? 'checked' : ''}></td>
           <td>${criarSelect(plantonista)}</td>
-          <td contenteditable="true">${escapeHtml(item.horario || '')}</td>
+          <td class="celula-bloqueada">${escapeHtml(NocRules.horario)}</td>
           <td>${telefoneHtml()}</td>
-          <td contenteditable="true">${escapeHtml(item.observacao || '')}</td>
+          <td contenteditable="true">${escapeHtml(limparObservacaoAutomatica(item.observacao))}</td>
         `;
 
+        linha.querySelector("select.colaborador").dataset.previous = plantonista;
         aplicarClasse(linha, diaSemana, feriado);
       }
 
@@ -1662,6 +2064,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         }
 
         $('escalaId').value = '';
+        $('nomeEscala').dataset.personalizado='';
         $('nomeEscala').value = nomeEscalaPadrao();
 
         bodyTabela().innerHTML = '';
@@ -1672,7 +2075,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         salvarAutomatico();
         mostrarConfiguracao();
 
-        alert('Nova escala iniciada. Configure mês, ano, setor, telefone e férias. Depois clique em Gerar tabela da escala.');
+        $('mes').focus();
       }
 
       async function gerarEscala() {
@@ -1687,20 +2090,19 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
 
         const mes = Number($('mes').value);
         const ano = Number($('ano').value);
+        if(!Number.isInteger(ano)||ano<2000||ano>2100||!Number.isInteger(mes)||mes<0||mes>11){aviso('Informe um mês válido e um ano entre 2000 e 2100.','erro');return;}
         const totalDias = new Date(ano, mes + 1, 0).getDate();
 
         bodyTabela().innerHTML = '';
 
-        const contagem = {};
-        const ultimoPorSemana = {};
-        let ultimoPlantonista = '';
+
 
         for (let dia = 1; dia <= totalDias; dia++) {
           const dataObj = new Date(ano, mes, dia);
           const diaSemana = dataObj.getDay();
           const data = dataBR(dia, mes, ano);
           const feriado = false;
-          const plantonista = escolherPlantonista(diaSemana, data, contagem, ultimoPorSemana, ultimoPlantonista, feriado);
+          const plantonista = ''; 
 
           montarLinha({
             data,
@@ -1708,18 +2110,26 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
             feriado,
             plantonista,
             horario: horarioPorDia(diaSemana, feriado),
-            observacao: plantonista ? '' : 'Sem colaborador disponível por férias'
+            observacao: ''
           });
 
-          ultimoPlantonista = plantonista;
+
         }
 
         await buscarFeriadosNacionais(false);
+        try {
+          const dados = montarDadosEscala();
+          const limites = await carregarLimites(dados);
+          const geradas = NocRules.generate(dados.linhas, ferias, limites);
+          bodyTabela().innerHTML = '';
+          geradas.forEach(montarLinha);
+        } catch(e) { mostrarTabela(); atualizarTudo(); aviso(e.message,'erro'); salvarAutomatico(); return; }
 
         mostrarTabela();
         atualizarTudo();
         atualizarCabecalhoPdf();
-        limparAviso();
+        if(feriadosVerificados) limparAviso();
+        else aviso('Feriados nacionais não foram carregados. Marque-os manualmente e confira antes de publicar.','erro');
         salvarAutomatico();
 
         window.scrollTo({
@@ -1747,6 +2157,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         obs.innerText = partes.join(' | ');
       }
 
+      let feriadosVerificados = false;
       async function buscarFeriadosNacionais(mostrarAlerta = true) {
         const ano = $('ano').value;
         const mesSelecionado = Number($('mes').value) + 1;
@@ -1765,6 +2176,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           if (!resposta.ok) throw new Error('Falha na consulta');
 
           const feriados = await resposta.json();
+          feriadosVerificados = true;
           let marcados = 0;
 
           feriados.forEach((feriado) => {
@@ -1798,6 +2210,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
             alert(marcados ? `${marcados} feriado(s) nacional(is) marcado(s).` : 'Nenhum feriado nacional neste mês.');
           }
         } catch {
+          feriadosVerificados = false;
           if (mostrarAlerta) {
             alert('Não foi possível buscar os feriados. Verifique a internet ou marque manualmente.');
           } else {
@@ -1866,53 +2279,27 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           }
         });
 
-        $('dashboardGeral').innerHTML = `
-          <div class="card-geral"><small>Total de dias</small><strong>${geral.total}</strong></div>
-          <div class="card-geral"><small>Dias úteis</small><strong>${geral.uteis}</strong></div>
-          <div class="card-geral"><small>Finais de semana</small><strong>${geral.finaisSemana}</strong></div>
-          <div class="card-geral"><small>Feriados</small><strong>${geral.feriados}</strong></div>
-          <div class="card-geral"><small>Sem plantonista</small><strong>${geral.semPlantonista}</strong></div>
-        `;
-
-        $('resumo').innerHTML = colaboradores.map((nome) => {
-          const item = resumo[nome];
-          const total = item.total || 0;
-
-          const pctUtil = total ? (item.uteis / total) * 100 : 0;
-          const pctFds = total ? (item.finaisSemana / total) * 100 : 0;
-          const pctFeriado = total ? (item.feriados / total) * 100 : 0;
-
-          return `
-            <div class="card-colaborador">
-              <div class="nome">
-                <strong>${escapeHtml(nome)}</strong>
-                <span class="total">${total}</span>
-              </div>
-
-              <div class="linha-metrica">
-                <span>Dias úteis</span>
-                <strong>${item.uteis}</strong>
-              </div>
-
-              <div class="linha-metrica">
-                <span>Final de semana</span>
-                <strong>${item.finaisSemana}</strong>
-              </div>
-
-              <div class="linha-metrica">
-                <span>Feriados</span>
-                <strong>${item.feriados}</strong>
-              </div>
-
-              <div class="barra-distribuicao" title="Distribuição dos plantões">
-                <div class="barra-util" style="width:${pctUtil}%"></div>
-                <div class="barra-fds" style="width:${pctFds}%"></div>
-                <div class="barra-feriado" style="width:${pctFeriado}%"></div>
-              </div>
-            </div>
-          `;
+        const dados=montarDadosEscala();
+        const reais=dados.linhas.filter(r=>r.plantonista);
+        const linhasDOM=Array.from(bodyTabela().rows);
+        const conflitos=linhasDOM.filter((linha,i)=>linhaTemConflito(linha,i,linhasDOM)).length;
+        const horas=quantidade=>{const m=quantidade*NocRules.config.minutes;return Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min';};
+        $('dashboardGeral').innerHTML=
+          '<div class="review-metric"><small>Horas de sobreaviso</small><strong>'+horas(reais.length)+'</strong></div>'+
+          '<div class="review-metric"><small>Plantões preenchidos</small><strong>'+reais.length+'<span> / '+geral.total+'</span></strong></div>'+
+          '<div class="review-metric '+(geral.semPlantonista?'review-warning':'')+'"><small>Sem responsável</small><strong>'+geral.semPlantonista+'</strong></div>'+
+          '<div class="review-metric '+(conflitos?'review-warning':'')+'"><small>Dias com problemas</small><strong>'+conflitos+'</strong></div>';
+        $('resumo').innerHTML=colaboradores.map(nome=>{
+          const rs=reais.filter(r=>r.plantonista===nome);
+          const feriados=rs.filter(r=>r.feriado).length;
+          const fins=rs.filter(r=>!r.feriado && ['Sábado','Domingo'].includes(r.semana)).length;
+          const uteis=rs.length-feriados-fins;
+          const proporcao=q=>rs.length?q/rs.length*100:0;
+          return '<div class="card-colaborador"><div class="nome"><strong>'+escapeHtml(nome)+'</strong><span class="total">'+rs.length+' plantões</span></div><div class="linha-metrica"><span>Horas de sobreaviso</span><strong>'+NocRules.hours(rs.length)+'</strong></div><div class="linha-metrica"><span>Dias úteis</span><strong>'+uteis+'</strong></div><div class="linha-metrica"><span>Final de semana</span><strong>'+fins+'</strong></div><div class="linha-metrica"><span>Feriados</span><strong>'+feriados+'</strong></div><div class="barra-distribuicao" title="Dias úteis, finais de semana e feriados"><div class="barra-util" style="width:'+proporcao(uteis)+'%"></div><div class="barra-fds" style="width:'+proporcao(fins)+'%"></div><div class="barra-feriado" style="width:'+proporcao(feriados)+'%"></div></div></div>';
         }).join('');
+
       }
+
 
       function linhaTemConflito(linha, index, linhas) {
         const data = linha.cells[0]?.innerText.trim() || '';
@@ -1926,6 +2313,8 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         if (!data) return true;
         if (diaSemana === -1) return true;
         if (!plantonista) return true;
+        if (!NocRules.allowed(plantonista,data,ferias)) return true;
+        if (limitesEscala.some(r=>r.plantonista===plantonista&&NocRules.consecutive(r.data,data))) return true;
         if (horario !== esperado) return true;
 
         if (plantonista && feriasNoDia(plantonista, data)) {
@@ -2053,32 +2442,15 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
 
       function validarColaborador(select) {
         const linha = select.closest('tr');
+        const data = linha.cells[0].innerText.trim();
         const nome = select.value;
-
-        if (!nome) return;
-
-        const data = linha.cells[0]?.innerText.trim() || '';
-
-        const f = feriasNoDia(nome, data);
-
-        if (f) {
-          select.value = '';
-          alert(`${nome} está de férias nesse dia (${dataIsoParaBr(f.inicio)} até ${dataIsoParaBr(f.fim)}).`);
-          return;
+        if(!nome) { select.dataset.previous=''; return; }
+        const outras = montarDadosEscala().linhas.filter(r=>r.data!==data).concat(limitesEscala);
+        if(!NocRules.allowed(nome,data,ferias) || outras.some(r=>r.plantonista===nome&&NocRules.consecutive(r.data,data))) {
+          select.value = select.dataset.previous || '';
+          alert('Ajuste bloqueado: respeite os dias permitidos, as indisponibilidades e o intervalo de um dia entre plantões.');
         }
-
-        const anterior = linha.previousElementSibling?.querySelector('select.colaborador')?.value || '';
-        const proximo = linha.nextElementSibling?.querySelector('select.colaborador')?.value || '';
-
-        if (nome === anterior || nome === proximo) {
-          const confirmar = confirm(
-            `${nome} ficará em dois dias seguidos.\n\nDeseja manter mesmo assim?`
-          );
-
-          if (!confirmar) {
-            select.value = '';
-          }
-        }
+        select.dataset.previous = select.value;
       }
 
       function preencherSelects() {
@@ -2161,7 +2533,8 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
 
       function montarDadosEscala() {
         const dados = {
-          versao: 14,
+          versao: 15,
+          configuracao: NocRules.config,
           atualizadoEm: new Date().toISOString(),
           escalaId: $('escalaId').value.trim(),
           nomeEscala: garantirNomeEscala(),
@@ -2195,15 +2568,19 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
       function carregarDadosEscala(dados) {
         $('escalaId').value = dados.escalaId || '';
         $('nomeEscala').value = dados.nomeEscala || nomeEscalaPadrao();
-        $('tituloPagina').innerText = dados.titulo || 'Admin - Escala de Plantão';
+        $('tituloPagina').innerText = 'Escala NOC';
         $('mes').value = String(dados.mesNumero ?? 0);
         $('ano').value = dados.ano || new Date().getFullYear();
         $('setor').value = dados.setor || 'NOC';
         $('telefone').value = dados.telefoneNoc || '98449-1917';
         $('observacoes').value = dados.observacoes || $('observacoes').value;
+        $('nomeEscala').dataset.personalizado=(!dados.nomeEscala || dados.nomeEscala===nomeEscalaPadrao() || dados.nomeEscala==='Escala NOC')?'':'sim';
+        sincronizarNome();
 
         ferias = dados.ferias || [];
         atualizarListaFerias();
+        limitesEscala = [];
+        carregarLimites(dados).then(atualizarConflitos).catch(e=>aviso(e.message,"erro"));
 
         bodyTabela().innerHTML = '';
         (dados.linhas || []).forEach(montarLinha);
@@ -2293,6 +2670,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           return null;
         }
 
+        if (!await validarParaSalvar(dados)) return null;
         dados.atualizadoEm = new Date().toISOString();
 
         const idEscala = gerarIdEscalaMensal(dados);
@@ -2308,9 +2686,20 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           atualizado_em: agora
         };
 
+        // Atualiza também a publicação manual quando ela representa este mesmo mês.
+        let atualManual;
+        try {
+          const resultado=await supabase.from('escalas').select('dados').eq('id',gerarIdEscalaAtual(dados)).maybeSingle();
+          if(resultado.error)throw resultado.error;
+          atualManual=resultado.data?.dados;
+        } catch(e){console.error(e);alert('Não foi possível verificar a escala publicada. Tente salvar novamente.');return null;}
+        const registros=[registro];
+        if(atualManual && Number(atualManual.ano)===Number(dados.ano) && Number(atualManual.mesNumero)===Number(dados.mesNumero)) {
+          registros.push({...registro,id:gerarIdEscalaAtual(dados)});
+        }
         const { error } = await supabase
           .from('escalas')
-          .upsert(registro, {
+          .upsert(registros, {
             onConflict: 'id'
           });
 
@@ -2320,12 +2709,13 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           return null;
         }
 
+        atualizarEtapas(5);
         salvarAutomatico();
         await carregarHistorico();
 
         if (mostrarMensagem) {
           alert(
-            `Escala do mês salva com sucesso.\n\nID: ${idEscala}\n\nEla aparecerá automaticamente para os plantonistas quando chegar esse mês.`
+            `Escala salva e horas recalculadas.\n\nID: ${idEscala}\n\nA página dos colaboradores verifica alterações automaticamente. Escalas futuras aparecem no mês correspondente.`
           );
         }
 
@@ -2408,6 +2798,7 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           return;
         }
 
+        if (!await validarParaSalvar(data.dados)) return;
         const idAtual = gerarIdEscalaAtual(data.dados);
 
         const confirmarNovamente = confirm(
@@ -2467,6 +2858,124 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         });
       }
 
+      const coresPlantonistas=['#007aff','#34c759','#ff9500','#af52de','#ff375f','#5ac8fa','#8e8e93'];
+      function graficoPlantonistas(reais, nomes) {
+        const cores=coresPlantonistas;
+        const total=reais.length;
+        let angulo=-Math.PI/2;
+        const legenda=[],fatias=[];
+        nomes.forEach((nome,i)=>{
+          const quantidade=reais.filter(r=>r.plantonista===nome).length;
+          const minutos=quantidade*NocRules.config.minutes;
+          const horas=Math.floor(minutos/60)+' h '+String(minutos%60).padStart(2,'0')+' min';
+          const detalhe=nome+' — '+quantidade+' plantões · '+horas;
+          const cor=cores[i%cores.length];
+          const attrs='data-pie-info="'+escapeHtml(detalhe)+'" aria-label="'+escapeHtml(detalhe)+'"';
+          legenda.push('<button type="button" '+attrs+'><span class="pie-dot" style="background:'+cor+'"></span>'+escapeHtml(nome)+'</button>');
+          if(!quantidade||!total)return;
+          const fim=angulo+quantidade/total*Math.PI*2;
+          const ponto=t=>[150+125*Math.cos(t),150+125*Math.sin(t)];
+          const [x1,y1]=ponto(angulo),[x2,y2]=ponto(fim);
+          const forma=quantidade===total?'<circle cx="150" cy="150" r="125"':'<path d="M150,150 L'+x1+','+y1+' A125,125 0 '+(fim-angulo>Math.PI?1:0)+' 1 '+x2+','+y2+' Z"';
+          fatias.push(forma+' class="pie-slice" fill="'+cor+'" tabindex="0" role="button" '+attrs+'><title>'+escapeHtml(detalhe)+'</title>'+(quantidade===total?'</circle>':'</path>'));
+          angulo=fim;
+        });
+        return '<div class="pie-card"><h3>Distribuição entre plantonistas</h3><p>Participação nas horas de sobreaviso do mês.</p><div class="pie-body"><svg class="pie-svg" viewBox="0 0 300 300" role="group" aria-label="Gráfico de pizza das horas por plantonista">'+(total?fatias.join(''):'<circle cx="150" cy="150" r="125" fill="#e5e5ea"/><text x="150" y="150" text-anchor="middle" fill="#6e6e73">Sem plantões</text>')+'</svg><div class="pie-legend">'+legenda.join('')+'</div></div><div id="pieDetail" class="pie-detail" aria-live="polite">Passe o mouse ou selecione um plantonista para ver plantões e horas.</div></div>';
+      }
+      function ligarGrafico() {
+        $('homeContent').querySelectorAll('[data-pie-info]').forEach(el=>{
+          const mostrar=()=>{$('pieDetail').innerText=el.dataset.pieInfo;};
+          el.addEventListener('pointerenter',mostrar);
+          el.addEventListener('focus',mostrar);
+          el.addEventListener('click',mostrar);
+          el.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();mostrar();}});
+        });
+      }
+
+      let observadorAlturaPlantoes;
+      function alinharColunaPlantoes() {
+        observadorAlturaPlantoes?.disconnect();
+        const painel=$('homeContent').querySelector('.pie-layout');
+        if(!painel){$('homeLive').style.removeProperty('--altura-plantoes');return;}
+        const ajustar=()=>{
+          const resumo=painel.querySelector('.month-total');
+          const quantidade=$('homeLive').querySelectorAll('.home-stat').length;
+          $('homeLive').style.setProperty('--altura-plantoes',Math.ceil(painel.getBoundingClientRect().height)+'px');
+          $('homeLive').style.setProperty('--altura-resumo',Math.ceil(resumo?.getBoundingClientRect().height||100)+'px');
+          $('homeLive').style.setProperty('--quantidade-proximos',Math.max(1,quantidade-1));
+        };
+        ajustar();
+        if(typeof ResizeObserver!=='undefined'){observadorAlturaPlantoes=new ResizeObserver(ajustar);observadorAlturaPlantoes.observe(painel);}
+      }
+      let registrosDashboard = [];
+      function renderizarDashboardInicial(registros = registrosDashboard) {
+        registrosDashboard = registros;
+        const setor = textoParaId($('setor').value.trim() || 'NOC');
+        const hoje = NocRules.today();
+        $('homeToday').innerText=new Intl.DateTimeFormat('pt-BR',{timeZone:NocRules.config.timeZone,weekday:'long',day:'numeric',month:'long'}).format(new Date(hoje+'T12:00:00Z')); 
+        const mensal=registros.find(r=>r.id===setor+'-'+hoje.slice(0,7));
+        const manual=registros.find(r=>r.id===setor+'-atual');
+        const atual=manual||mensal;
+        const ativas=(atual?.dados?.linhas||[]).filter(r=>r.plantonista);
+        const plantaoHoje=ativas.find(r=>NocRules.iso(r.data)===hoje);
+        const futuras=manual?ativas:registros.filter(r=>r.id.startsWith(setor+'-')&&!r.id.endsWith('-atual')).flatMap(r=>r.dados?.linhas||[]).filter(r=>r.plantonista);
+        const proximos=[...new Map(futuras.filter(r=>NocRules.iso(r.data)>hoje).sort((a,b)=>NocRules.iso(a.data).localeCompare(NocRules.iso(b.data))).map(r=>[r.data,r])).values()].slice(0,4);
+        function horasLegiveis(quantidade){const minutos=quantidade*NocRules.config.minutes;return Math.floor(minutos/60)+' h '+String(minutos%60).padStart(2,'0')+' min';}
+        function card(label,value,detail=''){return '<div class="home-stat"><small>'+escapeHtml(label)+'</small><strong>'+escapeHtml(value)+'</strong><span>'+escapeHtml(detail)+'</span></div>';}
+        $('homeLive').innerHTML='<div class="home-duty">'+card('Hoje',plantaoHoje?.plantonista||'Sem plantão publicado',plantaoHoje?hoje.split('-').reverse().join('/')+' · '+NocRules.horario:'Publique a escala para esta data')+
+          (proximos.length?proximos.map((r,i)=>card(i===0?'Próximo plantão':r.semana||'Plantão seguinte',r.plantonista,r.data+' · '+NocRules.horario)).join(''):card('Próximos plantões','Sem próximos publicados','Não há outros plantões disponíveis'))+
+          '</div><div class="live-source">'+escapeHtml(manual&&mensal&&manual.dados?.nomeEscala!==mensal.dados?.nomeEscala?'Escala em uso: '+(manual.dados?.nomeEscala||manual.nome||'escala atual'):'')+'</div>';
+
+        const mesesPublicados=registros.filter(r=>r.id.startsWith(setor+'-')&&!r.id.endsWith('-atual')).sort((a,b)=>b.id.localeCompare(a.id));
+        if(manual?.dados && Number.isInteger(Number(manual.dados.mesNumero)) && manual.dados.ano){
+          const id= setor+'-'+manual.dados.ano+'-'+String(Number(manual.dados.mesNumero)+1).padStart(2,'0');
+          if(!mesesPublicados.some(r=>r.id===id))mesesPublicados.push({...manual,id});
+        }
+        const anterior=$('homePeriod').value;
+        function periodo(r){return (r.dados?.mes || meses[Number(r.dados?.mesNumero)] || r.id.slice(-2))+' / '+(r.dados?.ano||r.id.slice(-7,-3));}
+        $('homePeriod').innerHTML=mesesPublicados.length?mesesPublicados.map(r=>'<option value="'+escapeHtml(r.id)+'">'+escapeHtml(periodo(r))+'</option>').join(''):'<option value="">Nenhum mês publicado</option>';
+        $('homePeriod').value=mesesPublicados.some(r=>r.id===anterior)?anterior:(mensal?.id||mesesPublicados[0]?.id||'');
+        const registro=mesesPublicados.find(r=>r.id===$('homePeriod').value);
+        if(!registro){observadorAlturaPlantoes?.disconnect();$('homeLive').style.removeProperty('--altura-plantoes');$('homeMonthLabel').innerText='Sem escala mensal publicada.';$('homeContent').innerHTML='<div class="home-empty">Crie uma escala na aba Criar escala e publique depois de conferir.</div>';return;}
+        $('homeMonthTitle').innerText='Horas da equipe';
+        $('homeMonthLabel').innerText=periodo(registro)+' · Escala publicada';
+        const linhas=registro.dados?.linhas||[],reais=linhas.filter(r=>r.plantonista);
+        const fimSemana=r=>['Sábado','Domingo'].includes(r.semana);
+        const nomes=[...new Set(colaboradores.concat(reais.map(r=>r.plantonista)))];
+        const maximo=Math.max(1,...nomes.map(nome=>reais.filter(r=>r.plantonista===nome).length));
+        const pendentes=linhas.length-reais.length;
+        $('homeContent').innerHTML='<div class="pie-layout"><div class="month-total"><small>Horas de sobreaviso no mês</small><strong>'+horasLegiveis(reais.length)+'</strong><p>'+reais.length+' plantões atribuídos</p>'+(pendentes?'<p>'+pendentes+' dia(s) sem responsável</p>':'')+'<div class="shift-note">Horário: '+NocRules.horario+'<br>Cada plantão soma 13 h 50 min.</div></div>'+graficoPlantonistas(reais,nomes)+'</div>'+
+          '<details class="metrics-detail"><summary><span>Detalhamento da equipe</span><small>Plantões, horas e dias especiais</small></summary><div class="metrics-table-wrap"><table class="home-table"><thead><tr><th scope="col">Colaborador</th><th scope="col">Plantões</th><th scope="col">Horas de sobreaviso</th><th scope="col">Finais de semana</th><th scope="col">Feriados</th></tr></thead><tbody>'+nomes.map((nome,i)=>{const rs=reais.filter(r=>r.plantonista===nome);return '<tr><th scope="row"><span class="table-person"><span class="pie-dot" style="background:'+coresPlantonistas[i%coresPlantonistas.length]+'"></span>'+escapeHtml(nome)+'</span></th><td><span class="shift-count">'+rs.length+'</span></td><td>'+horasLegiveis(rs.length)+'</td><td>'+rs.filter(fimSemana).length+'</td><td>'+rs.filter(r=>r.feriado).length+'</td></tr>';}).join('')+'</tbody><tfoot><tr><th scope="row">Total do mês</th><td>'+reais.length+'</td><td>'+horasLegiveis(reais.length)+'</td><td>'+reais.filter(fimSemana).length+'</td><td>'+reais.filter(r=>r.feriado).length+'</td></tr></tfoot></table></div><p class="metrics-note">Um feriado no sábado ou domingo é contabilizado nas duas colunas.</p></details>';
+
+        ligarGrafico();
+        alinharColunaPlantoes();
+
+      }
+
+      let registrosHistorico=[];
+      const normalizarPesquisa=texto=>String(texto||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+      function filtrarHistorico(registros,consulta) {
+        const termos=normalizarPesquisa(consulta).trim().split(/\s+/).filter(Boolean);
+        return registros.filter(item=>{
+          const d=item.dados||{};
+          const linhas=d.linhas||[];
+          const texto=normalizarPesquisa([item.nome,item.id,d.nomeEscala,d.mes,d.ano,d.setor,...linhas.flatMap(r=>[r.data,r.semana,r.plantonista])].join(' '));
+          return termos.every(termo=>/^\d{1,2}$/.test(termo)?linhas.some(r=>Number(String(r.data).split('/')[0])===Number(termo)):texto.includes(termo));
+        });
+      }
+      function renderizarHistorico() {
+        const consulta=$('pesquisaHistorico').value;
+        const registros=filtrarHistorico(registrosHistorico,consulta);
+        $('historicoContagem').innerText=registros.length+' de '+registrosHistorico.length+' escalas';
+        if(!registros.length){$('historicoLista').innerHTML='<div class="vazio">'+(registrosHistorico.length?'Nenhuma escala encontrada para essa pesquisa.':'Nenhuma escala salva ainda.')+'</div>';return;}
+        $('historicoLista').innerHTML='<div class="history-table-wrap"><table class="history-table"><thead><tr><th scope="col">Escala</th><th scope="col">Período</th><th scope="col">Plantões</th><th scope="col">Última atualização</th><th scope="col">Ações</th></tr></thead><tbody>'+registros.map(item=>{
+          const d=item.dados||{};
+          const nome=item.nome||d.nomeEscala||item.id;
+          const atualizado=item.atualizado_em?new Date(item.atualizado_em).toLocaleString('pt-BR',{timeZone:NocRules.config.timeZone,dateStyle:'short',timeStyle:'short'}):'—';
+          return '<tr><td><strong>'+escapeHtml(nome)+'</strong><small>'+escapeHtml(d.setor||'NOC')+'</small></td><td>'+escapeHtml((d.mes||'—')+' / '+(d.ano||'—'))+'</td><td>'+(d.linhas||[]).filter(r=>r.plantonista).length+'</td><td>'+escapeHtml(atualizado)+'</td><td><div class="historico-acoes"><button type="button" class="btn-secundario" data-abrir-historico="'+escapeHtml(item.id)+'">Abrir / editar</button><button type="button" class="btn-verde" data-publicar-historico="'+escapeHtml(item.id)+'">Publicar atual</button></div></td></tr>';
+        }).join('')+'</tbody></table></div>';
+      }
+
       async function carregarHistorico() {
         try {
           $('historicoLista').innerHTML = '<div class="vazio">Carregando histórico...</div>';
@@ -2481,43 +2990,20 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
 
           if (error) {
             console.error(error);
+            $('homeLive').innerHTML = '<div class="home-empty">Não foi possível carregar a escala em uso.</div>';
+            $('homeContent').innerHTML = '<div class="home-empty">Não foi possível carregar o dashboard. Clique na aba Dashboard para tentar novamente.</div>';
             $('historicoLista').innerHTML = '<div class="vazio">Não foi possível carregar o histórico.</div>';
             return;
           }
 
-          const registros = (data || []).filter((item) => !item.id.endsWith('-atual'));
+          renderizarDashboardInicial(data || []);
+          registrosHistorico=(data || []).filter(item=>!item.id.endsWith('-atual'));
+          renderizarHistorico();
 
-          if (!registros.length) {
-            $('historicoLista').innerHTML = '<div class="vazio">Nenhuma escala salva ainda.</div>';
-            return;
-          }
-
-          $('historicoLista').innerHTML = registros.map((item) => {
-            const dados = item.dados || {};
-            const nome = item.nome || dados.nomeEscala || item.id;
-            const mesAno = `${dados.mes || '-'} / ${dados.ano || '-'}`;
-            const setor = dados.setor || '-';
-            const atualizado = item.atualizado_em ? new Date(item.atualizado_em).toLocaleString('pt-BR') : '-';
-
-            return `
-              <div class="historico-card">
-                <div class="historico-info">
-                  <strong>${escapeHtml(nome)}</strong>
-                  <span>Setor: ${escapeHtml(setor)}</span>
-                  <span>ID: ${escapeHtml(item.id)}</span>
-                  <span>Mês/Ano: ${escapeHtml(mesAno)}</span>
-                  <span>Atualizado em: ${escapeHtml(atualizado)}</span>
-                </div>
-
-                <div class="historico-acoes">
-                  <button class="btn-secundario" type="button" data-abrir-historico="${escapeHtml(item.id)}">Abrir</button>
-                  <button class="btn-verde" type="button" data-publicar-historico="${escapeHtml(item.id)}">Publicar atual</button>
-                </div>
-              </div>
-            `;
-          }).join('');
         } catch (erro) {
           console.error(erro);
+          $('homeLive').innerHTML = '<div class="home-empty">Não foi possível carregar a escala em uso.</div>';
+          $('homeContent').innerHTML = '<div class="home-empty">Não foi possível carregar os dados. Tente atualizar novamente.</div>';
           $('historicoLista').innerHTML = '<div class="vazio">Erro inesperado ao carregar o histórico.</div>';
         }
       }
@@ -2616,47 +3102,12 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         window.print();
       }
 
-      function verificarEscala() {
-        const dados = montarDadosEscala();
-        const problemas = [];
-
-        if (!dados.linhas.length) {
-          aviso('Nenhuma escala foi gerada.', 'erro');
-          return;
-        }
-
-        const totalDias = new Date(dados.ano, dados.mesNumero + 1, 0).getDate();
-
-        if (dados.linhas.length !== totalDias) {
-          problemas.push(`A escala tem ${dados.linhas.length} linha(s), mas o mês tem ${totalDias} dia(s).`);
-        }
-
-        dados.linhas.forEach((linha, index) => {
-          const diaSemana = nomesSemana.indexOf(linha.semana);
-          const esperado = horarioPorDia(diaSemana, linha.feriado);
-
-          if (!linha.data) problemas.push(`Linha ${index + 1}: data em branco.`);
-          if (diaSemana === -1) problemas.push(`${linha.data || 'Linha ' + (index + 1)}: dia da semana inválido.`);
-          if (!linha.plantonista) problemas.push(`${linha.data || 'Linha ' + (index + 1)}: sem plantonista.`);
-          if (linha.horario !== esperado) problemas.push(`${linha.data}: horário deveria ser ${esperado}.`);
-
-          if (linha.plantonista && feriasNoDia(linha.plantonista, linha.data)) {
-            problemas.push(`${linha.data}: ${linha.plantonista} está de férias.`);
-          }
-
-          if (index > 0 && linha.plantonista && linha.plantonista === dados.linhas[index - 1].plantonista) {
-            problemas.push(`${dados.linhas[index - 1].data} e ${linha.data}: ${linha.plantonista} está em dois dias seguidos.`);
-          }
-        });
-
+      async function verificarEscala() {
+        const dados=montarDadosEscala();
+        try { await carregarLimites(dados); } catch(e) { aviso(e.message,'erro'); return; }
+        const problemas=NocRules.errors(dados,limitesEscala);
         atualizarConflitos();
-
-        aviso(
-          problemas.length
-            ? '⚠️ Verifique:\n\n' + problemas.join('\n')
-            : '✅ Escala verificada: nenhum problema encontrado.',
-          problemas.length ? 'erro' : 'ok'
-        );
+        aviso(problemas.length?problemas.join('\n'):'Escala verificada: todas as regras atendidas.',problemas.length?'erro':'ok');
       }
 
       function proximoPlantao() {
@@ -2738,7 +3189,25 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
           carregarHistorico();
         }
 
-        $('btnNovaEscala').onclick = novaEscala;
+        $('homePeriod').onchange = () => renderizarDashboardInicial();
+        $('setor').addEventListener('change',()=>renderizarDashboardInicial());
+        ['Dashboard','Create','History'].forEach((nome,i)=>{
+          $('tab'+nome).onclick=()=>{ mudarArea(nome); if(nome==='Dashboard'||nome==='History') carregarHistorico(); };
+          $('tab'+nome).addEventListener('keydown',e=>{
+            if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+            e.preventDefault();const nomes=['Dashboard','Create','History'];const indice=e.key==='Home'?0:e.key==='End'?2:(i+(e.key==='ArrowRight'?1:2))%3;
+            mudarArea(nomes[indice]);$('tab'+nomes[indice]).focus();
+          });
+        });
+        $('wizardNext').onclick=()=>{
+          const ano=Number($('ano').value);
+          if(!Number.isInteger(ano)||ano<2000||ano>2100){aviso('Informe um ano entre 2000 e 2100.','erro');$('ano').focus();return;}
+          sincronizarNome();limparAviso();definirEtapa(2);
+        };
+        $('wizardBack').onclick=()=>definirEtapa(Math.max(1,etapaCriacao-1));
+        [1,2,3].forEach(n=>$('wizardStep'+n).onclick=()=>definirEtapa(n));
+        $('nomeEscala').addEventListener('input',()=>{$('nomeEscala').dataset.personalizado='sim';});
+        ['mes','ano','setor'].forEach(id=>$(id).addEventListener('change',sincronizarNome));
         $('btnGerar').onclick = gerarEscala;
         $('btnSalvarMes').onclick = () => salvarEscalaDoMes(true);
         $('btnPublicarAtual').onclick = publicarComoAtualAgora;
@@ -2746,7 +3215,6 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         $('btnFeriados').onclick = () => buscarFeriadosNacionais(true);
         $('btnVerificar').onclick = verificarEscala;
         $('btnProximo').onclick = proximoPlantao;
-        $('btnResumo').onclick = atualizarResumo;
         $('btnCarregarAtual').onclick = carregarEscalaAtualManual;
         $('btnCarregar').onclick = carregarRascunho;
         $('btnBaixarPdf').onclick = baixarPdf;
@@ -2754,9 +3222,8 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
         $('btnAlternarTabela').onclick = alternarTabela;
         $('btnLimpar').onclick = limparTabela;
         $('btnAdicionarFerias').onclick = adicionarFerias;
-        $('btnHistorico').onclick = carregarHistorico;
-        $('btnAtualizarHistorico2').onclick = carregarHistorico;
 
+        $('pesquisaHistorico').addEventListener('input',renderizarHistorico);
         $('historicoLista').onclick = (event) => {
           const abrirId = event.target.getAttribute('data-abrir-historico');
           const publicarId = event.target.getAttribute('data-publicar-historico');
@@ -2821,6 +3288,9 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
       }
 
       preencherSelects();
+      sincronizarNome();
+      definirEtapa(1);
+      mudarArea('Dashboard');
       atualizarListaFerias();
       ligarEventos();
       atualizarTudo();
