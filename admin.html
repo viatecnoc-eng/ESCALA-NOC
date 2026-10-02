@@ -1529,7 +1529,7 @@
     </nav>
     <div id="viewDashboard" class="page-view" role="tabpanel" aria-labelledby="tabDashboard">
     <section class="home-dashboard" aria-labelledby="homeTitle">
-      <div class="home-heading"><div><h2 id="homeTitle">Plantões NOC</h2><p id="homeSubtitle">Todos os plantões: 08:00 às 21:50.</p></div></div>
+      <div class="home-heading"><div><h2 id="homeTitle">Plantões NOC</h2><p id="homeSubtitle">Horários conforme o dia da escala.</p></div></div>
 
       <div class="month-heading"><div><h3 id="homeMonthTitle">Resumo mensal</h3><p id="homeMonthLabel">Selecione o mês para consultar a distribuição.</p></div><div class="home-filter"><label for="homePeriod">Mês</label><select id="homePeriod"><option value="">Carregando…</option></select></div></div>
       <div id="homeContent" aria-live="polite"><div class="home-empty">Carregando resumo do mês…</div></div>
@@ -1554,7 +1554,7 @@
     <div id="aviso" class="aviso"></div>
 
     <div id="painelConfiguracao" class="bloco bloco-destaque">
-      <div id="wizardPeriod" class="wizard-panel"><h3 class="wizard-title">Qual período você quer preparar?</h3><p class="wizard-description">Todos os dias terão plantão das 08:00 às 21:50.</p>
+      <div id="wizardPeriod" class="wizard-panel"><h3 class="wizard-title">Qual período você quer preparar?</h3><p class="wizard-description">Seg–sex: 17:45–21:50. Sábado: 12:00–21:50. Domingo e feriados: 08:00–21:50.</p>
       <div class="grid5">
         <div class="campo">
           <label>Nome da escala</label>
@@ -1605,7 +1605,7 @@
         <button id="btnAdicionarFerias" class="btn-secundario" type="button">Adicionar indisponibilidade</button>
       </div>
 
-      <div class="rules-note"><span>13h50 por plantão</span><span>Ninguém em dias consecutivos</span><span>Férias e ausências obrigatórias</span></div>
+      <div class="rules-note"><span>Horas conforme o dia</span><span>Ninguém em dias consecutivos</span><span>Férias e ausências obrigatórias</span></div>
       <div id="listaFerias" class="lista-ferias"></div>
       <p class="wizard-description">Os feriados nacionais são consultados na geração. Feriados municipais podem ser marcados na conferência.</p></div>
       <div id="wizardReview" class="wizard-panel" hidden><h3 class="wizard-title">Confira antes de publicar</h3><p class="wizard-description">Revise a tabela abaixo, resolva os conflitos e publique o mês quando estiver pronto.</p></div>
@@ -1674,7 +1674,7 @@
 
         <div class="obs">
           <label>Observações gerais</label>
-          <textarea id="observacoes">Todos os plantões: 08:00 às 21:50 (13h50). João: segunda, sábado e domingo, inclusive em feriados. Ninguém pode fazer dois dias consecutivos. Férias e indisponibilidades são obrigatórias.</textarea>
+          <textarea id="observacoes">Seg–sex: 17:45 às 21:50 (4h05). Sábado: 12:00 às 21:50 (9h50). Domingo e feriados: 08:00 às 21:50 (13h50). João: segunda, sábado e domingo, inclusive em feriados. Ninguém pode fazer dois dias consecutivos. Férias e indisponibilidades são obrigatórias.</textarea>
         </div>
       </div>
 
@@ -1745,12 +1745,17 @@
   </div>
 
   <!-- NOC_RULES_START -->
-  <script>
+<script>
 /* Configuração e regras compartilhadas entre administração e página pública. */
 (function(root){
 const team=['André','Bruno','Emanuel','Guilherme','João','Ricardo'];
-const config=Object.freeze({start:'08:00',end:'21:50',minutes:830,timeZone:'America/Sao_Paulo'});
-const horario=config.start+' às '+config.end;
+const config=Object.freeze({end:'21:50',weekday:Object.freeze({start:'17:45',minutes:245}),saturday:Object.freeze({start:'12:00',minutes:590}),holiday:Object.freeze({start:'08:00',minutes:830}),timeZone:'America/Sao_Paulo'});
+const descricao='Seg–sex: 17:45–21:50 · Sáb: 12:00–21:50 · Dom/feriados: 08:00–21:50';
+function shift(row){const day=typeof row==='number'?row:date(row.data).getUTCDay();return row?.feriado||day===0?config.holiday:day===6?config.saturday:config.weekday;}
+function horario(row){return shift(row).start+' às '+config.end;}
+function totalMinutes(rows){return rows.filter(r=>r.plantonista).reduce((sum,r)=>sum+shift(r).minutes,0);}
+function formatMinutes(m){return Math.floor(m/60)+'h'+String(m%60).padStart(2,'0');}
+function readableHours(rows){const m=totalMinutes(rows);return Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min';}
 function iso(br){return String(br).split('/').reverse().join('-');}
 function date(br){return new Date(iso(br)+'T12:00:00Z');}
 function allowed(name,br,vacations=[]){return team.includes(name)&&(name!=='João'||[0,1,6].includes(date(br).getUTCDay()))&&!vacations.some(v=>v.nome===name&&iso(br)>=v.inicio&&iso(br)<=v.fim);}
@@ -1766,32 +1771,32 @@ function errors(data,neighbors=[]){
  seen.add(key);
  if(Number.isFinite(+d)&&['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'][d.getUTCDay()]!==r.semana)out.push(r.data+': dia da semana incorreto.');
  if(!allowed(r.plantonista,r.data,vac))out.push(r.data+': colaborador ausente, indisponível ou fora dos dias permitidos.');
- if(r.horario!==horario)out.push(r.data+': horário deve ser '+horario+'.');
+ if(r.horario!==horario(r))out.push(r.data+': horário deve ser '+horario(r)+'.');
  if(r.plantonista&&rows.concat(neighbors).some(o=>o!==r&&o.plantonista===r.plantonista&&consecutive(o.data,r.data)))out.push(r.data+': '+r.plantonista+' em dias consecutivos.');
  });return [...new Set(out)];
 }
 function generate(rows,vac=[],neighbors=[]){
- const stats=Object.fromEntries(team.map(n=>[n,{total:0,weekend:0,holiday:0}]));
- const result=rows.map(r=>({...r,plantonista:'',horario}));
+ const stats=Object.fromEntries(team.map(n=>[n,{total:0,minutes:0,weekend:0,holiday:0}]));
+ const result=rows.map(r=>({...r,plantonista:'',horario:horario(r)}));
  let attempts=0;
  function solve(i){if(i===result.length)return true;if(++attempts>100000)return false;
  const r=result[i],weekend=[0,6].includes(date(r.data).getUTCDay());
  const candidates=team.filter(n=>allowed(n,r.data,vac)&&!(i&&result[i-1].plantonista===n)&&!neighbors.some(o=>o.plantonista===n&&consecutive(o.data,r.data)));
  candidates.sort((a,b)=>score(a)-score(b)||team.indexOf(a)-team.indexOf(b));
- function score(n){const s=stats[n];return s.total+(weekend?s.weekend*1.6:0)+(r.feriado?s.holiday*2:0);}
- for(const n of candidates){r.plantonista=n;const s=stats[n];s.total++;s.weekend+=+weekend;s.holiday+=+!!r.feriado;
- if(solve(i+1))return true;s.total--;s.weekend-=+weekend;s.holiday-=+!!r.feriado;r.plantonista='';}
+ function score(n){const s=stats[n];return s.minutes/245+(weekend?s.weekend*1.6:0)+(r.feriado?s.holiday*2:0);}
+ for(const n of candidates){r.plantonista=n;const s=stats[n];s.total++;s.minutes+=shift(r).minutes;s.weekend+=+weekend;s.holiday+=+!!r.feriado;
+ if(solve(i+1))return true;s.total--;s.minutes-=shift(r).minutes;s.weekend-=+weekend;s.holiday-=+!!r.feriado;r.plantonista='';}
  return false;}
  if(!solve(0))throw new Error('Não foi possível preencher o período respeitando todas as regras. Revise as indisponibilidades.');
  return result;
 }
-function hours(count){const m=count*config.minutes;return Math.floor(m/60)+'h'+String(m%60).padStart(2,'0');}
+function hours(rows){return formatMinutes(totalMinutes(rows));}
 function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:config.timeZone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
-root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours,today};
+root.NocRules={team,config,descricao,shift,totalMinutes,readableHours,horario,iso,allowed,consecutive,errors,generate,hours,today};
 })(globalThis);
 
-  </script>
-  <!-- NOC_RULES_END -->
+</script>
+<!-- NOC_RULES_END -->
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -1949,7 +1954,7 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
         return ferias.find((f) => f.nome === nome && iso >= f.inicio && iso <= f.fim) || null;
       }
 
-      function horarioPorDia() { return NocRules.horario; }
+      function horarioPorDia(diaSemana,feriado) { return NocRules.horario(feriado?{data:'01/01/2026',feriado:true}:diaSemana); }
 
       function classeDia(diaSemana, feriado) {
         if (feriado || diaSemana === 0) return 'domingo';
@@ -2090,7 +2095,7 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
           <td class="celula-bloqueada">${escapeHtml(semana)}</td>
           <td><input type="checkbox" class="check-feriado" ${feriado ? 'checked' : ''}></td>
           <td>${criarSelect(plantonista)}</td>
-          <td class="celula-bloqueada">${escapeHtml(NocRules.horario)}</td>
+          <td class="celula-bloqueada">${escapeHtml(NocRules.horario(item))}</td>
           <td>${telefoneHtml()}</td>
           <td contenteditable="true">${escapeHtml(limparObservacaoAutomatica(item.observacao))}</td>
         `;
@@ -2330,9 +2335,9 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
         const reais=dados.linhas.filter(r=>r.plantonista);
         const linhasDOM=Array.from(bodyTabela().rows);
         const conflitos=linhasDOM.filter((linha,i)=>linhaTemConflito(linha,i,linhasDOM)).length;
-        const horas=quantidade=>{const m=quantidade*NocRules.config.minutes;return Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min';};
+        const horas=NocRules.readableHours;
         $('dashboardGeral').innerHTML=
-          '<div class="review-metric"><small>Horas de sobreaviso</small><strong>'+horas(reais.length)+'</strong></div>'+
+          '<div class="review-metric"><small>Horas de sobreaviso</small><strong>'+horas(reais)+'</strong></div>'+
           '<div class="review-metric"><small>Plantões preenchidos</small><strong>'+reais.length+'<span> / '+geral.total+'</span></strong></div>'+
           '<div class="review-metric '+(geral.semPlantonista?'review-warning':'')+'"><small>Sem responsável</small><strong>'+geral.semPlantonista+'</strong></div>'+
           '<div class="review-metric '+(conflitos?'review-warning':'')+'"><small>Dias com problemas</small><strong>'+conflitos+'</strong></div>';
@@ -2342,7 +2347,7 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
           const fins=rs.filter(r=>!r.feriado && ['Sábado','Domingo'].includes(r.semana)).length;
           const uteis=rs.length-feriados-fins;
           const proporcao=q=>rs.length?q/rs.length*100:0;
-          return '<div class="card-colaborador"><div class="nome"><strong>'+escapeHtml(nome)+'</strong><span class="total">'+rs.length+' plantões</span></div><div class="linha-metrica"><span>Horas de sobreaviso</span><strong>'+NocRules.hours(rs.length)+'</strong></div><div class="linha-metrica"><span>Dias úteis</span><strong>'+uteis+'</strong></div><div class="linha-metrica"><span>Final de semana</span><strong>'+fins+'</strong></div><div class="linha-metrica"><span>Feriados</span><strong>'+feriados+'</strong></div><div class="barra-distribuicao" title="Dias úteis, finais de semana e feriados"><div class="barra-util" style="width:'+proporcao(uteis)+'%"></div><div class="barra-fds" style="width:'+proporcao(fins)+'%"></div><div class="barra-feriado" style="width:'+proporcao(feriados)+'%"></div></div></div>';
+          return '<div class="card-colaborador"><div class="nome"><strong>'+escapeHtml(nome)+'</strong><span class="total">'+rs.length+' plantões</span></div><div class="linha-metrica"><span>Horas de sobreaviso</span><strong>'+NocRules.hours(rs)+'</strong></div><div class="linha-metrica"><span>Dias úteis</span><strong>'+uteis+'</strong></div><div class="linha-metrica"><span>Final de semana</span><strong>'+fins+'</strong></div><div class="linha-metrica"><span>Feriados</span><strong>'+feriados+'</strong></div><div class="barra-distribuicao" title="Dias úteis, finais de semana e feriados"><div class="barra-util" style="width:'+proporcao(uteis)+'%"></div><div class="barra-fds" style="width:'+proporcao(fins)+'%"></div><div class="barra-feriado" style="width:'+proporcao(feriados)+'%"></div></div></div>';
         }).join('');
 
       }
@@ -2908,22 +2913,22 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
       const coresPlantonistas=['#007aff','#34c759','#ff9500','#af52de','#ff375f','#5ac8fa','#8e8e93'];
       function graficoPlantonistas(reais, nomes) {
         const cores=coresPlantonistas;
-        const total=reais.length;
+        const total=NocRules.totalMinutes(reais);
         let angulo=-Math.PI/2;
         const legenda=[],fatias=[];
         nomes.forEach((nome,i)=>{
           const quantidade=reais.filter(r=>r.plantonista===nome).length;
-          const minutos=quantidade*NocRules.config.minutes;
+          const minutos=NocRules.totalMinutes(reais.filter(r=>r.plantonista===nome));
           const horas=Math.floor(minutos/60)+' h '+String(minutos%60).padStart(2,'0')+' min';
           const detalhe=nome+' — '+quantidade+' plantões · '+horas;
           const cor=cores[i%cores.length];
           const attrs='data-pie-info="'+escapeHtml(detalhe)+'" aria-label="'+escapeHtml(detalhe)+'"';
           legenda.push('<button type="button" '+attrs+'><span class="pie-dot" style="background:'+cor+'"></span>'+escapeHtml(nome)+'</button>');
-          if(!quantidade||!total)return;
-          const fim=angulo+quantidade/total*Math.PI*2;
+          if(!minutos||!total)return;
+          const fim=angulo+minutos/total*Math.PI*2;
           const ponto=t=>[150+125*Math.cos(t),150+125*Math.sin(t)];
           const [x1,y1]=ponto(angulo),[x2,y2]=ponto(fim);
-          const forma=quantidade===total?'<circle cx="150" cy="150" r="125"':'<path d="M150,150 L'+x1+','+y1+' A125,125 0 '+(fim-angulo>Math.PI?1:0)+' 1 '+x2+','+y2+' Z"';
+          const forma=minutos===total?'<circle cx="150" cy="150" r="125"':'<path d="M150,150 L'+x1+','+y1+' A125,125 0 '+(fim-angulo>Math.PI?1:0)+' 1 '+x2+','+y2+' Z"';
           fatias.push(forma+' class="pie-slice" fill="'+cor+'" tabindex="0" role="button" '+attrs+'><title>'+escapeHtml(detalhe)+'</title>'+(quantidade===total?'</circle>':'</path>'));
           angulo=fim;
         });
@@ -2967,10 +2972,10 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
         const plantaoHoje=ativas.find(r=>NocRules.iso(r.data)===hoje);
         const futuras=manual?ativas:registros.filter(r=>r.id.startsWith(setor+'-')&&!r.id.endsWith('-atual')).flatMap(r=>r.dados?.linhas||[]).filter(r=>r.plantonista);
         const proximos=[...new Map(futuras.filter(r=>NocRules.iso(r.data)>hoje).sort((a,b)=>NocRules.iso(a.data).localeCompare(NocRules.iso(b.data))).map(r=>[r.data,r])).values()].slice(0,4);
-        function horasLegiveis(quantidade){const minutos=quantidade*NocRules.config.minutes;return Math.floor(minutos/60)+' h '+String(minutos%60).padStart(2,'0')+' min';}
+        const horasLegiveis=NocRules.readableHours;
         function card(label,value,detail=''){return '<div class="home-stat"><small>'+escapeHtml(label)+'</small><strong>'+escapeHtml(value)+'</strong><span>'+escapeHtml(detail)+'</span></div>';}
-        $('homeLive').innerHTML='<div class="home-duty">'+card('Hoje',plantaoHoje?.plantonista||'Sem plantão publicado',plantaoHoje?hoje.split('-').reverse().join('/')+' · '+NocRules.horario:'Publique a escala para esta data')+
-          (proximos.length?proximos.map((r,i)=>card(i===0?'Próximo plantão':r.semana||'Plantão seguinte',r.plantonista,r.data+' · '+NocRules.horario)).join(''):card('Próximos plantões','Sem próximos publicados','Não há outros plantões disponíveis'))+
+        $('homeLive').innerHTML='<div class="home-duty">'+card('Hoje',plantaoHoje?.plantonista||'Sem plantão publicado',plantaoHoje?hoje.split('-').reverse().join('/')+' · '+NocRules.horario(plantaoHoje):'Publique a escala para esta data')+
+          (proximos.length?proximos.map((r,i)=>card(i===0?'Próximo plantão':r.semana||'Plantão seguinte',r.plantonista,r.data+' · '+NocRules.horario(r))).join(''):card('Próximos plantões','Sem próximos publicados','Não há outros plantões disponíveis'))+
           '</div><div class="live-source">'+escapeHtml(manual&&mensal&&manual.dados?.nomeEscala!==mensal.dados?.nomeEscala?'Escala em uso: '+(manual.dados?.nomeEscala||manual.nome||'escala atual'):'')+'</div>';
 
         const mesesPublicados=registros.filter(r=>r.id.startsWith(setor+'-')&&!r.id.endsWith('-atual')).sort((a,b)=>b.id.localeCompare(a.id));
@@ -2991,8 +2996,8 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
         const nomes=[...new Set(colaboradores.concat(reais.map(r=>r.plantonista)))];
         const maximo=Math.max(1,...nomes.map(nome=>reais.filter(r=>r.plantonista===nome).length));
         const pendentes=linhas.length-reais.length;
-        $('homeContent').innerHTML='<div class="pie-layout"><div class="month-total"><small>Horas de sobreaviso no mês</small><strong>'+horasLegiveis(reais.length)+'</strong><p>'+reais.length+' plantões atribuídos</p>'+(pendentes?'<p>'+pendentes+' dia(s) sem responsável</p>':'')+'<div class="shift-note">Horário: '+NocRules.horario+'<br>Cada plantão soma 13 h 50 min.</div></div>'+graficoPlantonistas(reais,nomes)+'</div>'+
-          '<details class="metrics-detail"><summary><span>Detalhamento da equipe</span><small>Plantões, horas e dias especiais</small></summary><div class="metrics-table-wrap"><table class="home-table"><thead><tr><th scope="col">Colaborador</th><th scope="col">Plantões</th><th scope="col">Horas de sobreaviso</th><th scope="col">Finais de semana</th><th scope="col">Feriados</th></tr></thead><tbody>'+nomes.map((nome,i)=>{const rs=reais.filter(r=>r.plantonista===nome);return '<tr><th scope="row"><span class="table-person"><span class="pie-dot" style="background:'+coresPlantonistas[i%coresPlantonistas.length]+'"></span>'+escapeHtml(nome)+'</span></th><td><span class="shift-count">'+rs.length+'</span></td><td>'+horasLegiveis(rs.length)+'</td><td>'+rs.filter(fimSemana).length+'</td><td>'+rs.filter(r=>r.feriado).length+'</td></tr>';}).join('')+'</tbody><tfoot><tr><th scope="row">Total do mês</th><td>'+reais.length+'</td><td>'+horasLegiveis(reais.length)+'</td><td>'+reais.filter(fimSemana).length+'</td><td>'+reais.filter(r=>r.feriado).length+'</td></tr></tfoot></table></div><p class="metrics-note">Um feriado no sábado ou domingo é contabilizado nas duas colunas.</p></details>';
+        $('homeContent').innerHTML='<div class="pie-layout"><div class="month-total"><small>Horas de sobreaviso no mês</small><strong>'+horasLegiveis(reais)+'</strong><p>'+reais.length+' plantões atribuídos</p>'+(pendentes?'<p>'+pendentes+' dia(s) sem responsável</p>':'')+'<div class="shift-note">'+escapeHtml(NocRules.descricao)+'</div></div>'+graficoPlantonistas(reais,nomes)+'</div>'+
+          '<details class="metrics-detail"><summary><span>Detalhamento da equipe</span><small>Plantões, horas e dias especiais</small></summary><div class="metrics-table-wrap"><table class="home-table"><thead><tr><th scope="col">Colaborador</th><th scope="col">Plantões</th><th scope="col">Horas de sobreaviso</th><th scope="col">Finais de semana</th><th scope="col">Feriados</th></tr></thead><tbody>'+nomes.map((nome,i)=>{const rs=reais.filter(r=>r.plantonista===nome);return '<tr><th scope="row"><span class="table-person"><span class="pie-dot" style="background:'+coresPlantonistas[i%coresPlantonistas.length]+'"></span>'+escapeHtml(nome)+'</span></th><td><span class="shift-count">'+rs.length+'</span></td><td>'+horasLegiveis(rs)+'</td><td>'+rs.filter(fimSemana).length+'</td><td>'+rs.filter(r=>r.feriado).length+'</td></tr>';}).join('')+'</tbody><tfoot><tr><th scope="row">Total do mês</th><td>'+reais.length+'</td><td>'+horasLegiveis(reais.length)+'</td><td>'+reais.filter(fimSemana).length+'</td><td>'+reais.filter(r=>r.feriado).length+'</td></tr></tfoot></table></div><p class="metrics-note">Um feriado no sábado ou domingo é contabilizado nas duas colunas.</p></details>';
 
         ligarGrafico();
         alinharColunaPlantoes();
