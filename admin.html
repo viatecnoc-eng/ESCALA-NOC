@@ -1274,8 +1274,8 @@
           <label>Observações gerais</label>
           <textarea id="observacoes">REGRAS DE ESCALA:
 Segunda a sexta: 17:45 às 21:50
-Sábado: 12:00 às 19:00
-Domingo e feriados: 08:00 às 19:00
+Sábado: 12:00 às 21:50
+Domingo e feriados: 08:00 às 21:50
 João: fixo em todas as segundas-feiras, salvo férias.
 Regra automática: ao gerar a escala, João entra preferencialmente nas segundas, finais de semana e feriados.
 Ajuste manual: se necessário, o administrador pode colocar João em outro dia manualmente.</textarea>
@@ -1506,8 +1506,8 @@ Ajuste manual: se necessário, o administrador pode colocar João em outro dia m
       }
 
       function horarioPorDia(diaSemana, feriado) {
-        if (feriado || diaSemana === 0) return '08:00 às 19:00';
-        if (diaSemana === 6) return '12:00 às 19:00';
+        if (feriado || diaSemana === 0) return '08:00 às 21:50';
+        if (diaSemana === 6) return '12:00 às 21:50';
         return '17:45 às 21:50';
       }
 
