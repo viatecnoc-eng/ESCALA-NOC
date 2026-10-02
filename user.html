@@ -546,16 +546,83 @@
         margin: 10mm;
       }
     }
+
+    :root {--public-font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI Variable","Segoe UI",Arial,sans-serif;}
+    body {font-family:var(--public-font);background:white;color:#1d1d1f;line-height:1.5;-webkit-font-smoothing:antialiased;}
+    button,input,select {font-family:var(--public-font);}
+    .topo {align-items:center;border-bottom:1px solid #e5e5ea;padding-bottom:22px;margin-bottom:24px;}
+    .public-brand {display:flex;align-items:center;gap:18px;min-width:0;}
+    .public-logo {width:130px;height:auto;object-fit:contain;}
+    h1 {font-size:32px;color:#1d1d1f;font-weight:600;letter-spacing:-.035em;line-height:1.2;}
+    .subtitulo {color:#6e6e73;font-size:14px;}
+    button {border-radius:9px;min-height:42px;font-size:13px;font-weight:500;}
+    .public-duty {display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;}
+    .public-duty-card {border:1px solid #e5e5ea;border-left:3px solid #007aff;border-radius:12px;background:#f8fafc;padding:16px 20px;}
+    .public-duty-card:first-child {border-left-color:#34c759;}
+    .public-duty-card small {display:block;color:#6e6e73;font-size:12px;}
+    .public-duty-card strong {display:block;font-size:23px;font-weight:550;letter-spacing:-.02em;margin:5px 0;}
+    .public-duty-card span {display:block;font-size:12px;color:#6e6e73;}
+    .info-grid {grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;}
+    .card-info {background:#fafbfc;border:1px solid #e5e5ea;border-radius:10px;padding:13px 16px;min-width:0;}
+    .card-info label,.card-info small {font-size:11px;letter-spacing:0;text-transform:none;color:#6e6e73;}
+    .card-info span {font-size:14px;font-weight:500;overflow-wrap:anywhere;}
+    .painel-filtros {background:#f8fafc;border:1px solid #e5e5ea;border-radius:12px;padding:18px;gap:18px;align-items:end;}
+    .campo label {font-size:12px;font-weight:500;text-transform:none;color:#6e6e73;margin-bottom:7px;}
+    .campo select {font-size:14px;min-height:44px;border:1px solid #dbe1e8;border-radius:8px;background:white;max-width:100%;}
+    .botoes-visualizacao {display:flex;background:#edf0f5;border-radius:9px;padding:3px;gap:3px;}
+    .botoes-visualizacao button {background:transparent;color:#6e6e73;}
+    .botoes-visualizacao .btn-ativo {background:#fff;color:#1d4ed8;box-shadow:0 1px 5px #00000012;}
+    .legenda {font-size:12px;color:#6e6e73;gap:14px;flex-wrap:wrap;}
+    .cor {width:13px;height:13px;border-radius:3px;}
+    .contador {font-size:13px;color:#6e6e73;}
+    .tabela-wrapper {border:1px solid #e5e5ea;border-radius:12px;overflow-x:auto;}
+    table {width:100%;min-width:760px;}
+    thead th {background:#f5f7fb;color:#475569;font-size:12px;font-weight:500;padding:13px 12px;border-color:#e5e5ea;}
+    tbody td {font-size:14px;padding:12px;border-color:#e5e5ea;font-variant-numeric:tabular-nums;}
+    .card-plantao {box-shadow:none;border-color:#e5e5ea;padding:18px;}
+    .card-data strong {font-size:17px;letter-spacing:-.01em;color:#1d1d1f;}
+    .linha-card {font-size:14px;padding:9px 0;color:#6e6e73;align-items:center;}
+    .linha-card strong {color:#1d1d1f;font-weight:500;text-align:right;}
+    .linha-card a {text-decoration:none;color:#007aff;}
+    .badge {font-size:11px;font-weight:500;}
+    .observacoes {background:#fafbfc;border:1px solid #e5e5ea;border-radius:12px;}
+    @media screen {#areaPdf.container {width:100%;max-width:none;min-height:100vh;margin:0;padding:28px 36px;border:0;border-radius:0;box-shadow:none;}}
+    @media(min-width:1400px){.area-cards {grid-template-columns:repeat(4,minmax(0,1fr));}}
+    @media(max-width:1000px){.info-grid {grid-template-columns:repeat(3,minmax(0,1fr));}.painel-filtros {grid-template-columns:1fr 1fr;}.painel-filtros .campo:last-child {grid-column:1/-1;}}
+    @media screen and (max-width:750px){
+      #areaPdf.container {padding:20px 14px;}
+      .topo {align-items:stretch;gap:18px;}
+      .public-brand {gap:13px;}
+      .public-logo {width:95px;}
+      h1 {font-size:26px;}
+      .subtitulo {font-size:12px;}
+      .acoes {gap:8px;}
+      .acoes button {min-height:44px;}
+      .public-duty {grid-template-columns:1fr;gap:10px;}
+      .public-duty-card {padding:13px 16px;}
+      .public-duty-card strong {font-size:21px;}
+      .info-grid {grid-template-columns:1fr 1fr;gap:8px;}
+      .card-info {padding:11px 12px;}
+      .info-grid .card-info:last-child {grid-column:1/-1;}
+      .painel-filtros {grid-template-columns:1fr;padding:14px;gap:14px;}
+      .painel-filtros .campo:last-child {grid-column:auto;}
+      .area-cards {grid-template-columns:1fr;gap:12px;}
+      .linha-card strong {max-width:65%;overflow-wrap:anywhere;}
+      .legenda {gap:10px;font-size:11px;}
+      .observacoes {padding:14px;}
+    }
+    @media print {.public-duty {display:none;} .public-logo {width:100px;} table {min-width:0;}}
+
   </style>
 </head>
 
 <body>
   <div class="container" id="areaPdf">
     <div class="topo">
-      <div>
-        <h1>Escala de Plantão NOC</h1>
+      <div class="public-brand"><img src="logo_viatec.png" alt="ViaTec" class="public-logo"><div>
+        <h1>Escala NOC</h1>
         <div class="subtitulo" id="subtitulo">Carregando escala...</div>
-      </div>
+      </div></div>
 
       <div class="acoes">
         <button id="btnAtualizar" class="btn-secundario" type="button">Atualizar escala</button>
@@ -563,6 +630,7 @@
       </div>
     </div>
 
+    <div id="publicDuty" class="public-duty" aria-live="polite"></div>
     <div class="info-grid">
       <div class="card-info">
         <strong>Mês/Ano</strong>
@@ -612,7 +680,7 @@
       <div class="campo">
         <label>Visualização</label>
         <div class="botoes-visualizacao">
-          <button id="btnCards" class="btn-secundario" type="button">Cards</button>
+          <button id="btnCards" class="btn-secundario" type="button">Cartões</button>
           <button id="btnTabela" class="btn-secundario" type="button">Tabela completa</button>
         </div>
       </div>
@@ -656,11 +724,12 @@
     </div>
   </div>
 
+  <script src="noc-rules.js"></script>
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    const SUPABASE_URL = "https://qbgwlfxsyqirwkvezkdu.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_oPqwuXv53mXcWAUgXc8XHg_XTLH7clz";
+    const SUPABASE_URL = "https://zvhvxkwxrinflonpxzmp.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_4RJB6lPQupdRhD94p2rOZA_KALCaBUZ";
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -834,7 +903,7 @@
 
             <div class="linha-card">
               <span>Telefone</span>
-              <strong>${escapeHtml(telefone)}</strong>
+              <strong><a href="tel:${escapeHtml(String(telefone).replace(/[^+0-9]/g,''))}">${escapeHtml(telefone)}</a></strong>
             </div>
 
             ${item.observacao ? `<div class="obs-card">${escapeHtml(item.observacao)}</div>` : ''}
@@ -921,9 +990,19 @@
       origem.className = 'badge-origem';
     }
 
+    function preencherPlantoesDestaque() {
+      const hoje=NocRules.today();
+      const atuais=linhasOriginais.filter(r=>r.plantonista);
+      const atual=atuais.find(r=>NocRules.iso(r.data)===hoje);
+      const proximo=atuais.filter(r=>NocRules.iso(r.data)>hoje).sort((a,b)=>NocRules.iso(a.data).localeCompare(NocRules.iso(b.data)))[0];
+      function item(label,linha){return '<div class="public-duty-card"><small>'+label+'</small><strong>'+escapeHtml(linha?.plantonista||'Sem plantão publicado')+'</strong><span>'+escapeHtml(linha?linha.data+' · '+NocRules.horario:'Nenhuma data disponível na escala')+'</span></div>';}
+      $('publicDuty').innerHTML=item('Plantão de hoje',atual)+item('Próximo plantão',proximo);
+    }
+    let ultimaVersaoPublica='';
     function preencherTela(dados, atualizadoBanco, idCarregado, carregouFallback = false) {
+      ultimaVersaoPublica=JSON.stringify([idCarregado,atualizadoBanco,dados]);
       dadosEscala = dados;
-      linhasOriginais = dados.linhas || [];
+      linhasOriginais = (dados.linhas || []).map(r=>({...r,horario:NocRules.horario}));
       origemAtual = idCarregado;
 
       const mes = dados.mes || '-';
@@ -932,7 +1011,8 @@
       const telefone = dados.telefoneNoc || '-';
       const whatsapp = dados.whatsappNoc || '';
 
-      $('subtitulo').innerText = `${dados.nomeEscala || 'Escala'} - ${mes} de ${ano}`;
+      $('subtitulo').innerText = `${mes} de ${ano} · Sobreaviso das ${NocRules.config.start} às ${NocRules.config.end}`;
+      preencherPlantoesDestaque();
       $('mesAno').innerText = `${mes} / ${ano}`;
       $('setor').innerText = setor;
 
@@ -960,7 +1040,7 @@
 
       if (error) {
         console.error(`Erro ao buscar ${id}:`, error);
-        return null;
+        throw error;
       }
 
       if (!data || !data.dados) return null;
@@ -975,6 +1055,8 @@
       const idMes = idEscalaMesAtual();
 
       try {
+        const manual = await buscarEscalaPorId('noc-atual');
+        if (manual) { preencherTela(manual.dados,manual.atualizado_em,'noc-atual',true); aviso('Escala atual publicada manualmente pelo NOC.','ok'); return; }
         const escalaMes = await buscarEscalaPorId(idMes);
 
         if (escalaMes) {
@@ -1004,6 +1086,7 @@
           'erro'
         );
 
+        $('publicDuty').innerHTML='';
         $('subtitulo').innerText = 'Nenhuma escala publicada';
         $('mesAno').innerText = '-';
         $('setor').innerText = '-';
@@ -1021,6 +1104,22 @@
       }
     }
 
+    let consultaAutomaticaEmAndamento=false;
+    async function verificarAtualizacaoPublica() {
+      if(document.hidden || consultaAutomaticaEmAndamento)return;
+      consultaAutomaticaEmAndamento=true;
+      try {
+        const manual=await buscarEscalaPorId('noc-atual');
+        const id=manual?'noc-atual':idEscalaMesAtual();
+        const registro=manual||await buscarEscalaPorId(id);
+        if(registro){
+          const versao=JSON.stringify([id,registro.atualizado_em,registro.dados]);
+          if(versao!==ultimaVersaoPublica){preencherTela(registro.dados,registro.atualizado_em,id,!!manual);limparAviso();}
+        } else if(ultimaVersaoPublica){ultimaVersaoPublica='';await carregarEscala();}
+      } catch(e){console.error('Falha temporária ao verificar atualização da escala:',e);}
+      finally{consultaAutomaticaEmAndamento=false;}
+    }
+
     function baixarPdf() {
       window.print();
     }
@@ -1036,6 +1135,10 @@
 
     definirVisualizacao(modoVisualizacao);
     carregarEscala();
+    setInterval(verificarAtualizacaoPublica,30000);
+    window.addEventListener('focus',verificarAtualizacaoPublica);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)verificarAtualizacaoPublica();});
+    window.addEventListener('online',verificarAtualizacaoPublica);
   </script>
 </body>
 </html>
