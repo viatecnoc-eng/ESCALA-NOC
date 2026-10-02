@@ -725,12 +725,17 @@
   </div>
 
   <!-- NOC_RULES_START -->
-  <script>
+<script>
 /* Configuração e regras compartilhadas entre administração e página pública. */
 (function(root){
 const team=['André','Bruno','Emanuel','Guilherme','João','Ricardo'];
-const config=Object.freeze({start:'08:00',end:'21:50',minutes:830,timeZone:'America/Sao_Paulo'});
-const horario=config.start+' às '+config.end;
+const config=Object.freeze({end:'21:50',weekday:Object.freeze({start:'17:45',minutes:245}),saturday:Object.freeze({start:'12:00',minutes:590}),holiday:Object.freeze({start:'08:00',minutes:830}),timeZone:'America/Sao_Paulo'});
+const descricao='Seg–sex: 17:45–21:50 · Sáb: 12:00–21:50 · Dom/feriados: 08:00–21:50';
+function shift(row){const day=typeof row==='number'?row:date(row.data).getUTCDay();return row?.feriado||day===0?config.holiday:day===6?config.saturday:config.weekday;}
+function horario(row){return shift(row).start+' às '+config.end;}
+function totalMinutes(rows){return rows.filter(r=>r.plantonista).reduce((sum,r)=>sum+shift(r).minutes,0);}
+function formatMinutes(m){return Math.floor(m/60)+'h'+String(m%60).padStart(2,'0');}
+function readableHours(rows){const m=totalMinutes(rows);return Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min';}
 function iso(br){return String(br).split('/').reverse().join('-');}
 function date(br){return new Date(iso(br)+'T12:00:00Z');}
 function allowed(name,br,vacations=[]){return team.includes(name)&&(name!=='João'||[0,1,6].includes(date(br).getUTCDay()))&&!vacations.some(v=>v.nome===name&&iso(br)>=v.inicio&&iso(br)<=v.fim);}
@@ -746,32 +751,32 @@ function errors(data,neighbors=[]){
  seen.add(key);
  if(Number.isFinite(+d)&&['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'][d.getUTCDay()]!==r.semana)out.push(r.data+': dia da semana incorreto.');
  if(!allowed(r.plantonista,r.data,vac))out.push(r.data+': colaborador ausente, indisponível ou fora dos dias permitidos.');
- if(r.horario!==horario)out.push(r.data+': horário deve ser '+horario+'.');
+ if(r.horario!==horario(r))out.push(r.data+': horário deve ser '+horario(r)+'.');
  if(r.plantonista&&rows.concat(neighbors).some(o=>o!==r&&o.plantonista===r.plantonista&&consecutive(o.data,r.data)))out.push(r.data+': '+r.plantonista+' em dias consecutivos.');
  });return [...new Set(out)];
 }
 function generate(rows,vac=[],neighbors=[]){
- const stats=Object.fromEntries(team.map(n=>[n,{total:0,weekend:0,holiday:0}]));
- const result=rows.map(r=>({...r,plantonista:'',horario}));
+ const stats=Object.fromEntries(team.map(n=>[n,{total:0,minutes:0,weekend:0,holiday:0}]));
+ const result=rows.map(r=>({...r,plantonista:'',horario:horario(r)}));
  let attempts=0;
  function solve(i){if(i===result.length)return true;if(++attempts>100000)return false;
  const r=result[i],weekend=[0,6].includes(date(r.data).getUTCDay());
  const candidates=team.filter(n=>allowed(n,r.data,vac)&&!(i&&result[i-1].plantonista===n)&&!neighbors.some(o=>o.plantonista===n&&consecutive(o.data,r.data)));
  candidates.sort((a,b)=>score(a)-score(b)||team.indexOf(a)-team.indexOf(b));
- function score(n){const s=stats[n];return s.total+(weekend?s.weekend*1.6:0)+(r.feriado?s.holiday*2:0);}
- for(const n of candidates){r.plantonista=n;const s=stats[n];s.total++;s.weekend+=+weekend;s.holiday+=+!!r.feriado;
- if(solve(i+1))return true;s.total--;s.weekend-=+weekend;s.holiday-=+!!r.feriado;r.plantonista='';}
+ function score(n){const s=stats[n];return s.minutes/245+(weekend?s.weekend*1.6:0)+(r.feriado?s.holiday*2:0);}
+ for(const n of candidates){r.plantonista=n;const s=stats[n];s.total++;s.minutes+=shift(r).minutes;s.weekend+=+weekend;s.holiday+=+!!r.feriado;
+ if(solve(i+1))return true;s.total--;s.minutes-=shift(r).minutes;s.weekend-=+weekend;s.holiday-=+!!r.feriado;r.plantonista='';}
  return false;}
  if(!solve(0))throw new Error('Não foi possível preencher o período respeitando todas as regras. Revise as indisponibilidades.');
  return result;
 }
-function hours(count){const m=count*config.minutes;return Math.floor(m/60)+'h'+String(m%60).padStart(2,'0');}
+function hours(rows){return formatMinutes(totalMinutes(rows));}
 function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:config.timeZone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
-root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours,today};
+root.NocRules={team,config,descricao,shift,totalMinutes,readableHours,horario,iso,allowed,consecutive,errors,generate,hours,today};
 })(globalThis);
 
-  </script>
-  <!-- NOC_RULES_END -->
+</script>
+<!-- NOC_RULES_END -->
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -1042,14 +1047,14 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
       const atuais=linhasOriginais.filter(r=>r.plantonista);
       const atual=atuais.find(r=>NocRules.iso(r.data)===hoje);
       const proximo=atuais.filter(r=>NocRules.iso(r.data)>hoje).sort((a,b)=>NocRules.iso(a.data).localeCompare(NocRules.iso(b.data)))[0];
-      function item(label,linha){return '<div class="public-duty-card"><small>'+label+'</small><strong>'+escapeHtml(linha?.plantonista||'Sem plantão publicado')+'</strong><span>'+escapeHtml(linha?linha.data+' · '+NocRules.horario:'Nenhuma data disponível na escala')+'</span></div>';}
+      function item(label,linha){return '<div class="public-duty-card"><small>'+label+'</small><strong>'+escapeHtml(linha?.plantonista||'Sem plantão publicado')+'</strong><span>'+escapeHtml(linha?linha.data+' · '+NocRules.horario(linha):'Nenhuma data disponível na escala')+'</span></div>';}
       $('publicDuty').innerHTML=item('Plantão de hoje',atual)+item('Próximo plantão',proximo);
     }
     let ultimaVersaoPublica='';
     function preencherTela(dados, atualizadoBanco, idCarregado, carregouFallback = false) {
       ultimaVersaoPublica=JSON.stringify([idCarregado,atualizadoBanco,dados]);
       dadosEscala = dados;
-      linhasOriginais = (dados.linhas || []).map(r=>({...r,horario:NocRules.horario}));
+      linhasOriginais = (dados.linhas || []).map(r=>({...r,horario:NocRules.horario(r)}));
       origemAtual = idCarregado;
 
       const mes = dados.mes || '-';
@@ -1058,7 +1063,7 @@ root.NocRules={team,config,horario,iso,allowed,consecutive,errors,generate,hours
       const telefone = dados.telefoneNoc || '-';
       const whatsapp = dados.whatsappNoc || '';
 
-      $('subtitulo').innerText = `${mes} de ${ano} · Sobreaviso das ${NocRules.config.start} às ${NocRules.config.end}`;
+      $('subtitulo').innerText = `${mes} de ${ano} · ${NocRules.descricao}`;
       preencherPlantoesDestaque();
       $('mesAno').innerText = `${mes} / ${ano}`;
       $('setor').innerText = setor;
